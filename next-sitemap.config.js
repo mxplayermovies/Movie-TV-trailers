@@ -1,7 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: 'https://movie-tv-trailers.vercel.app', // Change to your domain
-  generateRobotsTxt: true,
+  generateRobotsTxt: false,
   robotsTxtOptions: {
     policies: [
       { userAgent: '*', allow: '/' },
