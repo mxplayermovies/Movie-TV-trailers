@@ -60,7 +60,7 @@ export default function Header({ minimal }: { minimal?: boolean }) {
 
             {/* Get App Link – hidden on smallest screens, visible on sm+ */}
             <a
-              href="https://median.co/share/bnlpkdo"
+              href="https://median.co/share/odmellj"
               target="_blank"
               rel="noopener noreferrer"
               download
@@ -140,7 +140,7 @@ export default function Header({ minimal }: { minimal?: boolean }) {
 
             {/* Get App link for mobile (since it's hidden on sm in the top bar) */}
             <a
-              href="https://median.co/share/bnlpkdo"
+              href="https://median.co/share/odmellj"
               target="_blank"
               rel="noopener noreferrer"
               download
