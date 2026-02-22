@@ -5,7 +5,7 @@ import { Facebook, Twitter, Send, Link2 } from 'lucide-react';
 interface Props {
   url: string;
   title: string;
-  image?: string;
+  image?: string; // kept for future use, not required
 }
 
 const ShareButtons: React.FC<Props> = ({ url, title }) => {
@@ -40,17 +40,37 @@ const ShareButtons: React.FC<Props> = ({ url, title }) => {
     {
       name: 'Copy Link',
       icon: Link2,
-      onClick: () => navigator.clipboard.writeText(url),
+      onClick: () => {
+        if (typeof navigator !== 'undefined' && navigator.clipboard) {
+          navigator.clipboard.writeText(url).catch(() => {
+            // fallback – alert or ignore
+            alert('Failed to copy link. Please copy manually.');
+          });
+        } else {
+          // fallback for older browsers / server-side (should never happen on click)
+          alert('Copy not supported. Please copy manually.');
+        }
+      },
       color: 'bg-gray-600 hover:bg-gray-700',
     },
   ];
+
+  const handleClick = (item: typeof shareLinks[0]) => {
+    if (item.onClick) {
+      item.onClick();
+    } else if (item.href) {
+      if (typeof window !== 'undefined') {
+        window.open(item.href, '_blank', 'noopener,noreferrer');
+      }
+    }
+  };
 
   return (
     <div className="flex flex-wrap gap-2 mt-4">
       {shareLinks.map((item) => (
         <button
           key={item.name}
-          onClick={item.onClick ? item.onClick : () => window.open(item.href, '_blank')}
+          onClick={() => handleClick(item)}
           className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition ${item.color}`}
           title={`Share on ${item.name}`}
         >
