@@ -44,7 +44,7 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
-  const shareUrl = `${BASE_URL}/movies/${item.id}`; // uses string ID
+  const shareUrl = `${BASE_URL}/movies/${item.id}`; // uses string ID directly
 
   useEffect(() => {
     if (title) {
@@ -66,12 +66,19 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
 
-  // Build absolute image URL for social tags
-  const imageUrl = item.poster_path
-    ? item.poster_path.startsWith('http')
-      ? item.poster_path
-      : `${TMDB_IMAGE_BASE}${item.poster_path}`
-    : `${BASE_URL}/og-image.jpg`;
+  // Correctly handle both TMDB paths and local paths
+  let imageUrl = `${BASE_URL}/og-image.jpg`;
+  if (item.poster_path) {
+    if (item.poster_path.startsWith('http')) {
+      imageUrl = item.poster_path;
+    } else if (item.poster_path.startsWith('/')) {
+      // Local path (like /images/movie/case73.jpg) – serve from your domain
+      imageUrl = `${BASE_URL}${item.poster_path}`;
+    } else {
+      // Assume TMDB relative path
+      imageUrl = `${TMDB_IMAGE_BASE}${item.poster_path}`;
+    }
+  }
 
   return (
     <>
@@ -173,7 +180,7 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = UNIQUE_MOVIES.map((item) => ({
-    params: { id: String(item.id) }, // string ID directly
+    params: { id: String(item.id) },
   }));
   return { paths, fallback: 'blocking' };
 };

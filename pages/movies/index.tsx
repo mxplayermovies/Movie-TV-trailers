@@ -167,7 +167,7 @@ export default function MoviesPage({ items }: Props) {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {visibleItems.map((item) => (
-              <Link key={item.id} href={`/movies/${item.id}`}>  {/* ← uses string ID directly */}
+              <Link key={item.id} href={`/movies/${item.id}`}>
                 <div className="group cursor-pointer">
                   <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800">
                     <img
