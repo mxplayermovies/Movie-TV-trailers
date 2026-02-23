@@ -1,28 +1,33 @@
 // components/ShareButtons.tsx
+// Social crawlers (Facebook, WhatsApp etc.) scrape the share URL for OG tags.
+// Dynamic pages like /movies/[id] can 500 during static generation.
+// Solution: share /api/og?id=xxx&type=movie instead — that route uses only
+// static data, never fails, and returns correct OG tags + redirects users
+// to the real page automatically.
+
 import React, { useEffect, useState } from 'react';
 import {
-  FacebookShareButton,
-  FacebookIcon,
-  TwitterShareButton,
-  TwitterIcon,
-  WhatsappShareButton,
-  WhatsappIcon,
-  TelegramShareButton,
-  TelegramIcon,
-  EmailShareButton,
-  EmailIcon,
-  LinkedinShareButton,
-  LinkedinIcon,
+  FacebookShareButton, FacebookIcon,
+  TwitterShareButton, TwitterIcon,
+  WhatsappShareButton, WhatsappIcon,
+  TelegramShareButton, TelegramIcon,
+  EmailShareButton, EmailIcon,
+  LinkedinShareButton, LinkedinIcon,
 } from 'react-share';
 
+const BASE_URL = 'https://movie-tv-trailers.vercel.app';
+
 interface Props {
-  url: string;
+  // Pass the item id and type — ShareButtons builds the og URL internally
+  id: string | number;
+  type?: 'movie' | 'tv' | 'sports' | 'tv_live';
   title: string;
-  image?: string;
   description?: string;
+  // Also accept a direct url override if needed
+  url?: string;
 }
 
-const ShareButtons: React.FC<Props> = ({ url, title, image, description }) => {
+const ShareButtons: React.FC<Props> = ({ id, type = 'movie', title, description, url }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -31,26 +36,28 @@ const ShareButtons: React.FC<Props> = ({ url, title, image, description }) => {
 
   if (!mounted) return null;
 
+  // Use /api/og route as the share URL — crawlers scrape this and get valid OG tags
+  // Real users get instantly redirected to the actual page
+  const shareUrl = url || `${BASE_URL}/api/og?id=${encodeURIComponent(String(id))}&type=${type}`;
+
   return (
     <div className="flex flex-wrap gap-2 mt-4">
-      {/* Facebook reads og:image from page HEAD — it ignores props here.
-          The fix is the og:image meta tag in the page, not props on this button. */}
-      <FacebookShareButton url={url} className="transition-transform hover:scale-105">
+      <FacebookShareButton url={shareUrl} className="transition-transform hover:scale-105">
         <FacebookIcon size={40} round />
       </FacebookShareButton>
-      <TwitterShareButton url={url} title={title} className="transition-transform hover:scale-105">
+      <TwitterShareButton url={shareUrl} title={title} className="transition-transform hover:scale-105">
         <TwitterIcon size={40} round />
       </TwitterShareButton>
-      <WhatsappShareButton url={url} title={title} className="transition-transform hover:scale-105">
+      <WhatsappShareButton url={shareUrl} title={title} className="transition-transform hover:scale-105">
         <WhatsappIcon size={40} round />
       </WhatsappShareButton>
-      <TelegramShareButton url={url} title={title} className="transition-transform hover:scale-105">
+      <TelegramShareButton url={shareUrl} title={title} className="transition-transform hover:scale-105">
         <TelegramIcon size={40} round />
       </TelegramShareButton>
-      <LinkedinShareButton url={url} title={title} summary={description} className="transition-transform hover:scale-105">
+      <LinkedinShareButton url={shareUrl} title={title} summary={description} className="transition-transform hover:scale-105">
         <LinkedinIcon size={40} round />
       </LinkedinShareButton>
-      <EmailShareButton url={url} subject={title} body={`${description || ''}\n\n${url}`} className="transition-transform hover:scale-105">
+      <EmailShareButton url={shareUrl} subject={title} body={`${description || ''}\n\n${shareUrl}`} className="transition-transform hover:scale-105">
         <EmailIcon size={40} round />
       </EmailShareButton>
     </div>
