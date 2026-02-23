@@ -28,7 +28,7 @@ const ShareButtons: React.FC<Props> = ({ url, title, image }) => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
+  if (!mounted) return null; // prevent hydration mismatch
 
   const shareProps = {
     url,

@@ -44,7 +44,7 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
-  const shareUrl = `${BASE_URL}/movies/${item.id}`; // uses string ID directly
+  const shareUrl = `${BASE_URL}/movies/${item.id}`; // uses the exact string ID
 
   useEffect(() => {
     if (title) {
@@ -66,16 +66,16 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
 
-  // Correctly handle both TMDB paths and local paths
+  // Build absolute image URL for social tags
   let imageUrl = `${BASE_URL}/og-image.jpg`;
   if (item.poster_path) {
     if (item.poster_path.startsWith('http')) {
       imageUrl = item.poster_path;
     } else if (item.poster_path.startsWith('/')) {
-      // Local path (like /images/movie/case73.jpg) – serve from your domain
+      // Local path (e.g., /images/...)
       imageUrl = `${BASE_URL}${item.poster_path}`;
     } else {
-      // Assume TMDB relative path
+      // TMDB relative path
       imageUrl = `${TMDB_IMAGE_BASE}${item.poster_path}`;
     }
   }
@@ -180,7 +180,7 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = UNIQUE_MOVIES.map((item) => ({
-    params: { id: String(item.id) },
+    params: { id: String(item.id) }, // uses the exact string ID
   }));
   return { paths, fallback: 'blocking' };
 };
@@ -190,10 +190,19 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const id = params?.id as string;
     if (!id) return { notFound: true };
 
+    // First, verify the ID exists in our static list
     const matched = UNIQUE_MOVIES.find((item) => String(item.id) === id);
     if (!matched) return { notFound: true };
 
-    const item = await getDetails('movie', id);
+    // Now fetch full details (including streams) – this may still throw, so we wrap it
+    let item: ContentDetails;
+    try {
+      item = await getDetails('movie', id);
+    } catch (err) {
+      console.error(`[MovieDetail] getDetails failed for id ${id}:`, err);
+      return { notFound: true };
+    }
+
     const sanitizedItem = sanitizeMediaItem(item);
 
     const allMovies = UNIQUE_MOVIES.map(sanitizeMediaItem);
@@ -204,7 +213,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       revalidate: 3600,
     };
   } catch (err) {
-    console.error('[MovieDetail] Unhandled error:', err);
+    console.error('[MovieDetail] Unhandled error in getStaticProps:', err);
     return { notFound: true };
   }
 };
