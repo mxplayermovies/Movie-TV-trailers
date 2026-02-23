@@ -131,12 +131,37 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       <>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-          <meta name="theme-color" content="#0a0a0a" />
-          <meta name="robots" content="index, follow" />
-          <link rel="icon" href="/logo.png" type="image/png" />
-        </Head>
+            <Head>
+        <title>Movie & TV trailers – Free Movies, TV & Live Sports</title>
+        <meta name="description" content="Watch free movies, TV shows, live sports, and more online. No sign‑up required." />
+        <meta name="keywords" content="free movies, watch online, tv shows, live sports, streaming, hindi dubbed" />
+        <meta property="og:title" content="Movie & TV trailers – Free Streaming Platform" />
+        <meta property="og:description" content="Your ultimate destination for movies, TV, live sports, and more." />
+        <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="author" content="Movie & TV trailers" />
+        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://movie-tv-trailers.vercel.app" />
+        <link rel="canonical" href="https://movie-tv-trailers.vercel.app" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Movie & TV trailers – Free Streaming Platform" />
+        <meta name="twitter:description" content="Your ultimate destination for movies, TV, live sports, and more." />
+        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <meta name="twitter:site" content="@movie-tv-trailers" />
+        <meta name="twitter:creator" content="@movie-tv-trailers" />
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+
+      </Head>
+
 
         {/* Google Analytics - using Next.js Script component properly */}
         <Script
