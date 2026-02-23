@@ -357,26 +357,44 @@ const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
 
 interface Props {
-  item: Omit<ContentDetails, 'streams'>;
+  item: Omit<ContentDetails, 'streams'> | null;
   recommendations: Omit<MediaItem, 'streams'>[];
+  error?: boolean;
 }
 
-export default function MovieDetail({ item, recommendations }: Props) {
+export default function MovieDetail({ item, recommendations, error }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (error || !item) return;
+    if (item.title) {
+      voiceManager.speak(`Now viewing ${item.title}. Click the speaker icon to learn about the movie.`);
+    }
+  }, [item, error]);
+
+  if (error || !item) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-[#0f172a] flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Content not found</h1>
+          <button
+            onClick={() => router.push('/movies')}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+          >
+            Back to Movies
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
   const shareUrl = `${BASE_URL}/movies/${slugify(title)}`;
 
-  useEffect(() => {
-    if (title) {
-      voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
-    }
-  }, [title]);
-
   const readDetails = () => {
-    const text = `${title}. ${item.overview}...`;
+    const text = `${title}. ${item.overview || ''}...`;
     voiceManager.speak(text, true);
   };
 
@@ -389,7 +407,6 @@ export default function MovieDetail({ item, recommendations }: Props) {
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
 
-  // Build absolute image URL for social tags
   const imageUrl = item.poster_path
     ? item.poster_path.startsWith('http')
       ? item.poster_path
@@ -502,18 +519,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const rawSlug = params?.id as string;
-  const normalizedSlug = slugify(rawSlug); // remove any stray hyphens
-
-  const matched = UNIQUE_MOVIES.find(
-    (item) => slugify(item.title || item.name || '') === normalizedSlug
-  );
-
-  if (!matched) {
-    return { notFound: true };
-  }
-
   try {
+    const rawSlug = params?.id as string;
+    if (!rawSlug) return { notFound: true };
+
+    const normalizedSlug = slugify(rawSlug);
+
+    const matched = UNIQUE_MOVIES.find(
+      (item) => slugify(item.title || item.name || '') === normalizedSlug
+    );
+
+    if (!matched) {
+      console.warn(`No match found for slug: ${normalizedSlug}`);
+      return { notFound: true };
+    }
+
     const item = await getDetails('movie', String(matched.id));
     const sanitizedItem = sanitizeMediaItem(item);
 
@@ -529,8 +549,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: { item: sanitizedItem, recommendations },
       revalidate: 3600,
     };
-  } catch (error) {
-    console.error('Error in getStaticProps:', error);
-    return { notFound: true };
+  } catch (err) {
+    console.error('Error in getStaticProps for movie detail:', err);
+    // Return a 404 page gracefully – no 500 error
+    return {
+      props: { error: true, item: null, recommendations: [] },
+      revalidate: 60,
+    };
   }
 };
