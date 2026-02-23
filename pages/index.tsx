@@ -65,12 +65,29 @@ export default function Home() {
         <meta property="og:title" content="Movie & TV trailers – Free Streaming Platform" />
         <meta property="og:description" content="Your ultimate destination for movies, TV, live sports, and more." />
         <meta name="robots" content="index, follow" />
+        <meta name="language" content="English" />
+        <meta name="revisit-after" content="7 days" />
+        <meta name="author" content="Movie & TV trailers" />
+        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
         <link rel="icon" href="/logo.png" type="image/png" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://movie-tv-trailers.vercel.app" />
         <link rel="canonical" href="https://movie-tv-trailers.vercel.app" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Movie & TV trailers – Free Streaming Platform" />
+        <meta name="twitter:description" content="Your ultimate destination for movies, TV, live sports, and more." />
+        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <meta name="twitter:site" content="@movie-tv-trailers" />
+        <meta name="twitter:creator" content="@movie-tv-trailers" />
+        {/* Apple Touch Icons */}
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+
       </Head>
 
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-white font-sans overflow-x-hidden transition-colors duration-300">
