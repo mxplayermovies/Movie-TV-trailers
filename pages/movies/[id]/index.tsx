@@ -444,7 +444,7 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { UNIQUE_MOVIES, getDetails } from '../../../services/tmdb';
+import { UNIQUE_MOVIES, getDetails, getImageUrl } from '../../../services/tmdb';
 import { ContentDetails, MediaItem } from '../../../types';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
@@ -456,7 +456,6 @@ import Recommendations from '../../../components/Recommendations';
 import ShareButtons from '../../../components/ShareButtons';
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
-const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w780';
 
 interface Props {
   item?: Omit<ContentDetails, 'streams'>;
@@ -508,17 +507,14 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
 
-  // Build absolute image URL for social tags
-  let imageUrl = `${BASE_URL}/og-image.jpg`;
-  if (item.poster_path) {
-    if (item.poster_path.startsWith('http')) {
-      imageUrl = item.poster_path;
-    } else if (item.poster_path.startsWith('/')) {
-      imageUrl = `${BASE_URL}${item.poster_path}`;
-    } else {
-      imageUrl = `${TMDB_IMAGE_BASE}${item.poster_path}`;
-    }
-  }
+  // Use getImageUrl which correctly converts TMDB relative paths to absolute URLs
+  // This is what was causing og:image to be broken on all social platforms
+  const rawPoster = item.poster_path || null;
+  const imageUrl = rawPoster
+    ? getImageUrl(rawPoster, 'w500').startsWith('http')
+      ? getImageUrl(rawPoster, 'w500')
+      : `${BASE_URL}${getImageUrl(rawPoster, 'w500')}`
+    : `${BASE_URL}/og-image.jpg`;
 
   return (
     <>
@@ -630,30 +626,27 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const id = params?.id as string;
     if (!id) return { notFound: true };
 
-    // Verify the ID exists in our static list
     const matched = UNIQUE_MOVIES.find((item) => String(item.id) === id);
     if (!matched) return { notFound: true };
 
-    // Try getDetails but ALWAYS fall back to static matched data — never return notFound on API failure
+    // CRITICAL: Never let getDetails failure cause a 500.
+    // Always fall back to static matched data so the page always renders
+    // with correct OG tags for social share crawlers.
     let item: ContentDetails;
     try {
       item = await getDetails('movie', id);
     } catch (err) {
-      console.error(`[MovieDetail] getDetails failed for id ${id}, using static data:`, err);
-      // Use static data so page always renders — this prevents 500 on social share crawlers
+      console.error(`[MovieDetail] getDetails failed, using static fallback:`, err);
       item = matched as unknown as ContentDetails;
     }
 
-    // Fix poster_path: TMDB returns relative paths like "/abc.jpg"
-    // Social crawlers (Facebook etc.) need absolute URLs or og:image fails
-    const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
-    const BASE_URL = 'https://movie-tv-trailers.vercel.app';
-    if (item.poster_path && !item.poster_path.startsWith('http')) {
+    // CRITICAL: poster_path from TMDB is relative e.g. "/abc.jpg"
+    // og:image MUST be absolute or Facebook/WhatsApp will show nothing.
+    // Use getImageUrl which handles this correctly.
+    if (item.poster_path && !item.poster_path.startsWith('http') && !item.poster_path.startsWith('/images/') && item.poster_path !== '/18only.png') {
       item = {
         ...item,
-        poster_path: item.poster_path.startsWith('/')
-          ? `${TMDB_IMAGE_BASE}${item.poster_path}`
-          : `${BASE_URL}/${item.poster_path}`,
+        poster_path: `https://image.tmdb.org/t/p/w500${item.poster_path.startsWith('/') ? '' : '/'}${item.poster_path}`,
       };
     }
 
