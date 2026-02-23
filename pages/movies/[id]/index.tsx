@@ -456,7 +456,7 @@ import Recommendations from '../../../components/Recommendations';
 import ShareButtons from '../../../components/ShareButtons';
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
-const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
+const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w780';
 
 interface Props {
   item?: Omit<ContentDetails, 'streams'>;
@@ -634,18 +634,30 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const matched = UNIQUE_MOVIES.find((item) => String(item.id) === id);
     if (!matched) return { notFound: true };
 
-    // Try to fetch full details — if it fails, fall back to matched static data
-    // This prevents getDetails API errors from causing a 500
+    // Try getDetails but ALWAYS fall back to static matched data — never return notFound on API failure
     let item: ContentDetails;
     try {
       item = await getDetails('movie', id);
     } catch (err) {
       console.error(`[MovieDetail] getDetails failed for id ${id}, using static data:`, err);
+      // Use static data so page always renders — this prevents 500 on social share crawlers
       item = matched as unknown as ContentDetails;
     }
 
-    const sanitizedItem = sanitizeMediaItem(item);
+    // Fix poster_path: TMDB returns relative paths like "/abc.jpg"
+    // Social crawlers (Facebook etc.) need absolute URLs or og:image fails
+    const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
+    const BASE_URL = 'https://movie-tv-trailers.vercel.app';
+    if (item.poster_path && !item.poster_path.startsWith('http')) {
+      item = {
+        ...item,
+        poster_path: item.poster_path.startsWith('/')
+          ? `${TMDB_IMAGE_BASE}${item.poster_path}`
+          : `${BASE_URL}/${item.poster_path}`,
+      };
+    }
 
+    const sanitizedItem = sanitizeMediaItem(item);
     const allMovies = UNIQUE_MOVIES.map(sanitizeMediaItem);
     const recommendations = allMovies.filter((m) => String(m.id) !== id).slice(0, 6);
 

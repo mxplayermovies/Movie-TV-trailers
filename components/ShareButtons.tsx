@@ -19,41 +19,38 @@ interface Props {
   url: string;
   title: string;
   image?: string;
+  description?: string;
 }
 
-const ShareButtons: React.FC<Props> = ({ url, title, image }) => {
+const ShareButtons: React.FC<Props> = ({ url, title, image, description }) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; // prevent hydration mismatch
-
-  const shareProps = {
-    url,
-    title,
-    media: image,
-  };
+  if (!mounted) return null;
 
   return (
     <div className="flex flex-wrap gap-2 mt-4">
-      <FacebookShareButton {...shareProps} className="transition-transform hover:scale-105">
+      {/* Facebook reads og:image from page HEAD — it ignores props here.
+          The fix is the og:image meta tag in the page, not props on this button. */}
+      <FacebookShareButton url={url} className="transition-transform hover:scale-105">
         <FacebookIcon size={40} round />
       </FacebookShareButton>
-      <TwitterShareButton {...shareProps} className="transition-transform hover:scale-105">
+      <TwitterShareButton url={url} title={title} className="transition-transform hover:scale-105">
         <TwitterIcon size={40} round />
       </TwitterShareButton>
-      <WhatsappShareButton {...shareProps} className="transition-transform hover:scale-105">
+      <WhatsappShareButton url={url} title={title} className="transition-transform hover:scale-105">
         <WhatsappIcon size={40} round />
       </WhatsappShareButton>
-      <TelegramShareButton {...shareProps} className="transition-transform hover:scale-105">
+      <TelegramShareButton url={url} title={title} className="transition-transform hover:scale-105">
         <TelegramIcon size={40} round />
       </TelegramShareButton>
-      <LinkedinShareButton {...shareProps} className="transition-transform hover:scale-105">
+      <LinkedinShareButton url={url} title={title} summary={description} className="transition-transform hover:scale-105">
         <LinkedinIcon size={40} round />
       </LinkedinShareButton>
-      <EmailShareButton {...shareProps} className="transition-transform hover:scale-105">
+      <EmailShareButton url={url} subject={title} body={`${description || ''}\n\n${url}`} className="transition-transform hover:scale-105">
         <EmailIcon size={40} round />
       </EmailShareButton>
     </div>
