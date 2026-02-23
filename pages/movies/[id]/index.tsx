@@ -351,7 +351,7 @@ import { Play, Volume2 } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
 import ShareButtons from '../../../components/ShareButtons';
-import { slugify } from '../../../lib/utils/slugify'; // import slugify
+import { slugify } from '../../../lib/utils/slugify';
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
@@ -367,7 +367,7 @@ export default function MovieDetail({ item, recommendations }: Props) {
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
-  const shareUrl = `${BASE_URL}/movies/${slugify(title)}`; // use slugified title for canonical
+  const shareUrl = `${BASE_URL}/movies/${slugify(title)}`;
 
   useEffect(() => {
     if (title) {
@@ -476,7 +476,13 @@ export default function MovieDetail({ item, recommendations }: Props) {
               <ShareButtons url={shareUrl} title={title} image={imageUrl} />
             </div>
             <div>
-              <YouTubePlayer videoId={ytId} title={title} autoplay loop />
+              {ytId ? (
+                <YouTubePlayer videoId={ytId} title={title} autoplay loop />
+              ) : (
+                <div className="aspect-video bg-gray-800 rounded-lg flex items-center justify-center text-gray-400">
+                  No trailer available
+                </div>
+              )}
             </div>
           </div>
 
@@ -496,12 +502,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const slug = params?.id as string;
-  // Find the movie with matching slug
+  const rawSlug = params?.id as string;
+  const normalizedSlug = slugify(rawSlug); // remove any stray hyphens
+
   const matched = UNIQUE_MOVIES.find(
-    (item) => slugify(item.title || item.name || '') === slug
+    (item) => slugify(item.title || item.name || '') === normalizedSlug
   );
-  if (!matched) return { notFound: true };
+
+  if (!matched) {
+    return { notFound: true };
+  }
 
   try {
     const item = await getDetails('movie', String(matched.id));
@@ -519,7 +529,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: { item: sanitizedItem, recommendations },
       revalidate: 3600,
     };
-  } catch {
+  } catch (error) {
+    console.error('Error in getStaticProps:', error);
     return { notFound: true };
   }
 };
