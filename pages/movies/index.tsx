@@ -114,12 +114,11 @@ import Footer from '../../components/Footer';
 import { voiceManager } from '../../lib/core/VoiceManager';
 import { Volume2, ChevronDown } from 'lucide-react';
 import { sanitizeMediaItem } from '../../lib/core/sanitize';
-import { slugify } from '../../lib/utils/slugify'; // import slugify
 
 const ITEMS_PER_PAGE = 15;
 
 interface Props {
-  items: (Omit<MediaItem, 'streams'> & { slug: string })[];
+  items: Omit<MediaItem, 'streams'>[];
 }
 
 export default function MoviesPage({ items }: Props) {
@@ -168,7 +167,7 @@ export default function MoviesPage({ items }: Props) {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {visibleItems.map((item) => (
-              <Link key={item.id} href={`/movies/${item.slug}`}>  {/* ← use slug */}
+              <Link key={item.id} href={`/movies/${item.id}`}>  {/* ← numeric ID */}
                 <div className="group cursor-pointer">
                   <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800">
                     <img
@@ -201,10 +200,7 @@ export default function MoviesPage({ items }: Props) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const items = UNIQUE_MOVIES.map((item) => ({
-    ...sanitizeMediaItem(item),
-    slug: slugify(item.title || item.name || ''),
-  }));
+  const items = UNIQUE_MOVIES.map(sanitizeMediaItem);
   return {
     props: { items },
     revalidate: 3600,

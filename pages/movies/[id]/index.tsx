@@ -350,8 +350,7 @@ import { voiceManager } from '../../../lib/core/VoiceManager';
 import { Play, Volume2 } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
-import ShareButtons from '../../../components/ShareButtons';
-import { slugify } from '../../../lib/utils/slugify';
+import ShareButtons from '../../../components/ShareButtons'; // the fixed version (see step 4)
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w500';
@@ -384,7 +383,7 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
-  const shareUrl = `${BASE_URL}/movies/${slugify(title)}`;
+  const shareUrl = `${BASE_URL}/movies/${item.id}`; // numeric ID in URL
 
   useEffect(() => {
     if (title) {
@@ -512,44 +511,24 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = UNIQUE_MOVIES.map((item) => ({
-    params: { id: slugify(item.title || item.name || '') },
+    params: { id: String(item.id) },
   }));
   return { paths, fallback: 'blocking' };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
-    const rawSlug = params?.id as string;
-    if (!rawSlug) return { notFound: true };
+    const id = params?.id as string;
+    if (!id) return { notFound: true };
 
-    const normalizedSlug = slugify(rawSlug);
+    const matched = UNIQUE_MOVIES.find((item) => String(item.id) === id);
+    if (!matched) return { notFound: true };
 
-    const matched = UNIQUE_MOVIES.find(
-      (item) => slugify(item.title || item.name || '') === normalizedSlug
-    );
-
-    if (!matched) {
-      console.warn(`[MovieDetail] No match for slug: ${normalizedSlug}`);
-      return { notFound: true };
-    }
-
-    let item: ContentDetails;
-    try {
-      item = await getDetails('movie', String(matched.id));
-    } catch (err) {
-      console.error('[MovieDetail] getDetails failed:', err);
-      return { notFound: true };
-    }
-
+    const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
 
-    const allMovies = UNIQUE_MOVIES.map((m) => ({
-      ...sanitizeMediaItem(m),
-      slug: slugify(m.title || m.name || ''),
-    }));
-    const recommendations = allMovies
-      .filter((m) => m.id !== matched.id)
-      .slice(0, 6);
+    const allMovies = UNIQUE_MOVIES.map(sanitizeMediaItem);
+    const recommendations = allMovies.filter((m) => String(m.id) !== id).slice(0, 6);
 
     return {
       props: { item: sanitizedItem, recommendations },
