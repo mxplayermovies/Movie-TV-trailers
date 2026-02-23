@@ -593,7 +593,7 @@ export default function MovieDetail({ item, recommendations, notFound }: Props) 
                 {loading ? 'Loading...' : 'Play Now'}
               </button>
 
-              <ShareButtons id={item.id} type="movie" title={title} description={description} />
+              <ShareButtons url={shareUrl} id={item.id} type="movie" title={title} description={description} />
             </div>
             <div>
               {ytId ? (
