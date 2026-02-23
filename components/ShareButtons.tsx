@@ -1,5 +1,5 @@
 // components/ShareButtons.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Facebook, Twitter, Send, Link2, Check } from 'lucide-react';
 
 interface Props {
@@ -10,9 +10,15 @@ interface Props {
 
 const ShareButtons: React.FC<Props> = ({ url, title }) => {
   const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Guard: do not render on the server (prevents any SSR issues)
-  if (typeof window === 'undefined') return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render anything on the server or during the first client render
+  // to prevent hydration mismatch
+  if (!mounted) return null;
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);

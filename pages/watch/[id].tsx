@@ -90,8 +90,8 @@ export default function WatchPage() {
       try {
         const data = await getDetails(type as string, id as string);
         setItem(data);
-      } catch (error) {
-        console.error('Failed to load item', error);
+      } catch (err) {
+        console.error('Failed to load item', err);
         setError(true);
       } finally {
         setLoading(false);
