@@ -530,11 +530,19 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     );
 
     if (!matched) {
-      console.warn(`No match found for slug: ${normalizedSlug}`);
+      console.warn(`[MovieDetail] No match for slug: ${normalizedSlug}`);
       return { notFound: true };
     }
 
-    const item = await getDetails('movie', String(matched.id));
+    // Safely fetch details – getDetails already has internal fallback
+    let item: ContentDetails;
+    try {
+      item = await getDetails('movie', String(matched.id));
+    } catch (detailsError) {
+      console.error('[MovieDetail] getDetails failed:', detailsError);
+      return { notFound: true };
+    }
+
     const sanitizedItem = sanitizeMediaItem(item);
 
     const allMovies = UNIQUE_MOVIES.map((m) => ({
@@ -550,11 +558,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       revalidate: 3600,
     };
   } catch (err) {
-    console.error('Error in getStaticProps for movie detail:', err);
-    // Return a 404 page gracefully – no 500 error
-    return {
-      props: { error: true, item: null, recommendations: [] },
-      revalidate: 60,
-    };
+    console.error('[MovieDetail] Unhandled error in getStaticProps:', err);
+    // Return a 404 page gracefully – never a 500
+    return { notFound: true };
   }
 };
