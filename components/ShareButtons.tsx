@@ -1,10 +1,4 @@
 // components/ShareButtons.tsx
-// Social crawlers (Facebook, WhatsApp etc.) scrape the share URL for OG tags.
-// Dynamic pages like /movies/[id] can 500 during static generation.
-// Solution: share /api/og?id=xxx&type=movie instead — that route uses only
-// static data, never fails, and returns correct OG tags + redirects users
-// to the real page automatically.
-
 import React, { useEffect, useState } from 'react';
 import {
   FacebookShareButton, FacebookIcon,
@@ -18,27 +12,25 @@ import {
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 
 interface Props {
-  // Pass the item id and type — ShareButtons builds the og URL internally
-  id: string | number;
-  type?: 'movie' | 'tv' | 'sports' | 'tv_live';
+  url: string;           // direct page URL — required
   title: string;
   description?: string;
-  // Also accept a direct url override if needed
-  url?: string;
+  id?: string | number;  // optional — used to build /api/og share URL
+  type?: 'movie' | 'tv' | 'sports' | 'tv_live';
 }
 
-const ShareButtons: React.FC<Props> = ({ id, type = 'movie', title, description, url }) => {
+const ShareButtons: React.FC<Props> = ({ url, title, description, id, type = 'movie' }) => {
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   if (!mounted) return null;
 
-  // Use /api/og route as the share URL — crawlers scrape this and get valid OG tags
-  // Real users get instantly redirected to the actual page
-  const shareUrl = url || `${BASE_URL}/api/og?id=${encodeURIComponent(String(id))}&type=${type}`;
+  // If id provided, use /api/og so crawlers always get valid OG tags without 500
+  // Otherwise fall back to the direct url
+  const shareUrl = id
+    ? `${BASE_URL}/api/og?id=${encodeURIComponent(String(id))}&type=${type}`
+    : url;
 
   return (
     <div className="flex flex-wrap gap-2 mt-4">
