@@ -1,42 +1,39 @@
-/**
- * lib/ogImage.ts
- *
- * Generates OG image URLs served from YOUR OWN domain via /api/og
- * Facebook and Twitter ALWAYS load images from the page's own domain.
- * Zero external services. Zero accounts. Zero API keys.
- */
+// lib/ogImage.ts
+// Builds OG image URLs proxied through our own domain.
+// Facebook and Twitter always load images from your own domain.
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
-const TMDB_BASE = 'https://image.tmdb.org/t/p/w780';
+const TMDB_BASE = 'https://image.tmdb.org/t/p/w1280';
 
 function buildSocialImageUrl(
   path: string | null | undefined,
-  title?: string
+  _title?: string
 ): string {
-  // Resolve the raw image URL
-  let imgUrl = '';
-
   if (!path) {
-    imgUrl = '';
-  } else if (path.startsWith('http')) {
-    imgUrl = path;
-  } else if (
-    path.startsWith('/images/') ||
-    path === '/18only.png' ||
-    path === '/logo.png'
-  ) {
-    imgUrl = `${BASE_URL}${path}`;
-  } else {
-    const clean = path.startsWith('/') ? path : `/${path}`;
-    imgUrl = `${TMDB_BASE}${clean}`;
+    return `${BASE_URL}/og-image.jpg`;
   }
 
-  // Build URL to our own /api/og endpoint
-  const params = new URLSearchParams();
-  if (title) params.set('title', title.slice(0, 80));
-  if (imgUrl) params.set('img', imgUrl);
+  // Local files — already on your domain, always work
+  if (
+    path.startsWith('/images/') ||
+    path === '/18only.png' ||
+    path === '/logo.png' ||
+    path === '/og-image.jpg'
+  ) {
+    return `${BASE_URL}${path}`;
+  }
 
-  return `${BASE_URL}/api/og?${params.toString()}`;
+  // Build the source image URL
+  let sourceUrl: string;
+  if (path.startsWith('http')) {
+    sourceUrl = path;
+  } else {
+    const clean = path.startsWith('/') ? path : `/${path}`;
+    sourceUrl = `${TMDB_BASE}${clean}`;
+  }
+
+  // Proxy through our own domain
+  return `${BASE_URL}/api/og-image?url=${encodeURIComponent(sourceUrl)}`;
 }
 
 export const buildOgImageUrl = buildSocialImageUrl;
