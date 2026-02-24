@@ -49,54 +49,32 @@
 // pages/_document.tsx
 import { Html, Head, Main, NextScript } from 'next/document';
 
-/**
- * IMPORTANT: _document.tsx should NEVER contain OG, Twitter, or any
- * page-specific meta tags. Those tags belong in each page's <Head>.
- * _document.tsx is rendered ONCE on the server and its <Head> content
- * is NOT overridable by page-level Next.js <Head> tags — they MERGE,
- * causing duplicates and the wrong fallback values to win on social scrapers.
- *
- * Keep _document.tsx to: fonts, favicons, manifest, and truly global tags
- * (robots, author) that never need to be overridden per-page.
- */
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* ── Fonts ─────────────────────────────────────────────────────── */}
-        <link
-          rel="preconnect"
-          href="https://fonts.googleapis.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
+        {/* Fonts */}
         <link
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
-
-        {/* ── Favicons & manifest ───────────────────────────────────────── */}
+        {/* Favicons */}
         <link rel="icon" href="/logo.png" type="image/png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
-
-        {/* ── Truly global, never overridden ───────────────────────────── */}
+        {/* Static SEO — never overridden per page */}
         <meta name="robots" content="index, follow" />
         <meta name="language" content="English" />
         <meta name="revisit-after" content="7 days" />
         <meta name="author" content="Movie & TV trailers" />
-
         {/*
-         * ── DO NOT add og:*, twitter:*, description, canonical, or
-         *    og:image here. Those MUST live only in each page's <Head>
-         *    so social scrapers receive page-specific values.
-         * ─────────────────────────────────────────────────────────────── */}
+          DO NOT put og:*, twitter:*, og:image, og:url, description, or canonical here.
+          Those MUST only be in each page's <Head> so Facebook/Twitter scrapers
+          get the correct per-page values. Putting them here causes them to appear
+          TWICE — the scraper picks the first (wrong) value every time.
+        */}
       </Head>
       <body>
         <Main />

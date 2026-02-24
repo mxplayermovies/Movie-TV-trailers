@@ -28,8 +28,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
-
-  // Canonical URL for THIS specific movie page — not the homepage
   const shareUrl = `${BASE_URL}/movies/${item.id}`;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
 
@@ -64,7 +62,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={shareUrl} />
 
-        {/* Facebook / Open Graph */}
+        {/* ===== OPEN GRAPH — page-specific values ===== */}
         <meta property="fb:app_id" content="0" />
         <meta property="og:site_name" content="Movie & TV Trailers" />
         <meta property="og:type" content="video.movie" />
@@ -83,7 +81,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
 
-        {/* Twitter Card */}
+        {/* ===== TWITTER CARD ===== */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} - Watch Online HD`} />
         <meta name="twitter:description" content={description} />
@@ -104,18 +102,16 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               image: ogImage,
               datePublished: item.release_date || new Date().toISOString().split('T')[0],
               url: shareUrl,
-              ...(youtubeWatchUrl
-                ? {
-                    trailer: {
-                      '@type': 'VideoObject',
-                      name: `${title} - Trailer`,
-                      thumbnailUrl: ogImage,
-                      uploadDate: item.release_date || new Date().toISOString().split('T')[0],
-                      contentUrl: youtubeWatchUrl,
-                      embedUrl: youtubeEmbedUrl,
-                    },
-                  }
-                : {}),
+              ...(youtubeWatchUrl ? {
+                trailer: {
+                  '@type': 'VideoObject',
+                  name: `${title} - Trailer`,
+                  thumbnailUrl: ogImage,
+                  uploadDate: item.release_date || new Date().toISOString().split('T')[0],
+                  contentUrl: youtubeWatchUrl,
+                  embedUrl: youtubeEmbedUrl,
+                },
+              } : {}),
             }),
           }}
         />
@@ -230,11 +226,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
 
-    // Use backdrop for OG (landscape = ideal for social), fall back to poster
-    // Using getImageUrl with ONE argument only — same as your original code
+    // backdrop_path preferred (landscape = ideal for FB/Twitter previews)
+    // getImageUrl handles: null → picsum, http URLs → returned as-is, /path → tmdb URL
     const ogImage = sanitizedItem.backdrop_path
-      ? getImageUrl(sanitizedItem.backdrop_path)
-      : getImageUrl(sanitizedItem.poster_path);
+      ? getImageUrl(sanitizedItem.backdrop_path, 'original')
+      : getImageUrl(sanitizedItem.poster_path, 'original');
 
     const allItems = UNIQUE_MOVIES.map(sanitizeMediaItem);
     const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
