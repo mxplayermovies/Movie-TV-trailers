@@ -744,7 +744,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 </button>
               </div>
               <div className="flex justify-center gap-4">
-                <FacebookShareButton url={shareUrl} quote={description} hashtag="#movies">
+                <FacebookShareButton url={shareUrl}>
                   <FacebookIcon size={48} round />
                 </FacebookShareButton>
                 <TwitterShareButton url={shareUrl} title={title} via="movie_tv_trailers">
