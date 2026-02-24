@@ -572,7 +572,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const youtubeWatchUrl = ytId ? `https://www.youtube.com/watch?v=${ytId}` : null;
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
 
-  // Voice functionality – fully preserved
   useEffect(() => {
     if (title) {
       voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
@@ -601,7 +600,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={shareUrl} />
 
-        {/* Open Graph */}
         <meta property="og:type" content="video.movie" />
         <meta property="og:title" content={`${title} - Watch Online HD`} />
         <meta property="og:description" content={description} />
@@ -619,7 +617,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} - Watch Online HD`} />
         <meta name="twitter:description" content={description} />
@@ -629,7 +626,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="twitter:player:width" content="1280" />
         <meta name="twitter:player:height" content="720" />
 
-        {/* JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -662,7 +658,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
-            {/* Poster */}
             <div className="hidden md:block w-[300px] flex-shrink-0">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
                 <img
@@ -670,45 +665,32 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                   alt={title}
                   className="w-full h-full object-cover"
                   style={{
-                    filter:
-                      'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)',
+                    filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)',
                   }}
                 />
               </div>
             </div>
 
-            {/* Right column */}
             <div className="min-w-0">
               <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
                 <h1 className="text-2xl md:text-5xl font-bold text-white mb-2">{title}</h1>
                 <div className="flex items-center gap-2">
-                  {/* Voice button */}
-                  <button
-                    onClick={readDetails}
-                    className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition"
-                    title="Read aloud"
-                  >
+                  <button onClick={readDetails} className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition" title="Read aloud">
                     <Volume2 size={20} />
                   </button>
-                  {/* Share button */}
-                  <button
-                    onClick={() => setIsShareOpen(true)}
-                    className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 hover:bg-miraj-gold hover:text-black transition-colors border border-white/5"
-                  >
+                  <button onClick={() => setIsShareOpen(true)} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 hover:bg-miraj-gold hover:text-black transition-colors border border-white/5">
                     <Share2 size={18} />
                     <span className="hidden sm:inline font-bold text-sm">Share</span>
                   </button>
                 </div>
               </div>
 
-              {/* YouTube Trailer */}
               {ytId && (
                 <div className="mb-6">
                   <YouTubePlayer videoId={ytId} title={title} autoplay loop />
                 </div>
               )}
 
-              {/* Movie details */}
               <div className="mt-4">
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{item.overview}</p>
                 <div className="flex items-center gap-4 mb-6 flex-wrap">
@@ -732,7 +714,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
             </div>
           </div>
 
-          {/* Recommendations */}
           <div className="mt-12">
             <Recommendations items={recommendations} basePath="/movies" title="More Movies" />
           </div>
@@ -740,7 +721,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <Footer />
       </div>
 
-      {/* Share Modal with react-share */}
+      {/* Enhanced Share Modal with react-share */}
       {isShareOpen && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
@@ -758,10 +739,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                   readOnly
                   value={typeof window !== 'undefined' ? window.location.href : ''}
                 />
-                <button
-                  onClick={handleCopyLink}
-                  className="p-2 bg-white/10 rounded hover:bg-white/20 transition"
-                >
+                <button onClick={handleCopyLink} className="p-2 bg-white/10 rounded hover:bg-white/20 transition">
                   {copiedLink ? <Check size={16} className="text-green-500" /> : <Copy size={16} className="text-white" />}
                 </button>
               </div>
@@ -792,12 +770,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
-
-    // Ensure ogImage is absolute
-    let ogImage = getImageUrl(sanitizedItem.backdrop_path, 'original');
-    if (ogImage.startsWith('/')) {
-      ogImage = `${BASE_URL}${ogImage}`;
-    }
+    const ogImage = getImageUrl(sanitizedItem.backdrop_path, 'original');
 
     const allItems = UNIQUE_MOVIES.map(sanitizeMediaItem);
     const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
