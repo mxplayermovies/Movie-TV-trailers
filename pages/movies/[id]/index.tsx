@@ -581,23 +581,25 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // If item is null (should not happen with fallback), show a simple error
-  if (!item) {
-    return (
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
-        <Header />
-        <main className="container mx-auto px-4 py-8 text-center">
-          <h1 className="text-3xl font-bold text-white">Movie not found</h1>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  // If item is null (should not happen with fallback), create a minimal fallback
+  const safeItem = item || {
+    id: router.query.id as string,
+    title: 'Movie',
+    name: 'Movie',
+    overview: '',
+    poster_path: null,
+    backdrop_path: null,
+    release_date: '',
+    vote_average: 0,
+    duration: '',
+    genres: [],
+    media_type: 'movie' as const,
+  };
 
-  const title = item.title || item.name || 'Movie';
-  const ytId = item.yt_id;
-  const shareUrl = `${BASE_URL}/movies/${item.id}`;
-  const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
+  const title = safeItem.title || safeItem.name || 'Movie';
+  const ytId = safeItem.yt_id;
+  const shareUrl = `${BASE_URL}/movies/${safeItem.id}`;
+  const description = safeItem.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
 
   const youtubeWatchUrl = ytId ? `https://www.youtube.com/watch?v=${ytId}` : null;
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
@@ -609,12 +611,12 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   }, [title]);
 
   const readDetails = () => {
-    voiceManager.speak(`${title}. ${item.overview || ''}`, true);
+    voiceManager.speak(`${title}. ${safeItem.overview || ''}`, true);
   };
 
   const handlePlay = () => {
     setLoading(true);
-    router.push(`/watch/${item.id}?type=movie`);
+    router.push(`/watch/${safeItem.id}?type=movie`);
   };
 
   const handleCopyLink = () => {
@@ -668,7 +670,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               name: title,
               description: description,
               image: ogImage,
-              datePublished: item.release_date || new Date().toISOString().split('T')[0],
+              datePublished: safeItem.release_date || new Date().toISOString().split('T')[0],
               url: shareUrl,
               ...(youtubeWatchUrl
                 ? {
@@ -676,7 +678,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                       '@type': 'VideoObject',
                       name: `${title} - Trailer`,
                       thumbnailUrl: ogImage,
-                      uploadDate: item.release_date || new Date().toISOString().split('T')[0],
+                      uploadDate: safeItem.release_date || new Date().toISOString().split('T')[0],
                       contentUrl: youtubeWatchUrl,
                       embedUrl: youtubeEmbedUrl,
                     },
@@ -696,7 +698,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
             <div className="hidden md:block w-[300px] flex-shrink-0">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
                 <img
-                  src={getImageUrl(item.poster_path)}
+                  src={getImageUrl(safeItem.poster_path)}
                   alt={title}
                   className="w-full h-full object-cover"
                   style={{
@@ -738,15 +740,15 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 
               {/* Movie details and play button */}
               <div className="mt-4">
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{item.overview}</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{safeItem.overview}</p>
                 <div className="flex items-center gap-4 mb-6 flex-wrap">
-                  {item.vote_average ? (
+                  {safeItem.vote_average ? (
                     <span className="px-3 py-1 bg-yellow-500 text-black font-bold rounded">
-                      {item.vote_average.toFixed(1)} ★
+                      {safeItem.vote_average.toFixed(1)} ★
                     </span>
                   ) : null}
-                  {item.release_date && <span>{item.release_date}</span>}
-                  {item.duration && <span>{item.duration}</span>}
+                  {safeItem.release_date && <span>{safeItem.release_date}</span>}
+                  {safeItem.duration && <span>{safeItem.duration}</span>}
                 </div>
                 <button
                   onClick={handlePlay}
@@ -829,7 +831,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   } catch (error) {
     console.error('Error fetching movie:', error);
-    // Fallback: return a minimal item to avoid 404, but still show page
+    // Return a minimal item to avoid 500 error and still render the page
     return {
       props: {
         item: {
