@@ -67,10 +67,9 @@ export default function Document() {
         <meta name="revisit-after" content="7 days" />
         <meta name="author" content="Movie & TV trailers" />
         {/*
-          NO og:*, twitter:*, description, canonical, or og:image here.
-          Those belong ONLY in each page's own <Head> component.
-          Having them here causes duplicates — social scrapers pick the
-          wrong (document-level) value and ignore page-specific tags.
+          IMPORTANT: No og:*, twitter:*, description, or canonical tags here.
+          They must only exist in each page's own <Head> so social scrapers
+          get correct per-page values instead of the homepage fallback.
         */}
       </Head>
       <body>

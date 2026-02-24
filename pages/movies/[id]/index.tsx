@@ -11,6 +11,7 @@ import { voiceManager } from '../../../lib/core/VoiceManager';
 import { Play, Volume2, Share2, X, Copy, Check } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
+import { buildOgImageUrl } from '../../../lib/ogImage';
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 
@@ -62,6 +63,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={shareUrl} />
 
+        {/* Open Graph */}
         <meta property="fb:app_id" content="0" />
         <meta property="og:site_name" content="Movie & TV Trailers" />
         <meta property="og:type" content="video.movie" />
@@ -70,8 +72,8 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:secure_url" content={ogImage} />
-        <meta property="og:image:width" content="1280" />
-        <meta property="og:image:height" content="720" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={title} />
         {youtubeWatchUrl && <meta property="og:video" content={youtubeWatchUrl} />}
         {youtubeEmbedUrl && <meta property="og:video:url" content={youtubeEmbedUrl} />}
@@ -80,6 +82,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
 
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} - Watch Online HD`} />
         <meta name="twitter:description" content={description} />
@@ -224,29 +227,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
 
-    // Build ogImage — proxied through /api/og-image so Facebook & Twitter
-    // can fetch it (TMDB and third-party CDNs block social media scrapers)
-    const rawPath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
-    let sourceUrl: string;
-
-    if (!rawPath) {
-      sourceUrl = `${BASE_URL}/og-image.jpg`;
-    } else if (rawPath.startsWith('http')) {
-      // Direct URL (used by sports/live items with external images)
-      sourceUrl = rawPath;
-    } else {
-      // TMDB relative path — build full URL
-      const clean = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
-      sourceUrl = `https://image.tmdb.org/t/p/original${clean}`;
-    }
-
-    // Proxy through our own domain so FB/Twitter scrapers can load the image
-    const ogImage = sourceUrl.startsWith(`${BASE_URL}`)
-      ? sourceUrl
-      : `${BASE_URL}/api/og-image?url=${encodeURIComponent(sourceUrl)}`;
+    // buildOgImageUrl proxies all images through Cloudinary CDN so
+    // Facebook & Twitter scrapers can always load them.
+    // Priority: backdrop (landscape) → poster (portrait) → site fallback
+    const ogImage = buildOgImageUrl(
+      sanitizedItem.backdrop_path || sanitizedItem.poster_path
+    );
 
     const allItems = UNIQUE_MOVIES.map(sanitizeMediaItem);
-    const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
+    const recommendations = allItems
+      .filter((m) => String(m.id) !== String(id))
+      .slice(0, 6);
 
     return {
       props: { item: sanitizedItem, recommendations, ogImage },
