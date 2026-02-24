@@ -655,7 +655,7 @@ import { voiceManager } from '../../../lib/core/VoiceManager';
 import { Play, Volume2, Share2, X, Copy, Check } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
-import { buildOgImageUrl } from '../../../lib/ogImage';
+import { getOgImageUrl } from '../../../lib/ogImage';
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 
@@ -675,19 +675,14 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const ytId = item.yt_id;
   const shareUrl = `${BASE_URL}/movies/${item.id}`;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD.`;
-
   const youtubeWatchUrl = ytId ? `https://www.youtube.com/watch?v=${ytId}` : null;
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}` : null;
 
   useEffect(() => {
-    if (title) {
-      voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
-    }
+    if (title) voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
   }, [title]);
 
-  const readDetails = () => {
-    voiceManager.speak(`${title}. ${item.overview || ''}`, true);
-  };
+  const readDetails = () => voiceManager.speak(`${title}. ${item.overview || ''}`, true);
 
   const handlePlay = () => {
     setLoading(true);
@@ -707,7 +702,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={shareUrl} />
 
-        {/* Open Graph */}
         <meta property="fb:app_id" content="0" />
         <meta property="og:site_name" content="Movie & TV Trailers" />
         <meta property="og:type" content="video.movie" />
@@ -726,7 +720,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
 
-        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} - Watch Online HD`} />
         <meta name="twitter:description" content={description} />
@@ -743,7 +736,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               '@context': 'https://schema.org',
               '@type': 'Movie',
               name: title,
-              description: description,
+              description,
               image: ogImage,
               datePublished: item.release_date || new Date().toISOString().split('T')[0],
               url: shareUrl,
@@ -772,9 +765,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                   src={getImageUrl(item.poster_path)}
                   alt={title}
                   className="w-full h-full object-cover"
-                  style={{
-                    filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)',
-                  }}
+                  style={{ filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)' }}
                 />
               </div>
             </div>
@@ -810,11 +801,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                   {item.release_date && <span>{item.release_date}</span>}
                   {item.duration && <span>{item.duration}</span>}
                 </div>
-                <button
-                  onClick={handlePlay}
-                  disabled={loading}
-                  className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition disabled:opacity-50"
-                >
+                <button onClick={handlePlay} disabled={loading} className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition disabled:opacity-50">
                   <Play size={20} />
                   {loading ? 'Loading...' : 'Play Now'}
                 </button>
@@ -834,18 +821,11 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
           <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
               <h3 className="text-lg font-bold text-white flex items-center gap-2">Share Content</h3>
-              <button onClick={() => setIsShareOpen(false)} className="text-gray-400 hover:text-white">
-                <X size={24} />
-              </button>
+              <button onClick={() => setIsShareOpen(false)} className="text-gray-400 hover:text-white"><X size={24} /></button>
             </div>
             <div className="p-6">
               <div className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-lg p-2">
-                <input
-                  type="text"
-                  className="bg-transparent text-gray-300 text-sm flex-1 outline-none"
-                  readOnly
-                  value={shareUrl}
-                />
+                <input type="text" className="bg-transparent text-gray-300 text-sm flex-1 outline-none" readOnly value={shareUrl} />
                 <button onClick={handleCopyLink} className="p-2 bg-white/10 rounded hover:bg-white/20 transition">
                   {copiedLink ? <Check size={16} className="text-green-500" /> : <Copy size={16} className="text-white" />}
                 </button>
@@ -859,9 +839,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = UNIQUE_MOVIES.map((item) => ({
-    params: { id: String(item.id) },
-  }));
+  const paths = UNIQUE_MOVIES.map((item) => ({ params: { id: String(item.id) } }));
   return { paths, fallback: 'blocking' };
 };
 
@@ -870,23 +848,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
-
-    // buildOgImageUrl proxies all images through Cloudinary CDN so
-    // Facebook & Twitter scrapers can always load them.
-    // Priority: backdrop (landscape) → poster (portrait) → site fallback
-    const ogImage = buildOgImageUrl(
-      sanitizedItem.backdrop_path || sanitizedItem.poster_path
+    const title = sanitizedItem.title || sanitizedItem.name || '';
+    const ogImage = getOgImageUrl(
+      sanitizedItem.backdrop_path || sanitizedItem.poster_path,
+      title
     );
-
     const allItems = UNIQUE_MOVIES.map(sanitizeMediaItem);
-    const recommendations = allItems
-      .filter((m) => String(m.id) !== String(id))
-      .slice(0, 6);
-
-    return {
-      props: { item: sanitizedItem, recommendations, ogImage },
-      revalidate: 3600,
-    };
+    const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
+    return { props: { item: sanitizedItem, recommendations, ogImage }, revalidate: 3600 };
   } catch {
     return { notFound: true };
   }

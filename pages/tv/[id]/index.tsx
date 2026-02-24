@@ -717,7 +717,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const item = await getDetails('tv', id);
     const sanitizedItem = sanitizeMediaItem(item);
-    const ogImage = getOgImageUrl(sanitizedItem.backdrop_path || sanitizedItem.poster_path);
+    const ogImage = getOgImageUrl(sanitizedItem.backdrop_path || sanitizedItem.poster_path, sanitizedItem.title || sanitizedItem.name);
 
     const allShows = UNIQUE_TV_SHOWS.map(sanitizeMediaItem);
     const recommendations = allShows.filter((s) => String(s.id) !== String(id)).slice(0, 6);

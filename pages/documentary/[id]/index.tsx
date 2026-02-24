@@ -713,7 +713,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
-    const ogImage = getOgImageUrl(sanitizedItem.backdrop_path || sanitizedItem.poster_path);
+    const ogImage = getOgImageUrl(sanitizedItem.backdrop_path || sanitizedItem.poster_path, sanitizedItem.title || sanitizedItem.name);
 
     const allItems = UNIQUE_DOCUMENTARY.map(sanitizeMediaItem);
     const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
