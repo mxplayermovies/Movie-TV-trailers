@@ -131,7 +131,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       <>
-        <Head>
+            <Head>
         <title>Movie & TV trailers – Free Movies, TV & Live Sports</title>
         <meta name="description" content="Watch free movies, TV shows, live sports, and more online. No sign‑up required." />
         <meta name="keywords" content="free movies, watch online, tv shows, live sports, streaming, hindi dubbed" />
