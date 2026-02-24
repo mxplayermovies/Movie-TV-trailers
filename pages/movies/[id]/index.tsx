@@ -62,7 +62,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={shareUrl} />
 
-        {/* ===== OPEN GRAPH — page-specific values ===== */}
         <meta property="fb:app_id" content="0" />
         <meta property="og:site_name" content="Movie & TV Trailers" />
         <meta property="og:type" content="video.movie" />
@@ -81,7 +80,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
 
-        {/* ===== TWITTER CARD ===== */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} - Watch Online HD`} />
         <meta name="twitter:description" content={description} />
@@ -226,11 +224,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const item = await getDetails('movie', id);
     const sanitizedItem = sanitizeMediaItem(item);
 
-    // backdrop_path preferred (landscape = ideal for FB/Twitter previews)
-    // getImageUrl handles: null → picsum, http URLs → returned as-is, /path → tmdb URL
-    const ogImage = sanitizedItem.backdrop_path
-      ? getImageUrl(sanitizedItem.backdrop_path, 'original')
-      : getImageUrl(sanitizedItem.poster_path, 'original');
+    // Build ogImage — proxied through /api/og-image so Facebook & Twitter
+    // can fetch it (TMDB and third-party CDNs block social media scrapers)
+    const rawPath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
+    let sourceUrl: string;
+
+    if (!rawPath) {
+      sourceUrl = `${BASE_URL}/og-image.jpg`;
+    } else if (rawPath.startsWith('http')) {
+      // Direct URL (used by sports/live items with external images)
+      sourceUrl = rawPath;
+    } else {
+      // TMDB relative path — build full URL
+      const clean = rawPath.startsWith('/') ? rawPath : `/${rawPath}`;
+      sourceUrl = `https://image.tmdb.org/t/p/original${clean}`;
+    }
+
+    // Proxy through our own domain so FB/Twitter scrapers can load the image
+    const ogImage = sourceUrl.startsWith(`${BASE_URL}`)
+      ? sourceUrl
+      : `${BASE_URL}/api/og-image?url=${encodeURIComponent(sourceUrl)}`;
 
     const allItems = UNIQUE_MOVIES.map(sanitizeMediaItem);
     const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
