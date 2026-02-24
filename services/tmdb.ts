@@ -1002,7 +1002,7 @@ export const UNIQUE_MOVIES: MediaItem[] = [
       "Server 3": "https://zxcstream.xyz/player/movie/1638065",
       "Server 4": "https://www.vidking.net/embed/movie/1638065?autoPlay=true&nextEpisode=true&episodeSelector=true",
       "Server 5": "https://cinemaos.tech/player/1638065",
-      "Server 5": "https://xprime.today/watch/1638065",
+      "Server 6": "https://xprime.today/watch/1638065",
       "Server 7": "https://www.cinezo.net/watch/movie/1638065",
         },
     overview: "A gripping courtroom drama centres on unexplained sexual assault cases. An investigator and defence team fight to reveal shocking truths hidden beneath statistics and uncover the human cost behind the headlines. Parima a school teacher lives with her husband Vinay and son Dhruv. One night while returning late from school function. She is forcefully abducted by five strangers who brutally rape her and leave to die on railway tracks, Locals take Parima to hospital and the cops contact Vinay stays who strong after seeing her brutal state. Ravee a lawyer fights for Parima against the defense lawyer Navratan after the accused are arrested.But in the court things take a turn as all the evidence and samples submitted don't match with the victim and accused and they are granted bail. After seeing a failure in law a stranger starts killing rapists hiding himself under and umbrella. He becomes the hero of everyone and is known as Chattri Man. But Ravee feels that by doing this there will be rises in case of revenge and rape in society.",
