@@ -5,7 +5,6 @@ import Head from 'next/head';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
-import Header from '../components/Header';
 import { voiceManager } from '../lib/core/VoiceManager';
 import { AlertTriangle } from 'lucide-react';
 
@@ -130,80 +129,48 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-      <>
-            <Head>
-        <title>Movie & TV trailers – Free Movies, TV & Live Sports</title>
-        <meta name="description" content="Watch free movies, TV shows, live sports, and more online. No sign‑up required." />
-        <meta name="keywords" content="free movies, watch online, tv shows, live sports, streaming, hindi dubbed" />
-        <meta property="og:title" content="Movie & TV trailers – Free Streaming Platform" />
-        <meta property="og:description" content="Your ultimate destination for movies, TV, live sports, and more." />
-        <meta name="robots" content="index, follow" />
-        <meta name="language" content="English" />
-        <meta name="revisit-after" content="7 days" />
-        <meta name="author" content="Movie & TV trailers" />
-        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
-        <link rel="icon" href="/logo.png" type="image/png" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://movie-tv-trailers.vercel.app" />
-        <link rel="canonical" href="https://movie-tv-trailers.vercel.app" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Movie & TV trailers – Free Streaming Platform" />
-        <meta name="twitter:description" content="Your ultimate destination for movies, TV, live sports, and more." />
-        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
-        <meta name="twitter:site" content="@movie-tv-trailers" />
-        <meta name="twitter:creator" content="@movie-tv-trailers" />
-        {/* Apple Touch Icons */}
-        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
+      {/* No Head here – all global meta tags moved to _document.tsx */}
+      
+      {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-QV663BPPEH"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QV663BPPEH');
+        `}
+      </Script>
 
-      </Head>
+      {/* Google Translate Script */}
+      <Script
+        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        strategy="afterInteractive"
+      />
 
+      {/* Fixed Floating Translate Widget */}
+      <div
+        id="google_translate_element"
+        className="fixed bottom-4 right-4 z-[9999] bg-white dark:bg-slate-800 p-2 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
+        style={{ minHeight: '40px', minWidth: '160px' }}
+      />
 
-        {/* Google Analytics - using Next.js Script component properly */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-QV663BPPEH"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-QV663BPPEH');
-          `}
-        </Script>
-
-        {/* Google Translate Script */}
-        <Script
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
-        />
-
-        {/* Fixed Floating Translate Widget */}
-        <div
-          id="google_translate_element"
-          className="fixed bottom-4 right-4 z-[9999] bg-white dark:bg-slate-800 p-2 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
-          style={{ minHeight: '40px', minWidth: '160px' }}
-        />
-
-        {/* Security Warning Toast */}
-        <div
-          className={`fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 pointer-events-none ${
-            showSecurityWarning ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-          }`}
-        >
-          <div className="bg-red-600/95 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold shadow-2xl border border-white/20 flex items-center gap-3">
-            <AlertTriangle size={20} className="text-white" />
-            <span className="text-sm md:text-base">Right click is disabled</span>
-          </div>
+      {/* Security Warning Toast */}
+      <div
+        className={`fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 pointer-events-none ${
+          showSecurityWarning ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+        }`}
+      >
+        <div className="bg-red-600/95 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold shadow-2xl border border-white/20 flex items-center gap-3">
+          <AlertTriangle size={20} className="text-white" />
+          <span className="text-sm md:text-base">Right click is disabled</span>
         </div>
+      </div>
 
-        <Component {...pageProps} />
-      </>
+      <Component {...pageProps} />
     </ThemeContext.Provider>
   );
 }
