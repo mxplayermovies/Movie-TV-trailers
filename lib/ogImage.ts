@@ -1,6 +1,7 @@
 // lib/ogImage.ts
-// Builds OG image URLs proxied through our own domain.
-// Facebook and Twitter always load images from your own domain.
+// Returns the direct image URL for OG tags.
+// TMDB images work fine for Twitter and Facebook when the URL is direct.
+// The previous proxy approaches were causing the failures.
 
 const BASE_URL = 'https://movie-tv-trailers.vercel.app';
 const TMDB_BASE = 'https://image.tmdb.org/t/p/w1280';
@@ -13,7 +14,7 @@ function buildSocialImageUrl(
     return `${BASE_URL}/og-image.jpg`;
   }
 
-  // Local files — already on your domain, always work
+  // Local files on your domain - always work
   if (
     path.startsWith('/images/') ||
     path === '/18only.png' ||
@@ -23,17 +24,14 @@ function buildSocialImageUrl(
     return `${BASE_URL}${path}`;
   }
 
-  // Build the source image URL
-  let sourceUrl: string;
+  // Already a full URL (sports/live items with external images)
   if (path.startsWith('http')) {
-    sourceUrl = path;
-  } else {
-    const clean = path.startsWith('/') ? path : `/${path}`;
-    sourceUrl = `${TMDB_BASE}${clean}`;
+    return path;
   }
 
-  // Proxy through our own domain
-  return `${BASE_URL}/api/og-image?url=${encodeURIComponent(sourceUrl)}`;
+  // TMDB relative path - return direct TMDB URL
+  const clean = path.startsWith('/') ? path : `/${path}`;
+  return `${TMDB_BASE}${clean}`;
 }
 
 export const buildOgImageUrl = buildSocialImageUrl;

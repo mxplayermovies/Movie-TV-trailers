@@ -698,20 +698,18 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   return (
     <>
       <Head>
-        <title>{title} - Watch Online HD | Movie & TV Trailers</title>
+        <title>{title} - Watch Online HD | Movie &amp; TV Trailers</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={shareUrl} />
-
-        <meta property="fb:app_id" content="0" />
-        <meta property="og:site_name" content="Movie & TV Trailers" />
+        <meta property="og:site_name" content="Movie &amp; TV Trailers" />
         <meta property="og:type" content="video.movie" />
         <meta property="og:url" content={shareUrl} />
         <meta property="og:title" content={`${title} - Watch Online HD`} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:secure_url" content={ogImage} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:image:width" content="1280" />
+        <meta property="og:image:height" content="720" />
         <meta property="og:image:alt" content={title} />
         {youtubeWatchUrl && <meta property="og:video" content={youtubeWatchUrl} />}
         {youtubeEmbedUrl && <meta property="og:video:url" content={youtubeEmbedUrl} />}
@@ -719,7 +717,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:type" content="text/html" />
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
-
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${title} - Watch Online HD`} />
         <meta name="twitter:description" content={description} />
@@ -728,7 +725,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         {youtubeEmbedUrl && <meta name="twitter:player" content={youtubeEmbedUrl} />}
         <meta name="twitter:player:width" content="1280" />
         <meta name="twitter:player:height" content="720" />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -740,16 +736,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               image: ogImage,
               datePublished: item.release_date || new Date().toISOString().split('T')[0],
               url: shareUrl,
-              ...(youtubeWatchUrl ? {
-                trailer: {
-                  '@type': 'VideoObject',
-                  name: `${title} - Trailer`,
-                  thumbnailUrl: ogImage,
-                  uploadDate: item.release_date || new Date().toISOString().split('T')[0],
-                  contentUrl: youtubeWatchUrl,
-                  embedUrl: youtubeEmbedUrl,
-                },
-              } : {}),
             }),
           }}
         />
@@ -769,7 +755,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 />
               </div>
             </div>
-
             <div className="min-w-0">
               <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
                 <h1 className="text-2xl md:text-5xl font-bold text-white mb-2">{title}</h1>
@@ -783,13 +768,11 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                   </button>
                 </div>
               </div>
-
               {ytId && (
                 <div className="mb-6">
                   <YouTubePlayer videoId={ytId} title={title} autoplay loop />
                 </div>
               )}
-
               <div className="mt-4">
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{item.overview}</p>
                 <div className="flex items-center gap-4 mb-6 flex-wrap">
@@ -808,7 +791,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               </div>
             </div>
           </div>
-
           <div className="mt-12">
             <Recommendations items={recommendations} basePath="/movies" title="More Movies" />
           </div>
@@ -820,7 +802,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">Share Content</h3>
+              <h3 className="text-lg font-bold text-white">Share Content</h3>
               <button onClick={() => setIsShareOpen(false)} className="text-gray-400 hover:text-white"><X size={24} /></button>
             </div>
             <div className="p-6">
