@@ -446,7 +446,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                     '@type': 'AggregateRating',
                     ratingValue: item.vote_average.toFixed(1),
                     bestRating: '10',
-                    ratingCount: item.vote_count || 1,
+                    ratingCount: 1,
                   }
                 : undefined,
               ...(youtubeWatchUrl
