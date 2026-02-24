@@ -23,7 +23,7 @@ export default function HindiDubbedPage({ items }: Props) {
   const hasMore = visibleCount < totalItems;
 
   useEffect(() => {
-    voiceManager.speak('Hindi Dubbed movies page. Browse the latest hindi dubbed movies, Click the speaker icon to learn about the latest updated Movies.');
+    voiceManager.speak('Hindi Dubbed movies page. Browse the latest hindi dubbed movies, Please Select the Languages from the player settings options. Click the speaker icon to learn about the latest updated Movies.');
   }, []);
 
  const readPageContent = () => {
