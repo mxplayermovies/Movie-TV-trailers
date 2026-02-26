@@ -522,9 +522,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       const rawImageUrl = getImageUrl(imagePath, 'original');
       // Ensure absolute URL
       ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
-    } else {
-      ogImage = `${BASE_URL}/og-image.jpg`; // fallback (should never happen)
-    }
+    } 
 
     // Get recommendations
     const recommendations = UNIQUE_MOVIES
