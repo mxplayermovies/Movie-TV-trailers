@@ -780,7 +780,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 <ShareButtons
                   contentType="movie"
                   contentId={String(item.id)}
-                  url={canonicalUrl}
+                  url={getImageUrl(item.backdrop_path, 'original')}
                 />
               </div>
             </div>
