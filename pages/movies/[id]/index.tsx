@@ -274,7 +274,6 @@
 
 
 
-// pages/movies/[id]/index.tsx
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -297,7 +296,7 @@ const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 interface Props {
   item: MediaItem | null;
   recommendations: MediaItem[];
-  ogImage: string; // absolute URL for social sharing – guaranteed to exist
+  ogImage: string; // absolute URL for social sharing (backdrop or poster)
 }
 
 export default function MovieDetail({ item, recommendations, ogImage }: Props) {
@@ -473,13 +472,13 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 </button>
               </div>
 
-              {/* Share section */}
+              {/* Share section – url is the page link, thumbnail fetched internally */}
               <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
                 <h3 className="text-lg font-semibold mb-4">Share this movie</h3>
                 <ShareButtons
                   contentType="movie"
                   contentId={String(item.id)}
-                  url={canonicalUrl}
+                  url={canonicalUrl}   // ← this is the page URL, correct for sharing
                 />
               </div>
             </div>
@@ -513,10 +512,9 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
     const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
 
-    // Build OG image URL (priority: backdrop_path -> poster_path)
-    // Every movie in UNIQUE_MOVIES has at least one image, so we don't need a fallback.
+    // Build OG image URL – strictly from movie data, no fallback
     const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
-    // imagePath is guaranteed to exist – if not, the movie object is malformed.
+    // Every movie has at least one image; if not, the movie data is malformed.
     const rawImageUrl = getImageUrl(imagePath!, 'original');
     const ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
 

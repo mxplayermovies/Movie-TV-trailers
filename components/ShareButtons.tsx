@@ -69,7 +69,7 @@ import {
 interface Props {
   contentType: 'blog' | 'movie' | 'tv' | 'sports' | 'tv_live' | 'hindi-dubbed' | 'adult' | 'documentary';
   contentId: string; // slug for blog, id string for others
-  url: string;
+  url: string;       // the page URL to share
 }
 
 export default function ShareButtons({ contentType, contentId, url }: Props) {
@@ -81,7 +81,7 @@ export default function ShareButtons({ contentType, contentId, url }: Props) {
       const post = blogPosts.find(p => p.id === contentId || p.slug === contentId);
       if (post) {
         setTitle(post.title);
-        setImage(post.image); // blog posts use their own image field
+        setImage(post.image);
       }
     } else {
       let dataArray: any[] = [];
@@ -125,7 +125,7 @@ export default function ShareButtons({ contentType, contentId, url }: Props) {
 
   return (
     <div className="flex items-center gap-4">
-      {/* Preview thumbnail */}
+      {/* Preview thumbnail – fetched from the correct data source */}
       {image && (
         <div className="w-16 h-16 rounded overflow-hidden flex-shrink-0">
           <img src={image} alt={title} className="w-full h-full object-cover" />
