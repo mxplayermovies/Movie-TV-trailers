@@ -598,7 +598,7 @@ import ShareButtons from '../../../components/ShareButtons';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
-// Combine all movie arrays – this runs at build time
+// Combine all movie arrays
 const ALL_MOVIES = [
   ...UNIQUE_MOVIES,
   ...UNIQUE_HINDI_DUBBED,
@@ -754,8 +754,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params?.id as string;
+  console.log(`[Vercel Debug] Fetching movie with ID: "${id}"`); // Will appear in Vercel logs
+
   const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
-  if (!rawMovie) return { notFound: true };
+  if (!rawMovie) {
+    console.error(`[Vercel Debug] Movie not found for ID: "${id}"`);
+    return { notFound: true };
+  }
+
+  console.log(`[Vercel Debug] Found movie: "${rawMovie.title}"`);
+  console.log(`[Vercel Debug] backdrop_path: "${rawMovie.backdrop_path}"`);
 
   const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
   let ogImage: string | undefined;
@@ -768,6 +776,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
       ogImage = base + path;
     }
+    console.log(`[Vercel Debug] ogImage: ${ogImage}`);
+  } else {
+    console.log(`[Vercel Debug] No image found for this movie`);
   }
 
   const recommendations = ALL_MOVIES
