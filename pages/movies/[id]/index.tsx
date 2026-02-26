@@ -598,12 +598,12 @@ import ShareButtons from '../../../components/ShareButtons';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
-// Combine all movie arrays – but ensure they exist
+// Combine all movie arrays
 const ALL_MOVIES = [
-  ...(UNIQUE_MOVIES || []),
-  ...(UNIQUE_HINDI_DUBBED || []),
-  ...(UNIQUE_ADULT || []),
-  ...(UNIQUE_DOCUMENTARY || []),
+  ...UNIQUE_MOVIES,
+  ...UNIQUE_HINDI_DUBBED,
+  ...UNIQUE_ADULT,
+  ...UNIQUE_DOCUMENTARY,
 ];
 
 interface Props {
@@ -748,53 +748,32 @@ export default function MovieDetail({ movie, recommendations, ogImage }: Props) 
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  try {
-    const id = params?.id as string;
-    console.log(`[Movie] Looking for ID: ${id}`);
+  const id = params?.id as string;
+  const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
+  if (!rawMovie) return { notFound: true };
 
-    const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
-    if (!rawMovie) {
-      console.log(`[Movie] Not found: ${id}`);
-      return { notFound: true };
-    }
+  const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
+  let ogImage: string | undefined;
 
-    console.log(`[Movie] Found: ${rawMovie.title}`);
-
-    const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
-    let ogImage: string | undefined;
-
-    if (imagePath) {
-      if (imagePath.startsWith('http')) {
-        ogImage = imagePath;
-      } else {
-        const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
-        const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-        ogImage = base + path;
-      }
-      console.log(`[Movie] ogImage: ${ogImage}`);
+  if (imagePath) {
+    if (imagePath.startsWith('http')) {
+      ogImage = imagePath;
     } else {
-      console.log(`[Movie] No image path`);
+      const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
+      const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+      ogImage = base + path;
     }
-
-    const recommendations = ALL_MOVIES
-      .filter((m) => String(m.id) !== String(id))
-      .slice(0, 6);
-
-    return {
-      props: {
-        movie: rawMovie,
-        recommendations,
-        ...(ogImage ? { ogImage } : {}),
-      },
-    };
-  } catch (error) {
-    console.error('[Movie] CRITICAL ERROR:', error);
-    // Return a valid but empty movie to avoid 500 – Facebook will just see no image
-    return {
-      props: {
-        movie: { id: params?.id, title: 'Movie not found' },
-        recommendations: [],
-      },
-    };
   }
+
+  const recommendations = ALL_MOVIES
+    .filter((m) => String(m.id) !== String(id))
+    .slice(0, 6);
+
+  return {
+    props: {
+      movie: rawMovie,
+      recommendations,
+      ...(ogImage ? { ogImage } : {}),
+    },
+  };
 };
