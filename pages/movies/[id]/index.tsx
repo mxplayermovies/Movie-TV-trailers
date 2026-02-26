@@ -580,8 +580,8 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { UNIQUE_MOVIES, getDetails, getImageUrl } from '../../../services/tmdb';
-import { ContentDetails, MediaItem } from '../../../types';
+import { UNIQUE_MOVIES, getImageUrl } from '../../../services/tmdb'; // adjust path if needed
+import { MediaItem } from '../../../types';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
@@ -596,25 +596,24 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 interface Props {
-  item: Omit<ContentDetails, 'streams'> | null;
-  recommendations: Omit<MediaItem, 'streams'>[];
-  ogImage: string;
+  item: MediaItem | null;
+  recommendations: MediaItem[];
+  ogImage: string; // absolute URL for social sharing
 }
 
 export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  // If item is null (not found), show a 404-style page with its own Head
   if (!item) {
     return (
       <>
         <Head>
-          <title>Movie Not Found – Movie & TV Trailers</title>
+          <title>Movie Not Found | Movie & TV Trailers</title>
           <meta name="robots" content="noindex" />
         </Head>
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-xl">Movie not found</p>
+          <p>Movie not found</p>
         </div>
       </>
     );
@@ -643,6 +642,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     router.push(`/watch/${item.id}?type=movie`);
   };
 
+  // Movie schema for structured data
   const movieSchema = {
     "@context": "https://schema.org",
     "@type": "Movie",
@@ -679,6 +679,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
 
+        {/* Open Graph */}
         <meta property="fb:app_id" content={FB_APP_ID} />
         <meta property="og:site_name" content="Movie & TV Trailers" />
         <meta property="og:type" content="video.movie" />
@@ -701,6 +702,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 
         {item.release_date && <meta property="video:release_date" content={item.release_date} />}
 
+        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@MovieTVTrailers" />
         <meta name="twitter:creator" content="@MovieTVTrailers" />
@@ -712,6 +714,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="twitter:player:width" content="1280" />
         <meta name="twitter:player:height" content="720" />
 
+        {/* Structured Data */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }} />
       </Head>
 
@@ -794,45 +797,55 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  // Directly use UNIQUE_MOVIES – no async calls
   const paths = UNIQUE_MOVIES.map((item) => ({
     params: { id: String(item.id) },
   }));
   return { paths, fallback: 'blocking' };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const id = params?.id as string;
   try {
-    const item = await getDetails('movie', id);
-    if (!item) {
+    // Directly find the movie in UNIQUE_MOVIES
+    const movie = UNIQUE_MOVIES.find((m) => String(m.id) === id);
+    if (!movie) {
+      console.error(`Movie not found for id: ${id}`);
       return { notFound: true };
     }
 
-    const sanitizedItem = sanitizeMediaItem(item);
+    // Sanitize if needed (but you can pass raw if your component accepts MediaItem)
+    const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
 
+    // Build OG image URL (priority: backdrop_path -> poster_path)
     const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
     let ogImage: string;
 
     if (imagePath) {
       const rawImageUrl = getImageUrl(imagePath, 'original');
-      if (rawImageUrl.startsWith('http')) {
-        ogImage = rawImageUrl;
-      } else {
-        ogImage = `${BASE_URL}${rawImageUrl}`;
-      }
+      // Ensure absolute URL
+      ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
     } else {
-      ogImage = `${BASE_URL}/og-image.jpg`;
+      ogImage = `${BASE_URL}/og-image.jpg`; // fallback
     }
 
-    const allItems = UNIQUE_MOVIES.map(sanitizeMediaItem);
-    const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
+    // Get recommendations (excluding current movie)
+    const recommendations = UNIQUE_MOVIES
+      .filter((m) => String(m.id) !== id)
+      .slice(0, 6)
+      .map(m => sanitizeMediaItem ? sanitizeMediaItem(m) : m);
 
     return {
-      props: { item: sanitizedItem, recommendations, ogImage },
-      revalidate: 3600,
+      props: {
+        item: sanitizedItem,
+        recommendations,
+        ogImage,
+      },
+      revalidate: 3600, // 1 hour
     };
   } catch (error) {
-    console.error('Error in getStaticProps for movie:', id, error);
+    console.error(`Error in getStaticProps for movie ${id}:`, error);
+    // Return notFound to show 404 page
     return { notFound: true };
   }
 };
