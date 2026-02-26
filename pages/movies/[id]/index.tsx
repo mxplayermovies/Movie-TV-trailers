@@ -578,14 +578,9 @@
 // pages/movies/[id]/index.tsx
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import {
-  UNIQUE_MOVIES,
-  UNIQUE_HINDI_DUBBED,
-  UNIQUE_ADULT,
-  UNIQUE_DOCUMENTARY,
-} from '../../../services/tmdb';
+import { UNIQUE_MOVIES } from '../../../services/tmdb';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
@@ -597,14 +592,6 @@ import ShareButtons from '../../../components/ShareButtons';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
-
-// Combine all movie arrays – this runs at build time
-const ALL_MOVIES = [
-  ...UNIQUE_MOVIES,
-  ...UNIQUE_HINDI_DUBBED,
-  ...UNIQUE_ADULT,
-  ...UNIQUE_DOCUMENTARY,
-];
 
 interface Props {
   movie: any;
@@ -747,39 +734,44 @@ export default function MovieDetail({ movie, recommendations, ogImage }: Props) 
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = ALL_MOVIES.map((item) => ({ params: { id: String(item.id) } }));
-  return { paths, fallback: 'blocking' };
-};
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  try {
+    const id = params?.id as string;
+    const rawMovie = UNIQUE_MOVIES.find((item) => String(item.id) === id);
+    if (!rawMovie) return { notFound: true };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = params?.id as string;
-  const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
-  if (!rawMovie) return { notFound: true };
+    const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
+    let ogImage: string | undefined;
 
-  const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
-  let ogImage: string | undefined;
-
-  if (imagePath) {
-    if (imagePath.startsWith('http')) {
-      ogImage = imagePath;
-    } else {
-      const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
-      const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
-      ogImage = base + path;
+    if (imagePath) {
+      if (imagePath.startsWith('http')) {
+        ogImage = imagePath;
+      } else {
+        const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
+        const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
+        ogImage = base + path;
+      }
     }
+
+    // Simple recommendations (just other movies)
+    const recommendations = UNIQUE_MOVIES
+      .filter((m) => String(m.id) !== String(id))
+      .slice(0, 6);
+
+    return {
+      props: {
+        movie: rawMovie,
+        recommendations,
+        ...(ogImage ? { ogImage } : {}),
+      },
+    };
+  } catch (error) {
+    console.error('Error in getServerSideProps:', error);
+    return {
+      props: {
+        movie: null,
+        recommendations: [],
+      },
+    };
   }
-
-  const recommendations = ALL_MOVIES
-    .filter((m) => String(m.id) !== String(id))
-    .slice(0, 6);
-
-  return {
-    props: {
-      movie: rawMovie,
-      recommendations,
-      ...(ogImage ? { ogImage } : {}),
-    },
-    revalidate: 3600,
-  };
 };
