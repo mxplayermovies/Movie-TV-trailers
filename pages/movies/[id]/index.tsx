@@ -598,7 +598,7 @@ import ShareButtons from '../../../components/ShareButtons';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
-// Combine all movie arrays – ensure they are correctly imported
+// Combine all movie arrays – this runs at build time
 const ALL_MOVIES = [
   ...UNIQUE_MOVIES,
   ...UNIQUE_HINDI_DUBBED,
@@ -688,6 +688,8 @@ export default function MovieDetail({ movie, recommendations, ogImage }: Props) 
         <meta name="twitter:title" content={`${title} – Watch Online HD`} />
         <meta name="twitter:description" content={description} />
         {ogImage && <meta name="twitter:image" content={ogImage} />}
+        <meta name="twitter:site" content="@MovieTVTrailers" />
+        <meta name="twitter:creator" content="@MovieTVTrailers" />
 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }} />
       </Head>
@@ -781,4 +783,3 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     revalidate: 3600,
   };
 };
-
