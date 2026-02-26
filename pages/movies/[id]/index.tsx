@@ -578,7 +578,7 @@
 // pages/movies/[id]/index.tsx
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import {
   UNIQUE_MOVIES,
@@ -747,23 +747,10 @@ export default function MovieDetail({ movie, recommendations, ogImage }: Props) 
   );
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = ALL_MOVIES.map((item) => ({ params: { id: String(item.id) } }));
-  return { paths, fallback: 'blocking' };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const id = params?.id as string;
-  console.log(`[Vercel Debug] Fetching movie with ID: "${id}"`); // Will appear in Vercel logs
-
   const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
-  if (!rawMovie) {
-    console.error(`[Vercel Debug] Movie not found for ID: "${id}"`);
-    return { notFound: true };
-  }
-
-  console.log(`[Vercel Debug] Found movie: "${rawMovie.title}"`);
-  console.log(`[Vercel Debug] backdrop_path: "${rawMovie.backdrop_path}"`);
+  if (!rawMovie) return { notFound: true };
 
   const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
   let ogImage: string | undefined;
@@ -776,9 +763,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
       ogImage = base + path;
     }
-    console.log(`[Vercel Debug] ogImage: ${ogImage}`);
-  } else {
-    console.log(`[Vercel Debug] No image found for this movie`);
   }
 
   const recommendations = ALL_MOVIES
@@ -791,6 +775,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       recommendations,
       ...(ogImage ? { ogImage } : {}),
     },
-    revalidate: 3600,
   };
 };

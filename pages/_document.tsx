@@ -65,7 +65,6 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
-        {/* Global meta tags – these are only fallbacks and will be overridden by page‑specific tags */}
         <meta name="description" content="Watch free movies, TV shows, live sports, and more online. No sign‑up required." />
         <meta name="keywords" content="free movies, watch online, tv shows, live sports, streaming, hindi dubbed" />
         <meta name="robots" content="index, follow" />
@@ -74,20 +73,14 @@ export default function Document() {
         <meta name="author" content="Movie & TV trailers" />
         <meta name="theme-color" content="#0f172a" />
 
-        {/* Facebook App ID – required for rich sharing */}
+        {/* Only keep fb:app_id and og:site_name – no global og:image, og:title, etc. */}
         <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
-
-        {/* Site‑wide Open Graph – each page will override these */}
         <meta property="og:site_name" content="Movie & TV trailers" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app'} />
 
-        {/* Twitter – only site and creator are global */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@movie-tv-trailers" />
         <meta name="twitter:creator" content="@movie-tv-trailers" />
 
-        {/* Icons */}
         <link rel="icon" href="/logo.png" type="image/png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
