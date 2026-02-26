@@ -580,7 +580,12 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { UNIQUE_MOVIES } from '../../../services/tmdb';
+import {
+  UNIQUE_MOVIES,
+  UNIQUE_HINDI_DUBBED,
+  UNIQUE_ADULT,
+  UNIQUE_DOCUMENTARY,
+} from '../../../services/tmdb';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
@@ -592,6 +597,14 @@ import ShareButtons from '../../../components/ShareButtons';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
+
+// Combine all movie arrays – but ensure they exist
+const ALL_MOVIES = [
+  ...(UNIQUE_MOVIES || []),
+  ...(UNIQUE_HINDI_DUBBED || []),
+  ...(UNIQUE_ADULT || []),
+  ...(UNIQUE_DOCUMENTARY || []),
+];
 
 interface Props {
   movie: any;
@@ -737,8 +750,15 @@ export default function MovieDetail({ movie, recommendations, ogImage }: Props) 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   try {
     const id = params?.id as string;
-    const rawMovie = UNIQUE_MOVIES.find((item) => String(item.id) === id);
-    if (!rawMovie) return { notFound: true };
+    console.log(`[Movie] Looking for ID: ${id}`);
+
+    const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
+    if (!rawMovie) {
+      console.log(`[Movie] Not found: ${id}`);
+      return { notFound: true };
+    }
+
+    console.log(`[Movie] Found: ${rawMovie.title}`);
 
     const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
     let ogImage: string | undefined;
@@ -751,10 +771,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
         const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
         ogImage = base + path;
       }
+      console.log(`[Movie] ogImage: ${ogImage}`);
+    } else {
+      console.log(`[Movie] No image path`);
     }
 
-    // Simple recommendations (just other movies)
-    const recommendations = UNIQUE_MOVIES
+    const recommendations = ALL_MOVIES
       .filter((m) => String(m.id) !== String(id))
       .slice(0, 6);
 
@@ -766,10 +788,11 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       },
     };
   } catch (error) {
-    console.error('Error in getServerSideProps:', error);
+    console.error('[Movie] CRITICAL ERROR:', error);
+    // Return a valid but empty movie to avoid 500 – Facebook will just see no image
     return {
       props: {
-        movie: null,
+        movie: { id: params?.id, title: 'Movie not found' },
         recommendations: [],
       },
     };
