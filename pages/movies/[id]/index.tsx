@@ -598,7 +598,7 @@ import ShareButtons from '../../../components/ShareButtons';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
-// Combine all movie arrays
+// Combine all movie arrays – ensure they are correctly imported
 const ALL_MOVIES = [
   ...UNIQUE_MOVIES,
   ...UNIQUE_HINDI_DUBBED,
@@ -762,7 +762,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (imagePath.startsWith('http')) {
       ogImage = imagePath;
     } else {
-      // For relative paths like /images/movie/case.jpg
       const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
       const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
       ogImage = base + path;

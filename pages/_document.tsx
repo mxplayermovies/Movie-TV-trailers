@@ -80,7 +80,7 @@ export default function Document() {
         <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app'} />
         <meta property="og:title" content="Movie & TV trailers – Free Streaming Platform" />
         <meta property="og:description" content="Your ultimate destination for movies, TV, live sports, and more." />
-        {/* ❌ REMOVED global og:image – each page now sets its own */}
+        {/* ❌ Global og:image removed – each page sets its own */}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Movie & TV trailers – Free Streaming Platform" />
