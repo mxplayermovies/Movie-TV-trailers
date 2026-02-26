@@ -3,16 +3,17 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { UNIQUE_ADULT, getDetails, getImageUrl } from '../../../services/tmdb';
+import { UNIQUE_ADULT, getImageUrl } from '../../../services/tmdb';
 import { ContentDetails, MediaItem } from '../../../types';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
 import { voiceManager } from '../../../lib/core/VoiceManager';
-import { Play, Volume2, Share2, X, Copy, Check } from 'lucide-react';
+import { Play, Volume2 } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
 import { formatDurationToISO } from '../../../lib/utils/duration';
+import ShareButtons from '../../../components/ShareButtons';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
@@ -26,8 +27,6 @@ interface Props {
 export default function AdultDetail({ item, recommendations, ogImage }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isShareOpen, setIsShareOpen] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
 
   const title = item.title || item.name || 'Adult Movie';
   const ytId = item.yt_id;
@@ -52,13 +51,6 @@ export default function AdultDetail({ item, recommendations, ogImage }: Props) {
     router.push(`/watch/${item.id}?type=movie`);
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(canonicalUrl);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
-  };
-
-  // Movie schema with contentRating R18+
   const movieSchema = {
     "@context": "https://schema.org",
     "@type": "Movie",
@@ -152,15 +144,13 @@ export default function AdultDetail({ item, recommendations, ogImage }: Props) {
             <div className="min-w-0">
               <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
                 <h1 className="text-2xl md:text-5xl font-bold text-white mb-2">{title}</h1>
-                <div className="flex items-center gap-2">
-                  <button onClick={readDetails} className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition" title="Read aloud">
-                    <Volume2 size={20} />
-                  </button>
-                  <button onClick={() => setIsShareOpen(true)} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 hover:bg-miraj-gold hover:text-black transition-colors border border-white/5">
-                    <Share2 size={18} />
-                    <span className="hidden sm:inline font-bold text-sm">Share</span>
-                  </button>
-                </div>
+                <button
+                  onClick={readDetails}
+                  className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition"
+                  title="Read aloud"
+                >
+                  <Volume2 size={20} />
+                </button>
               </div>
 
               {ytId && (
@@ -189,6 +179,16 @@ export default function AdultDetail({ item, recommendations, ogImage }: Props) {
                   {loading ? 'Loading…' : 'Play Now'}
                 </button>
               </div>
+
+              {/* Share section */}
+              <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
+                <h3 className="text-lg font-semibold mb-4">Share this movie</h3>
+                <ShareButtons 
+                  url={canonicalUrl} 
+                  title={title} 
+                  description={description}
+                />
+              </div>
             </div>
           </div>
 
@@ -198,38 +198,15 @@ export default function AdultDetail({ item, recommendations, ogImage }: Props) {
         </main>
         <Footer />
       </div>
-
-      {/* Share Modal – same as before */}
-      {isShareOpen && (
-        <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">Share Content</h3>
-              <button onClick={() => setIsShareOpen(false)} className="text-gray-400 hover:text-white">
-                <X size={24} />
-              </button>
-            </div>
-            <div className="p-6">
-              <div className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-lg p-2">
-                <input
-                  type="text"
-                  className="bg-transparent text-gray-300 text-sm flex-1 outline-none"
-                  readOnly
-                  value={canonicalUrl}
-                />
-                <button onClick={handleCopyLink} className="p-2 bg-white/10 rounded hover:bg-white/20 transition">
-                  {copiedLink ? <Check size={16} className="text-green-500" /> : <Copy size={16} className="text-white" />}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  if (!UNIQUE_ADULT || UNIQUE_ADULT.length === 0) {
+    console.error('UNIQUE_ADULT is empty or undefined – paths will be empty');
+    return { paths: [], fallback: 'blocking' };
+  }
   const paths = UNIQUE_ADULT.map((item) => ({
     params: { id: String(item.id) },
   }));
@@ -238,24 +215,40 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params?.id as string;
-  try {
-    const item = await getDetails('movie', id);
-    const sanitizedItem = sanitizeMediaItem(item);
-    const ogImage =
-      sanitizedItem.backdrop_path
-        ? getImageUrl(sanitizedItem.backdrop_path, 'original')
-        : sanitizedItem.poster_path
-        ? getImageUrl(sanitizedItem.poster_path, 'original')
-        : `${BASE_URL}/og-image.jpg`;
-
-    const allItems = UNIQUE_ADULT.map(sanitizeMediaItem);
-    const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
-
-    return {
-      props: { item: sanitizedItem, recommendations, ogImage },
-      revalidate: 3600,
-    };
-  } catch {
+  if (!id) {
     return { notFound: true };
   }
+
+  // Directly find the item in the static array
+  const staticItem = UNIQUE_ADULT.find(item => String(item.id) === id);
+  if (!staticItem) {
+    console.error(`Adult item with id ${id} not found in UNIQUE_ADULT`);
+    return { notFound: true };
+  }
+
+  // Sanitize to remove streams
+  const sanitizedItem = sanitizeMediaItem(staticItem);
+
+  // Build absolute ogImage URL
+  const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
+  let ogImage: string;
+  if (imagePath) {
+    const rawImageUrl = getImageUrl(imagePath, 'original');
+    if (rawImageUrl.startsWith('http')) {
+      ogImage = rawImageUrl;
+    } else {
+      ogImage = `${BASE_URL}${rawImageUrl}`;
+    }
+  } else {
+    ogImage = `${BASE_URL}/og-image.jpg`;
+  }
+
+  // Generate recommendations (excluding current item)
+  const allItems = UNIQUE_ADULT.map(sanitizeMediaItem);
+  const recommendations = allItems.filter((m) => String(m.id) !== String(id)).slice(0, 6);
+
+  return {
+    props: { item: sanitizedItem, recommendations, ogImage },
+    revalidate: 3600,
+  };
 };

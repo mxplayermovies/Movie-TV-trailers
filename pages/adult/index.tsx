@@ -137,6 +137,13 @@ export default function AdultPage({ items }: Props) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+  if (!UNIQUE_ADULT || UNIQUE_ADULT.length === 0) {
+    console.error('UNIQUE_ADULT is empty or undefined');
+    return {
+      props: { items: [] },
+      revalidate: 3600,
+    };
+  }
   const items = UNIQUE_ADULT.map(sanitizeMediaItem);
   return {
     props: { items },

@@ -19,16 +19,4 @@ Allow: /
 User-agent: YandexBot
 Allow: /
 
-User-agent: facebookexternalhit
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: LinkedInBot
-Allow: /
-
-User-agent: WhatsApp
-Allow: /
-
 Sitemap: https://movie-tv-trailers.vercel.app/sitemap.xml

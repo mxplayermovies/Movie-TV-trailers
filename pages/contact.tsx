@@ -43,52 +43,14 @@ export default function ContactPage() {
     setSubmitted(true);
   };
 
-  const contactPageSchema = {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    "name": "Contact Movie & TV trailers",
-    "description": "Get in touch with Movie & TV trailers for support, business partnerships, or advertising.",
-    "url": "https://movie-tv-trailers.vercel.app/contact",
-    "mainEntity": {
-      "@type": "Organization",
-      "name": "Movie & TV trailers",
-      "email": "movie-tv-trailers@protonmail.com",
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "contactType": "customer support",
-          "email": "movie-tv-trailers@protonmail.com"
-        },
-        {
-          "@type": "ContactPoint",
-          "contactType": "business",
-          "email": "movie-tv-trailers@protonmail.com"
-        },
-        {
-          "@type": "ContactPoint",
-          "contactType": "advertising",
-          "email": "movie-tv-trailers@protonmail.com"
-        }
-      ]
-    }
-  };
-
   return (
     <>
       <Head>
         <title>Contact Us – Movie & TV trailers | Support, Business & Advertising</title>
         <meta name="description" content="Get in touch with Movie & TV trailers for customer support, business partnerships, or advertising opportunities. Request movies/TV shows via Telegram. Download our Android app." />
         <meta name="keywords" content="contact, support, business inquiries, advertising, partnerships, Movie & TV trailers, Android app, Telegram, request movies" />
-        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
         <meta property="og:title" content="Contact Movie & TV trailers – Support, Business & Advertising" />
         <meta property="og:description" content="Reach out to us for any questions, business collaborations, or advertising on our platform. Request content via Telegram. Download our Android app." />
-        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
-        <meta property="og:url" content="https://movie-tv-trailers.vercel.app/contact" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Movie & TV trailers – Support, Business & Advertising" />
-        <meta name="twitter:description" content="Get in touch with us for support, business, or advertising." />
-        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }} />
       </Head>
 
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-white font-sans transition-colors duration-300">

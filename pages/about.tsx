@@ -1,4 +1,3 @@
-// pages/about.tsx
 import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -52,27 +51,15 @@ export default function AboutPage() {
     }
   };
 
-  // Define description to use in meta tags
-  const description = "Learn about Movie & TV trailers – our mission to provide free entertainment to everyone, our technology, and our commitment to privacy. Download our Android app for the best experience.";
-
   return (
     <>
       <Head>
         <title>About Movie & TV trailers | Free Streaming Platform & Android App</title>
-        <meta name="description" content={description} />
+        <meta name="description" content="Learn about Movie & TV trailers – our mission to provide free entertainment to everyone, our technology, and our commitment to privacy. Download our Android app for the best experience." />
         <meta name="keywords" content="Movie & TV trailers, about us, free streaming, movies online, TV shows, live sports, Android app download" />
-        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="About Movie & TV trailers – Free Entertainment for All" />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:url" content="https://movie-tv-trailers.vercel.app/about" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="About Movie & TV trailers – Free Entertainment for All" />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <meta property="og:description" content="Discover how Movie & TV trailers brings you unlimited movies, TV, and sports for free – no sign‑up required. Get our Android app!" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       </Head>
