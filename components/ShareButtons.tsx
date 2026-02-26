@@ -64,7 +64,7 @@ import {
   UNIQUE_ADULT,
   UNIQUE_DOCUMENTARY,
   getImageUrl,
-} from '../services/tmdb.ts';
+} from '../services/tmdb';
 
 interface Props {
   contentType: 'blog' | 'movie' | 'tv' | 'sports' | 'tv_live' | 'hindi-dubbed' | 'adult' | 'documentary';
