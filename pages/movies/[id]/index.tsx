@@ -657,8 +657,8 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:secure_url" content={ogImage} />
         <meta property="og:image:type" content="image/jpeg" />
-        <meta property="og:image:width" content="1280" />
-        <meta property="og:image:height" content="720" />
+        <meta property="og:image:width" content="480" />
+        <meta property="og:image:height" content="360" />
         <meta property="og:image:alt" content={`${title} - backdrop`} />
 
         {youtubeWatchUrl && <meta property="og:video" content={youtubeWatchUrl} />}
@@ -811,9 +811,12 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
     // Use YouTube thumbnail as ogImage — always publicly accessible by Facebook/Twitter scrapers.
     // All other image sources (TMDB, CBS, Pinterest etc) block external scrapers → 500 error.
+    // Rules:
+    //   - i.ytimg.com  is the correct CDN (img.youtube.com just redirects, less reliable)
+    //   - hqdefault.jpg (480x360) ALWAYS exists for every video — maxresdefault does NOT
     const ytId = sanitizedItem.yt_id;
     const ogImage = ytId
-      ? `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`
+      ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`
       : null;
 
     if (!ogImage) {
