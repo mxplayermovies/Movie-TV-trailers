@@ -128,6 +128,7 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   return (
+    <>
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {/* No Head here – all global meta tags moved to _document.tsx */}
       
@@ -169,8 +170,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <span className="text-sm md:text-base">Right click is disabled</span>
         </div>
       </div>
-
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* DO NOT set og:title, og:image, og:url here – let pages handle them */}
+      </Head>
       <Component {...pageProps} />
     </ThemeContext.Provider>
+    </>
   );
 }

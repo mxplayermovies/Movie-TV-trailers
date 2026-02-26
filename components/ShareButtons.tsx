@@ -1,49 +1,172 @@
-// components/ShareButtons.tsx
+// import React from 'react';
+// import { Facebook, Twitter, Linkedin, Link2 } from 'lucide-react';
+
+// interface Props {
+//   url: string;
+//   title: string;
+//   description?: string;
+// }
+
+// export default function ShareButtons({ url, title, description }: Props) {
+//   const encodedUrl = encodeURIComponent(url);
+//   const encodedTitle = encodeURIComponent(title);
+
+//   return (
+//     <div className="flex gap-3">
+//       <a
+//         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+//         aria-label="Share on Facebook"
+//       >
+//         <Facebook size={18} />
+//       </a>
+//       <a
+//         href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         className="p-2 bg-sky-500 text-white rounded hover:bg-sky-600"
+//         aria-label="Share on Twitter"
+//       >
+//         <Twitter size={18} />
+//       </a>
+//       <a
+//         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         className="p-2 bg-blue-700 text-white rounded hover:bg-blue-800"
+//         aria-label="Share on LinkedIn"
+//       >
+//         <Linkedin size={18} />
+//       </a>
+//       <button
+//         onClick={() => navigator.clipboard.writeText(url)}
+//         className="p-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+//         aria-label="Copy link"
+//       >
+//         <Link2 size={18} />
+//       </button>
+//     </div>
+//   );
+// }
+
+
 import React, { useEffect, useState } from 'react';
+import { Facebook, Twitter, Linkedin, Link2 } from 'lucide-react';
+import { blogPosts } from '../data/blogPosts';
 import {
-  FacebookShareButton, FacebookIcon,
-  TwitterShareButton, TwitterIcon,
-  WhatsappShareButton, WhatsappIcon,
-  TelegramShareButton, TelegramIcon,
-  EmailShareButton, EmailIcon,
-  LinkedinShareButton, LinkedinIcon,
-} from 'react-share';
+  UNIQUE_MOVIES,
+  UNIQUE_TV_SHOWS,
+  UNIQUE_SPORTS,
+  UNIQUE_TV_LIVE,
+  UNIQUE_HINDI_DUBBED,
+  UNIQUE_ADULT,
+  UNIQUE_DOCUMENTARY,
+  getImageUrl,
+} from '../services/tmdb.ts';
 
 interface Props {
+  contentType: 'blog' | 'movie' | 'tv' | 'sports' | 'tv_live' | 'hindi-dubbed' | 'adult' | 'documentary';
+  contentId: string; // slug for blog, id string for others
   url: string;
-  title: string;
-  description?: string;
 }
 
-const ShareButtons: React.FC<Props> = ({ url, title, description }) => {
-  const [mounted, setMounted] = useState(false);
+export default function ShareButtons({ contentType, contentId, url }: Props) {
+  const [title, setTitle] = useState<string>('');
+  const [image, setImage] = useState<string>('');
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    if (contentType === 'blog') {
+      const post = blogPosts.find(p => p.id === contentId || p.slug === contentId);
+      if (post) {
+        setTitle(post.title);
+        setImage(post.image); // blog posts use their own image field
+      }
+    } else {
+      let dataArray: any[] = [];
+      switch (contentType) {
+        case 'movie':
+          dataArray = UNIQUE_MOVIES;
+          break;
+        case 'tv':
+          dataArray = UNIQUE_TV_SHOWS;
+          break;
+        case 'sports':
+          dataArray = UNIQUE_SPORTS;
+          break;
+        case 'tv_live':
+          dataArray = UNIQUE_TV_LIVE;
+          break;
+        case 'hindi-dubbed':
+          dataArray = UNIQUE_HINDI_DUBBED;
+          break;
+        case 'adult':
+          dataArray = UNIQUE_ADULT;
+          break;
+        case 'documentary':
+          dataArray = UNIQUE_DOCUMENTARY;
+          break;
+      }
 
-  if (!mounted) return null;
+      const item = dataArray.find(i => String(i.id) === contentId);
+      if (item) {
+        setTitle(item.title || item.name || '');
+        const imgPath = item.backdrop_path || item.poster_path;
+        setImage(getImageUrl(imgPath, 'w500'));
+      }
+    }
+  }, [contentType, contentId]);
+
+  const encodedUrl = encodeURIComponent(url);
+  const encodedTitle = encodeURIComponent(title);
+
+  if (!title) return null; // loading or not found
 
   return (
-    <div className="flex flex-wrap gap-2 mt-4">
-      <FacebookShareButton url={url} className="transition-transform hover:scale-105">
-        <FacebookIcon size={40} round />
-      </FacebookShareButton>
-      <TwitterShareButton url={url} title={title} className="transition-transform hover:scale-105">
-        <TwitterIcon size={40} round />
-      </TwitterShareButton>
-      <WhatsappShareButton url={url} title={title} className="transition-transform hover:scale-105">
-        <WhatsappIcon size={40} round />
-      </WhatsappShareButton>
-      <TelegramShareButton url={url} title={title} className="transition-transform hover:scale-105">
-        <TelegramIcon size={40} round />
-      </TelegramShareButton>
-      <LinkedinShareButton url={url} title={title} summary={description} className="transition-transform hover:scale-105">
-        <LinkedinIcon size={40} round />
-      </LinkedinShareButton>
-      <EmailShareButton url={url} subject={title} body={`${description || ''}\n\n${url}`} className="transition-transform hover:scale-105">
-        <EmailIcon size={40} round />
-      </EmailShareButton>
+    <div className="flex items-center gap-4">
+      {/* Preview thumbnail */}
+      {image && (
+        <div className="w-16 h-16 rounded overflow-hidden flex-shrink-0">
+          <img src={image} alt={title} className="w-full h-full object-cover" />
+        </div>
+      )}
+      <div className="flex gap-3">
+        <a
+          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          aria-label="Share on Facebook"
+        >
+          <Facebook size={18} />
+        </a>
+        <a
+          href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 bg-sky-500 text-white rounded hover:bg-sky-600"
+          aria-label="Share on Twitter"
+        >
+          <Twitter size={18} />
+        </a>
+        <a
+          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="p-2 bg-blue-700 text-white rounded hover:bg-blue-800"
+          aria-label="Share on LinkedIn"
+        >
+          <Linkedin size={18} />
+        </a>
+        <button
+          onClick={() => navigator.clipboard.writeText(url)}
+          className="p-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+          aria-label="Copy link"
+        >
+          <Link2 size={18} />
+        </button>
+      </div>
     </div>
   );
-};
-
-export default ShareButtons;
+}
