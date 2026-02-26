@@ -575,11 +575,17 @@
 //   }
 // };
 
+// pages/movies/[id]/index.tsx
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { UNIQUE_MOVIES, UNIQUE_HINDI_DUBBED, UNIQUE_ADULT, UNIQUE_DOCUMENTARY } from '../../../services/tmdb';
+import {
+  UNIQUE_MOVIES,
+  UNIQUE_HINDI_DUBBED,
+  UNIQUE_ADULT,
+  UNIQUE_DOCUMENTARY,
+} from '../../../services/tmdb';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
@@ -592,6 +598,7 @@ import ShareButtons from '../../../components/ShareButtons';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
+// Combine all movie arrays – this runs on both server and client
 const ALL_MOVIES = [
   ...UNIQUE_MOVIES,
   ...UNIQUE_HINDI_DUBBED,
@@ -602,7 +609,7 @@ const ALL_MOVIES = [
 interface Props {
   movie: any;
   recommendations: any[];
-  ogImage?: string;
+  ogImage?: string; // if undefined, no og:image tag will be rendered
 }
 
 export default function MovieDetail({ movie, recommendations, ogImage }: Props) {
@@ -745,33 +752,37 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params?.id as string;
-  console.log(`🔍 Looking for movie with id: "${id}"`);
+  // These logs will appear in Vercel's function logs
+  console.log(`[Vercel Debug] Looking for movie with id: "${id}"`);
+  console.log(`[Vercel Debug] ALL_MOVIES length: ${ALL_MOVIES.length}`);
 
   const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
   if (!rawMovie) {
-    console.error(`❌ Movie with id "${id}" not found`);
+    console.error(`[Vercel Debug] Movie with id "${id}" not found in ALL_MOVIES`);
     return { notFound: true };
   }
 
-  console.log(`✅ Found movie: "${rawMovie.title}"`);
-  console.log(`   backdrop_path: "${rawMovie.backdrop_path}"`);
-  console.log(`   poster_path: "${rawMovie.poster_path}"`);
+  console.log(`[Vercel Debug] Found movie: "${rawMovie.title}"`);
+  console.log(`[Vercel Debug] backdrop_path: "${rawMovie.backdrop_path}"`);
+  console.log(`[Vercel Debug] poster_path: "${rawMovie.poster_path}"`);
 
   const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
   let ogImage: string | undefined;
 
   if (imagePath) {
+    // If it's already absolute, use it directly
     if (imagePath.startsWith('http')) {
       ogImage = imagePath;
-      console.log(`   Using absolute image: ${ogImage}`);
+      console.log(`[Vercel Debug] Using absolute image: ${ogImage}`);
     } else {
+      // Relative path – make absolute using BASE_URL
       const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
       const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
       ogImage = base + path;
-      console.log(`   Converted relative to absolute: ${ogImage}`);
+      console.log(`[Vercel Debug] Converted relative to absolute: ${ogImage}`);
     }
   } else {
-    console.log(`⚠️ No image found for this movie – ogImage will be omitted`);
+    console.log(`[Vercel Debug] No image found for this movie – ogImage will be omitted`);
   }
 
   const recommendations = ALL_MOVIES
