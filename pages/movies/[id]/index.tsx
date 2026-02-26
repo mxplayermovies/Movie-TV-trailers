@@ -274,6 +274,7 @@
 
 
 
+// pages/movies/[id]/index.tsx
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -296,7 +297,7 @@ const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 interface Props {
   item: MediaItem | null;
   recommendations: MediaItem[];
-  ogImage: string; // absolute URL for social sharing
+  ogImage: string; // absolute URL for social sharing – guaranteed to exist
 }
 
 export default function MovieDetail({ item, recommendations, ogImage }: Props) {
@@ -478,7 +479,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 <ShareButtons
                   contentType="movie"
                   contentId={String(item.id)}
-                  url={canonicalUrl}   // ← this is the page URL, correct for sharing
+                  url={canonicalUrl}
                 />
               </div>
             </div>
@@ -504,27 +505,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const id = params?.id as string;
   try {
-    // Direct lookup – no async calls, no risk of failure
     const movie = UNIQUE_MOVIES.find((m) => String(m.id) === id);
     if (!movie) {
       console.error(`Movie not found for id: ${id}`);
       return { notFound: true };
     }
 
-    // Sanitize if needed
     const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
 
     // Build OG image URL (priority: backdrop_path -> poster_path)
+    // Every movie in UNIQUE_MOVIES has at least one image, so we don't need a fallback.
     const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
-    let ogImage: string;
+    // imagePath is guaranteed to exist – if not, the movie object is malformed.
+    const rawImageUrl = getImageUrl(imagePath!, 'original');
+    const ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
 
-    if (imagePath) {
-      const rawImageUrl = getImageUrl(imagePath, 'original');
-      // Ensure absolute URL
-      ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
-    } 
-
-    // Get recommendations
     const recommendations = UNIQUE_MOVIES
       .filter((m) => String(m.id) !== id)
       .slice(0, 6)
@@ -536,7 +531,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         recommendations,
         ogImage,
       },
-      revalidate: 3600, // 1 hour
+      revalidate: 3600,
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
