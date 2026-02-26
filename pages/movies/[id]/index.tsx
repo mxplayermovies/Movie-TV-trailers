@@ -762,6 +762,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     if (imagePath.startsWith('http')) {
       ogImage = imagePath;
     } else {
+      // For relative paths like /images/movie/case.jpg
       const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
       const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
       ogImage = base + path;

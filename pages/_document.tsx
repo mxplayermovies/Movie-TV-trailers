@@ -66,7 +66,6 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
-        {/* Global meta tags – these will be overridden by page‑specific tags */}
         <meta name="description" content="Watch free movies, TV shows, live sports, and more online. No sign‑up required." />
         <meta name="keywords" content="free movies, watch online, tv shows, live sports, streaming, hindi dubbed" />
         <meta name="robots" content="index, follow" />
@@ -75,15 +74,13 @@ export default function Document() {
         <meta name="author" content="Movie & TV trailers" />
         <meta name="theme-color" content="#0f172a" />
 
-        {/* Facebook App ID – required for rich sharing */}
         <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
-
         <meta property="og:site_name" content="Movie & TV trailers" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app'} />
         <meta property="og:title" content="Movie & TV trailers – Free Streaming Platform" />
         <meta property="og:description" content="Your ultimate destination for movies, TV, live sports, and more." />
-        {/* REMOVED the global og:image – now each page sets its own */}
+        {/* ❌ REMOVED global og:image – each page now sets its own */}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Movie & TV trailers – Free Streaming Platform" />
