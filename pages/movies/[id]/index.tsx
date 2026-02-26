@@ -294,7 +294,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 interface Props {
-  item: MediaItem | null;
+  item: MediaItem;
   recommendations: MediaItem[];
   ogImage: string; // absolute URL for social sharing (backdrop or poster)
 }
@@ -302,20 +302,6 @@ interface Props {
 export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-
-  if (!item) {
-    return (
-      <>
-        <Head>
-          <title>Movie Not Found | Movie & TV Trailers</title>
-          <meta name="robots" content="noindex" />
-        </Head>
-        <div className="min-h-screen flex items-center justify-center">
-          <p>Movie not found</p>
-        </div>
-      </>
-    );
-  }
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
@@ -340,7 +326,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     router.push(`/watch/${item.id}?type=movie`);
   };
 
-  // Movie schema for structured data
   const movieSchema = {
     "@context": "https://schema.org",
     "@type": "Movie",
@@ -412,7 +397,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="twitter:player:width" content="1280" />
         <meta name="twitter:player:height" content="720" />
 
-        {/* Structured Data */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }} />
       </Head>
 
@@ -472,13 +456,13 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 </button>
               </div>
 
-              {/* Share section – url is the page link, thumbnail fetched internally */}
+              {/* Share section */}
               <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
                 <h3 className="text-lg font-semibold mb-4">Share this movie</h3>
                 <ShareButtons
                   contentType="movie"
                   contentId={String(item.id)}
-                  url={canonicalUrl}   // ← this is the page URL, correct for sharing
+                  url={canonicalUrl}
                 />
               </div>
             </div>
@@ -512,10 +496,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
     const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
 
-    // Build OG image URL – strictly from movie data, no fallback
+    // Strictly require an image – no fallback. Build will fail if any movie lacks an image.
     const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
-    // Every movie has at least one image; if not, the movie data is malformed.
-    const rawImageUrl = getImageUrl(imagePath!, 'original');
+    if (!imagePath) {
+      throw new Error(`Movie "${sanitizedItem.title}" (id: ${id}) has no backdrop_path or poster_path. Add an image to the data.`);
+    }
+
+    const rawImageUrl = getImageUrl(imagePath, 'original');
     const ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
 
     const recommendations = UNIQUE_MOVIES
@@ -533,6 +520,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
+    // If an error occurs during build, fail the build to force fixing the data.
+    if (process.env.NODE_ENV === 'production') {
+      throw error; // This will fail the build on Vercel
+    }
     return { notFound: true };
   }
 };
