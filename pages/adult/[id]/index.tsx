@@ -13,7 +13,7 @@ import { Play, Volume2 } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
 import { formatDurationToISO } from '../../../lib/utils/duration';
-import ShareButtons from '../../../components/ShareButtons';
+
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
@@ -181,14 +181,14 @@ export default function AdultDetail({ item, recommendations, ogImage }: Props) {
               </div>
 
               {/* Share section */}
-              <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
+              {/* <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
                 <h3 className="text-lg font-semibold mb-4">Share this movie</h3>
-                <ShareButtons 
-                  url={canonicalUrl} 
-                  title={title} 
-                  description={description}
+                <ShareButtons
+                  contentType="movie"
+                  contentId={String(item.id)}
+                  url={canonicalUrl}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 

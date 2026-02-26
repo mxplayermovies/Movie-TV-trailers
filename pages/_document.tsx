@@ -21,7 +21,7 @@ export default function Document() {
         <meta property="og:url" content="https://movie-tv-trailers.vercel.app" />
         <meta property="og:title" content="Movie & TV trailers – Free Streaming Platform" />
         <meta property="og:description" content="Your ultimate destination for movies, TV, live sports, and more." />
-        {/* <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" /> */}
+        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Movie & TV trailers" />
