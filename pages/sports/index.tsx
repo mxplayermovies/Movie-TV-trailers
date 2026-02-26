@@ -12,6 +12,8 @@ import { Volume2, ChevronDown } from 'lucide-react';
 import { sanitizeMediaItem } from '../../lib/core/sanitize';
 
 const ITEMS_PER_PAGE = 15;
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
+const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 interface Props {
   items: Omit<MediaItem, 'streams'>[];
@@ -43,11 +45,47 @@ export default function SportsPage({ items }: Props) {
 
   const visibleItems = items.slice(0, visibleCount);
 
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Live Sports - Movie & TV trailers",
+    "description": "Browse the latest live sports events. Watch free live sports streaming.",
+    "url": `${BASE_URL}/sports`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": visibleItems.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `${BASE_URL}/sports/${item.id}`,
+        "name": item.title || item.name
+      }))
+    }
+  };
+
   return (
     <>
       <Head>
         <title>Live Sports - Movie & TV trailers</title>
+        <meta name="description" content="Browse the latest live sports events. Watch free live sports streaming online." />
+        <meta name="keywords" content="live sports, streaming, cricket, football, live matches" />
+        <link rel="canonical" href={`${BASE_URL}/sports`} />
+        <meta property="fb:app_id" content={FB_APP_ID} />
+        <meta property="og:site_name" content="Movie & TV trailers" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${BASE_URL}/sports`} />
+        <meta property="og:title" content="Live Sports - Movie & TV trailers" />
+        <meta property="og:description" content="Browse the latest live sports events." />
+        <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MovieTVTrailers" />
+        <meta name="twitter:title" content="Live Sports - Movie & TV trailers" />
+        <meta name="twitter:description" content="Browse the latest live sports events." />
+        <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       </Head>
+
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
         <Header />
         <main className="container mx-auto px-4 py-8">

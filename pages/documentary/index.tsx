@@ -12,6 +12,8 @@ import { Volume2, ChevronDown } from 'lucide-react';
 import { sanitizeMediaItem } from '../../lib/core/sanitize';
 
 const ITEMS_PER_PAGE = 15;
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
+const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 interface Props {
   items: Omit<MediaItem, 'streams'>[];
@@ -36,17 +38,54 @@ export default function DocumentaryPage({ items }: Props) {
     const text = ` We have ${items.length} latest documentary available. Updated as on ${formattedDate}. `;
     voiceManager.speak(text, true);
   };
+
   const loadMore = () => {
     setVisibleCount((prev) => Math.min(prev + ITEMS_PER_PAGE, totalItems));
   };
 
   const visibleItems = items.slice(0, visibleCount);
 
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Documentary Movies - Movie & TV trailers",
+    "description": "Browse the latest documentary movies. Watch free documentaries online.",
+    "url": `${BASE_URL}/documentary`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": visibleItems.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `${BASE_URL}/documentary/${item.id}`,
+        "name": item.title || item.name
+      }))
+    }
+  };
+
   return (
     <>
       <Head>
         <title>Documentary Movies - Movie & TV trailers</title>
+        <meta name="description" content="Browse the latest documentary movies. Watch free documentaries online in HD." />
+        <meta name="keywords" content="documentary, movies, streaming, free" />
+        <link rel="canonical" href={`${BASE_URL}/documentary`} />
+        <meta property="fb:app_id" content={FB_APP_ID} />
+        <meta property="og:site_name" content="Movie & TV trailers" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${BASE_URL}/documentary`} />
+        <meta property="og:title" content="Documentary Movies - Movie & TV trailers" />
+        <meta property="og:description" content="Browse the latest documentary movies." />
+        <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MovieTVTrailers" />
+        <meta name="twitter:title" content="Documentary Movies - Movie & TV trailers" />
+        <meta name="twitter:description" content="Browse the latest documentary movies." />
+        <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       </Head>
+
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
         <Header />
         <main className="container mx-auto px-4 py-8">

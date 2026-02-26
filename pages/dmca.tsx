@@ -37,14 +37,30 @@ export default function DMCAPage() {
     voiceManager.speak(text, true);
   };
 
+  const dmcaSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "DMCA – Movie & TV trailers",
+    "description": "Digital Millennium Copyright Act notice and takedown procedure for Movie & TV trailers, including our Android app.",
+    "url": "https://movie-tv-trailers.vercel.app/dmca"
+  };
+
   return (
     <>
-      <Head>
+           <Head>
         <title>DMCA – Movie & TV trailers</title>
         <meta name="description" content="Digital Millennium Copyright Act notice and takedown procedure for Movie & TV trailers, including our Android app." />
         <meta name="keywords" content="DMCA, copyright infringement, takedown, Android app" />
+        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
         <meta property="og:title" content="DMCA – Movie & TV trailers" />
         <meta property="og:description" content="How to report copyright infringement on Movie & TV trailers." />
+        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <meta property="og:url" content="https://movie-tv-trailers.vercel.app/dmca" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="DMCA – Movie & TV trailers" />
+        <meta name="twitter:description" content="How to report copyright infringement." />
+        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dmcaSchema) }} />
       </Head>
 
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-white font-sans transition-colors duration-300">

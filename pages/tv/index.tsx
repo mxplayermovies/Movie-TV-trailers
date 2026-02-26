@@ -12,6 +12,8 @@ import { Volume2, ChevronDown } from 'lucide-react';
 import { sanitizeMediaItem } from '../../lib/core/sanitize';
 
 const ITEMS_PER_PAGE = 15;
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
+const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 interface Props {
   items: Omit<MediaItem, 'streams'>[];
@@ -23,9 +25,7 @@ export default function TvShowsPage({ items }: Props) {
   const hasMore = visibleCount < totalItems;
 
   useEffect(() => {
-    voiceManager.speak(
-      'TV shows page. Browse the latest TV shows collection. Click the speaker icon to learn about the latest updated TV shows.'
-    );
+    voiceManager.speak('TV shows page. Browse the latest TV shows collection. Click the speaker icon to learn about the latest updated TV shows.');
   }, []);
 
   const readPageContent = () => {
@@ -45,11 +45,47 @@ export default function TvShowsPage({ items }: Props) {
 
   const visibleItems = items.slice(0, visibleCount);
 
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "TV Shows - Movie & TV trailers",
+    "description": "Browse the latest TV shows collection. Watch free TV shows online.",
+    "url": `${BASE_URL}/tv`,
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": visibleItems.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "url": `${BASE_URL}/tv/${item.id}`,
+        "name": item.title || item.name
+      }))
+    }
+  };
+
   return (
     <>
       <Head>
         <title>TV Shows - Movie & TV trailers</title>
+        <meta name="description" content="Browse the latest TV shows collection. Watch free TV shows online in HD." />
+        <meta name="keywords" content="free tv shows, watch online, tv series, streaming" />
+        <link rel="canonical" href={`${BASE_URL}/tv`} />
+        <meta property="fb:app_id" content={FB_APP_ID} />
+        <meta property="og:site_name" content="Movie & TV trailers" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${BASE_URL}/tv`} />
+        <meta property="og:title" content="TV Shows - Movie & TV trailers" />
+        <meta property="og:description" content="Browse the latest TV shows collection." />
+        <meta property="og:image" content={`${BASE_URL}/og-image.jpg`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MovieTVTrailers" />
+        <meta name="twitter:title" content="TV Shows - Movie & TV trailers" />
+        <meta name="twitter:description" content="Browse the latest TV shows collection." />
+        <meta name="twitter:image" content={`${BASE_URL}/og-image.jpg`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
       </Head>
+
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
         <Header />
         <main className="container mx-auto px-4 py-8">

@@ -38,16 +38,31 @@ export default function TermsPage() {
     voiceManager.speak(text, true);
   };
 
+    const termsSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Terms of Service – Movie & TV trailers",
+    "description": "Read the terms and conditions for using Movie & TV trailers, including our Android app.",
+    "url": "https://movie-tv-trailers.vercel.app/terms"
+  };
+
   return (
     <>
-      <Head>
+            <Head>
         <title>Terms of Service – Movie & TV trailers</title>
         <meta name="description" content="Read the terms and conditions for using Movie & TV trailers, including our Android app." />
         <meta name="keywords" content="terms of service, terms, conditions, legal, Android app terms" />
+        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
         <meta property="og:title" content="Terms of Service – Movie & TV trailers" />
         <meta property="og:description" content="Legal terms governing your use of Movie & TV trailers." />
+        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <meta property="og:url" content="https://movie-tv-trailers.vercel.app/terms" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Terms of Service – Movie & TV trailers" />
+        <meta name="twitter:description" content="Read our terms and conditions." />
+        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termsSchema) }} />
       </Head>
-
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-white font-sans transition-colors duration-300">
         <Header />
         

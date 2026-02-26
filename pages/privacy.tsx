@@ -38,14 +38,30 @@ export default function PrivacyPage() {
     voiceManager.speak(text, true);
   };
 
+    const privacySchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy – Movie & TV trailers",
+    "description": "Movie & TV trailers's privacy policy – how we handle your data and protect your privacy.",
+    "url": "https://movie-tv-trailers.vercel.app/privacy"
+  };
+
   return (
     <>
-      <Head>
+           <Head>
         <title>Privacy Policy – Movie & TV trailers</title>
         <meta name="description" content="Movie & TV trailers's privacy policy – how we handle your data and protect your privacy." />
         <meta name="keywords" content="privacy policy, data protection, cookies" />
+        <meta property="fb:app_id" content={process.env.NEXT_PUBLIC_FB_APP_ID} />
         <meta property="og:title" content="Privacy Policy – Movie & TV trailers" />
         <meta property="og:description" content="Learn how Movie & TV trailers protects your personal information." />
+        <meta property="og:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <meta property="og:url" content="https://movie-tv-trailers.vercel.app/privacy" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Privacy Policy – Movie & TV trailers" />
+        <meta name="twitter:description" content="Learn how we protect your data." />
+        <meta name="twitter:image" content="https://movie-tv-trailers.vercel.app/og-image.jpg" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(privacySchema) }} />
       </Head>
 
       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-white font-sans transition-colors duration-300">
