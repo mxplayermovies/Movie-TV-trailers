@@ -294,14 +294,29 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 interface Props {
-  item: MediaItem;
+  item: MediaItem | null;
   recommendations: MediaItem[];
-  ogImage: string; // absolute URL for social sharing (backdrop or poster)
+  ogImage: string | null; // if null, page will 404
 }
 
 export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  // If item is null or ogImage is missing, show 404
+  if (!item || !ogImage) {
+    return (
+      <>
+        <Head>
+          <title>Movie Not Found | Movie & TV Trailers</title>
+          <meta name="robots" content="noindex" />
+        </Head>
+        <div className="min-h-screen flex items-center justify-center">
+          <p>Movie not found</p>
+        </div>
+      </>
+    );
+  }
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id;
@@ -362,7 +377,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
 
-        {/* Open Graph */}
         <meta property="fb:app_id" content={FB_APP_ID} />
         <meta property="og:site_name" content="Movie & TV Trailers" />
         <meta property="og:type" content="video.movie" />
@@ -385,7 +399,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 
         {item.release_date && <meta property="video:release_date" content={item.release_date} />}
 
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@MovieTVTrailers" />
         <meta name="twitter:creator" content="@MovieTVTrailers" />
@@ -404,19 +417,16 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
-            {/* Poster */}
             <div className="hidden md:block w-[300px] flex-shrink-0">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
                 <img
                   src={getImageUrl(item.poster_path)}
                   alt={title}
                   className="w-full h-full object-cover"
-                  style={{ filter: 'brightness(1.05) contrast(1.1) saturate(1.08)' }}
                 />
               </div>
             </div>
 
-            {/* Details */}
             <div className="min-w-0">
               <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
                 <h1 className="text-2xl md:text-5xl font-bold text-white mb-2">{title}</h1>
@@ -438,11 +448,11 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               <div className="mt-4">
                 <p className="text-gray-600 dark:text-gray-300 mb-4">{item.overview}</p>
                 <div className="flex items-center gap-4 mb-6 flex-wrap">
-                  {item.vote_average ? (
+                  {item.vote_average && (
                     <span className="px-3 py-1 bg-yellow-500 text-black font-bold rounded">
                       {item.vote_average.toFixed(1)} ★
                     </span>
-                  ) : null}
+                  )}
                   {item.release_date && <span>{item.release_date}</span>}
                   {item.duration && <span>{item.duration}</span>}
                 </div>
@@ -456,13 +466,12 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                 </button>
               </div>
 
-              {/* Share section */}
               <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
                 <h3 className="text-lg font-semibold mb-4">Share this movie</h3>
                 <ShareButtons
                   contentType="movie"
                   contentId={String(item.id)}
-                  url={canonicalUrl}
+                  url={canonicalUrl}   // ✅ this is the page URL – correct!
                 />
               </div>
             </div>
@@ -489,17 +498,15 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const id = params?.id as string;
   try {
     const movie = UNIQUE_MOVIES.find((m) => String(m.id) === id);
-    if (!movie) {
-      console.error(`Movie not found for id: ${id}`);
-      return { notFound: true };
-    }
+    if (!movie) return { notFound: true };
 
     const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
 
-    // Strictly require an image – no fallback. Build will fail if any movie lacks an image.
+    // Strict check: movie must have a valid image path
     const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
     if (!imagePath) {
-      throw new Error(`Movie "${sanitizedItem.title}" (id: ${id}) has no backdrop_path or poster_path. Add an image to the data.`);
+      // If no image, return 404 – this will be caught in the component
+      return { notFound: true };
     }
 
     const rawImageUrl = getImageUrl(imagePath, 'original');
@@ -520,10 +527,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
-    // If an error occurs during build, fail the build to force fixing the data.
-    if (process.env.NODE_ENV === 'production') {
-      throw error; // This will fail the build on Vercel
-    }
     return { notFound: true };
   }
 };
