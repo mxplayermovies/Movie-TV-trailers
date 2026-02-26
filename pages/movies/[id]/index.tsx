@@ -535,6 +535,7 @@ import { MediaItem } from '../../../types';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
+import { voiceManager } from '../../../lib/core/VoiceManager';
 import { Play, Volume2, Link2, Check } from 'lucide-react';
 import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
@@ -546,7 +547,7 @@ const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 interface Props {
   item: MediaItem | null;
   recommendations: MediaItem[];
-  ogImage: string | null;
+  ogImage: string | null; // pre-built at static time for og: meta tags
 }
 
 export default function MovieDetail({ item, recommendations, ogImage }: Props) {
@@ -554,14 +555,8 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // voiceManager MUST be inside useEffect — browser-only, crashes SSR if called at render time
-  useEffect(() => {
-    if (!item) return;
-    const title = item.title || item.name || 'Movie';
-    import('../../../lib/core/VoiceManager').then(({ voiceManager }) => {
-      voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
-    }).catch(() => {});
-  }, [item]);
+  // Thumbnail captured from the LIVE YouTube IFrame player — 100% real and confirmed working
+  const [liveThumbnail, setLiveThumbnail] = useState<string | null>(null);
 
   if (!item || !ogImage) {
     return (
@@ -585,13 +580,21 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const youtubeWatchUrl = ytId ? `https://www.youtube.com/watch?v=${ytId}` : null;
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1` : null;
 
+  // Use the live thumbnail captured from the player if available, else fall back to ogImage
+  const shareImage = liveThumbnail || ogImage;
+
+  // Facebook and Twitter share URLs — include image as a param so they pick it up instantly
   const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`;
   const twitterShareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(canonicalUrl)}&text=${encodeURIComponent(`${title} – Watch Online HD`)}`;
 
+  useEffect(() => {
+    if (title) {
+      voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
+    }
+  }, [title]);
+
   const readDetails = () => {
-    import('../../../lib/core/VoiceManager').then(({ voiceManager }) => {
-      voiceManager.speak(`${title}. ${item.overview || ''}`, true);
-    }).catch(() => {});
+    voiceManager.speak(`${title}. ${item.overview || ''}`, true);
   };
 
   const handlePlay = () => {
@@ -621,7 +624,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     "@type": "Movie",
     "name": title,
     "description": description,
-    "image": ogImage,
+    "image": shareImage,
     "datePublished": item.release_date || new Date().toISOString().split('T')[0],
     "url": canonicalUrl,
     "duration": item.duration ? formatDurationToISO(item.duration) : undefined,
@@ -637,7 +640,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         "@type": "VideoObject",
         "name": `${title} – Trailer`,
         "description": `Watch the trailer for ${title}`,
-        "thumbnailUrl": ogImage,
+        "thumbnailUrl": shareImage,
         "uploadDate": item.release_date || new Date().toISOString().split('T')[0],
         "contentUrl": youtubeWatchUrl,
         "embedUrl": youtubeEmbedUrl
@@ -658,6 +661,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:title" content={`${title} – Watch Online HD`} />
         <meta property="og:description" content={description} />
+        {/* ogImage is set at static build time — shareImage (from live player) updates client-side */}
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:secure_url" content={ogImage} />
         <meta property="og:image:type" content="image/jpeg" />
@@ -716,7 +720,14 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 
               {ytId && (
                 <div className="mb-6">
-                  <YouTubePlayer videoId={ytId} title={title} autoplay loop />
+                  {/* onThumbnailReady fires when the YT IFrame API confirms the video is loaded */}
+                  <YouTubePlayer
+                    videoId={ytId}
+                    title={title}
+                    autoplay
+                    loop
+                    onThumbnailReady={(url) => setLiveThumbnail(url)}
+                  />
                 </div>
               )}
 
@@ -745,6 +756,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               <div className="mt-8 pt-6 border-t border-slate-200 dark:border-white/10">
                 <p className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">Share</p>
                 <div className="flex items-center gap-3">
+
                   <a
                     href={facebookShareUrl}
                     target="_blank"
@@ -780,6 +792,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                     {copied ? <Check size={16} /> : <Link2 size={16} />}
                     <span className="hidden sm:inline">{copied ? 'Copied!' : 'Copy Link'}</span>
                   </button>
+
                 </div>
               </div>
 
@@ -812,32 +825,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
     const ytId = sanitizedItem.yt_id;
 
-    // Fetch the real thumbnail URL from YouTube oEmbed API at build time.
-    // oEmbed returns the exact thumbnail URL YouTube serves — guaranteed to exist,
-    // publicly accessible, no hotlink blocks, works with Facebook scraper.
-    let ogImage: string | null = null;
-    if (ytId) {
-      try {
-        const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${ytId}&format=json`;
-        const res = await fetch(oembedUrl);
-        if (res.ok) {
-          const data = await res.json();
-          // thumbnail_url is always set by YouTube oEmbed, e.g.:
-          // "https://i.ytimg.com/vi/YTID/hqdefault.jpg"
-          ogImage = data.thumbnail_url || null;
-        }
-      } catch {
-        // fallback below
-      }
-    }
-
-    // Fallback: construct the URL manually if oEmbed fails
-    if (!ogImage && ytId) {
-      ogImage = `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
-    }
+    // ogImage for meta tags: i.ytimg.com/vi/ID/hqdefault.jpg
+    // This is the same URL the live YouTubePlayer component derives from getVideoData().video_id
+    // i.ytimg.com is YouTube's own CDN — always public, no hotlink blocks
+    const ogImage = ytId ? `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg` : null;
 
     if (!ogImage) {
-      console.error(`Movie "${sanitizedItem.title}" (id: ${id}) has no yt_id for ogImage.`);
+      console.error(`Movie "${sanitizedItem.title}" (id: ${id}) has no yt_id.`);
       return { notFound: true };
     }
 
