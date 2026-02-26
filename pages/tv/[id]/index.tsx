@@ -58,7 +58,7 @@ export default function TvShowDetail({ item, recommendations, ogImage }: Props) 
     setTimeout(() => setCopiedLink(false), 2000);
   };
 
-  // TVSeries schema
+  // TVSeries schema – removed numberOfSeasons/numberOfEpisodes as they are not in the data
   const tvSchema = {
     "@context": "https://schema.org",
     "@type": "TVSeries",
@@ -66,8 +66,6 @@ export default function TvShowDetail({ item, recommendations, ogImage }: Props) 
     "description": description,
     "image": ogImage,
     "url": canonicalUrl,
-    "numberOfSeasons": item.number_of_seasons || 1,
-    "numberOfEpisodes": item.number_of_episodes || 1,
     "aggregateRating": item.vote_average ? {
       "@type": "AggregateRating",
       "ratingValue": item.vote_average.toFixed(1),
@@ -195,7 +193,7 @@ export default function TvShowDetail({ item, recommendations, ogImage }: Props) 
         <Footer />
       </div>
 
-      {/* Share Modal – same as movie */}
+      {/* Share Modal */}
       {isShareOpen && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="bg-slate-800 border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
