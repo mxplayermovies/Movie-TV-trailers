@@ -598,7 +598,7 @@ import ShareButtons from '../../../components/ShareButtons';
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
-// Combine all movie arrays – this runs on both server and client
+// Combine all movie arrays
 const ALL_MOVIES = [
   ...UNIQUE_MOVIES,
   ...UNIQUE_HINDI_DUBBED,
@@ -609,7 +609,7 @@ const ALL_MOVIES = [
 interface Props {
   movie: any;
   recommendations: any[];
-  ogImage?: string; // if undefined, no og:image tag will be rendered
+  ogImage?: string;
 }
 
 export default function MovieDetail({ movie, recommendations, ogImage }: Props) {
@@ -752,37 +752,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params?.id as string;
-  // These logs will appear in Vercel's function logs
-  console.log(`[Vercel Debug] Looking for movie with id: "${id}"`);
-  console.log(`[Vercel Debug] ALL_MOVIES length: ${ALL_MOVIES.length}`);
-
   const rawMovie = ALL_MOVIES.find((item) => String(item.id) === id);
-  if (!rawMovie) {
-    console.error(`[Vercel Debug] Movie with id "${id}" not found in ALL_MOVIES`);
-    return { notFound: true };
-  }
-
-  console.log(`[Vercel Debug] Found movie: "${rawMovie.title}"`);
-  console.log(`[Vercel Debug] backdrop_path: "${rawMovie.backdrop_path}"`);
-  console.log(`[Vercel Debug] poster_path: "${rawMovie.poster_path}"`);
+  if (!rawMovie) return { notFound: true };
 
   const imagePath = rawMovie.backdrop_path || rawMovie.poster_path;
   let ogImage: string | undefined;
 
   if (imagePath) {
-    // If it's already absolute, use it directly
     if (imagePath.startsWith('http')) {
       ogImage = imagePath;
-      console.log(`[Vercel Debug] Using absolute image: ${ogImage}`);
     } else {
-      // Relative path – make absolute using BASE_URL
       const base = BASE_URL.endsWith('/') ? BASE_URL.slice(0, -1) : BASE_URL;
       const path = imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
       ogImage = base + path;
-      console.log(`[Vercel Debug] Converted relative to absolute: ${ogImage}`);
     }
-  } else {
-    console.log(`[Vercel Debug] No image found for this movie – ogImage will be omitted`);
   }
 
   const recommendations = ALL_MOVIES
