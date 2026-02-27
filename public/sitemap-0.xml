@@ -11,6 +11,7 @@
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/index copy</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/privacy</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/sports</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/terms</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -23,6 +24,13 @@
 <url><loc>https://movie-tv-trailers.vercel.app/blog/hindi-dubbed-blockbusters-you-cant-miss</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/blog/adult-movies-top-picks</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/blog/documentaries-that-will-blow-your-mind</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/cheetahs-up-close-with-bertie-gregory-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/Disneyland Handcrafted-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/land-looters-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-tony-blair-story-s1-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/wwe-la-storia-dietro-le-quinte-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/queen-of-chess-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-investigation-of-lucy-letby-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/sex-trip-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/pansamantala-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/foreplay-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -153,6 +161,4 @@
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/redux-redux-2026-multi-lang</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/return-to-silent-hill-2026-multi-Languages</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/send-help-2026-multi-lang</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/queen-of-chess-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-investigation-of-lucy-letby-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
