@@ -123,9 +123,58 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   };
 
+  // Load ad & tracking scripts after page load
+  useEffect(() => {
+    const loadAdScripts = () => {
+      const adScript1 = document.createElement('script');
+      adScript1.innerHTML = `(function(s){s.dataset.zone='10641698',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`;
+      document.head.appendChild(adScript1);
+
+      const adScript2 = document.createElement('script');
+      adScript2.innerHTML = `(function(s){s.dataset.zone='10641706',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`;
+      document.head.appendChild(adScript2);
+
+      const clickyScript1 = document.createElement('script');
+      clickyScript1.async = true;
+      clickyScript1.setAttribute('data-id', '101501713');
+      clickyScript1.src = '//static.getclicky.com/js';
+      document.head.appendChild(clickyScript1);
+
+      const clickyScript2 = document.createElement('script');
+      clickyScript2.async = true;
+      clickyScript2.setAttribute('data-id', '101501713');
+      clickyScript2.src = '/7d6e5c4e347dc.js';
+      document.head.appendChild(clickyScript2);
+    };
+
+    if (document.readyState === 'complete') {
+      loadAdScripts();
+    } else {
+      window.addEventListener('load', loadAdScripts);
+    }
+    return () => window.removeEventListener('load', loadAdScripts);
+  }, []);
+
+
   return (
     <>
       <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+
+          {/* Google Analytics */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-QV663BPPEH"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-QV663BPPEH');
+        `}
+      </Script>
+
+{/* Google Translate Script */}
         <Script
           src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
           strategy="afterInteractive"
