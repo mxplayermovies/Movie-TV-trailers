@@ -179,21 +179,19 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import { UNIQUE_MOVIES, getImageUrl } from '../../../services/tmdb';
-import { MediaItem } from '../../../types';
 import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import YouTubePlayer from '../../../components/YouTubePlayer';
-import { Play, Volume2 } from 'lucide-react';
-import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import Recommendations from '../../../components/Recommendations';
+import { Play, Volume2 } from 'lucide-react';
+import { UNIQUE_MOVIES, getImageUrl } from '../../../services/tmdb';
+import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 import { formatDurationToISO } from '../../../lib/utils/duration';
+import { MediaItem } from '../../../types';
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ||
   'https://movie-tv-trailers.vercel.app';
-
-const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID || '';
 
 interface Props {
   item: Omit<MediaItem, 'streams'>;
@@ -210,15 +208,15 @@ export default function MovieDetail({
   const [loading, setLoading] = useState(false);
   const voiceRef = useRef<{ speak: (text: string, interrupt?: boolean) => void } | null>(null);
 
-  if (!item) return null;
+  if (!item || !item.id) return null;
 
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id || null;
   const canonicalUrl = `${BASE_URL}/movies/${item.id}`;
 
   const description =
-    item.overview?.slice(0, 160) ||
-    `Watch ${title} online in HD on Movie & TV Trailers. No sign-up required.`;
+    (item.overview && item.overview.slice(0, 160)) ||
+    `Watch ${title} online in HD on Movie & TV Trailers.`;
 
   const youtubeWatchUrl = ytId
     ? `https://www.youtube.com/watch?v=${ytId}`
@@ -230,9 +228,9 @@ export default function MovieDetail({
 
   let isoDuration: string | undefined;
   try {
-    isoDuration = item.duration
-      ? formatDurationToISO(item.duration)
-      : undefined;
+    if (item.duration) {
+      isoDuration = formatDurationToISO(item.duration);
+    }
   } catch {
     isoDuration = undefined;
   }
@@ -248,40 +246,15 @@ export default function MovieDetail({
       new Date().toISOString().split('T')[0],
     url: canonicalUrl,
     ...(isoDuration ? { duration: isoDuration } : {}),
-    ...(item.vote_average
-      ? {
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: item.vote_average.toFixed(1),
-            bestRating: '10',
-            ratingCount: 100,
-          },
-        }
-      : {}),
-    ...(youtubeWatchUrl
-      ? {
-          trailer: {
-            '@type': 'VideoObject',
-            name: `${title} – Trailer`,
-            description: `Watch the trailer for ${title}`,
-            thumbnailUrl: ogImage,
-            uploadDate:
-              item.release_date ||
-              new Date().toISOString().split('T')[0],
-            contentUrl: youtubeWatchUrl,
-            embedUrl: youtubeEmbedUrl,
-          },
-        }
-      : {}),
   };
 
   const getPageText = useCallback((): string => {
     if (typeof document === 'undefined') return '';
     try {
-      const t = document.querySelector('h1')?.textContent || '';
+      const h = document.querySelector('h1')?.textContent || '';
       const o =
         document.querySelector('.movie-overview')?.textContent || '';
-      return t ? `${t}. ${o}` : o;
+      return h ? `${h}. ${o}` : o;
     } catch {
       return '';
     }
@@ -327,22 +300,15 @@ export default function MovieDetail({
         <title>{title} – Watch Online HD | Movie & TV Trailers</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={canonicalUrl} />
-
-        {FB_APP_ID && (
-          <meta property="fb:app_id" content={FB_APP_ID} />
-        )}
-
         <meta property="og:type" content="video.movie" />
         <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:title" content={`${title} – Watch Online HD`} />
+        <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={ogImage} />
-
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${title} – Watch Online HD`} />
+        <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImage} />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -359,7 +325,11 @@ export default function MovieDetail({
             <div className="hidden md:block w-[300px]">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl border border-white/10">
                 <img
-                  src={getImageUrl(item.poster_path)}
+                  src={
+                    item.poster_path
+                      ? getImageUrl(item.poster_path)
+                      : ogImage
+                  }
                   alt={`${title} poster`}
                   className="w-full h-full object-cover"
                 />
@@ -391,9 +361,11 @@ export default function MovieDetail({
                 </div>
               )}
 
-              <p className="movie-overview mb-4">
-                {item.overview}
-              </p>
+              {item.overview && (
+                <p className="movie-overview mb-4">
+                  {item.overview}
+                </p>
+              )}
 
               <button
                 onClick={() => {
@@ -409,13 +381,15 @@ export default function MovieDetail({
             </div>
           </div>
 
-          <div className="mt-12">
-            <Recommendations
-              items={recommendations}
-              basePath="/movies"
-              title="More Movies"
-            />
-          </div>
+          {recommendations.length > 0 && (
+            <div className="mt-12">
+              <Recommendations
+                items={recommendations}
+                basePath="/movies"
+                title="More Movies"
+              />
+            </div>
+          )}
         </main>
 
         <Footer />
@@ -425,14 +399,18 @@ export default function MovieDetail({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  if (!Array.isArray(UNIQUE_MOVIES) || UNIQUE_MOVIES.length === 0) {
+  if (!Array.isArray(UNIQUE_MOVIES)) {
     return { paths: [], fallback: false };
   }
 
+  const paths = UNIQUE_MOVIES
+    .filter((m) => m && m.id)
+    .map((m) => ({
+      params: { id: String(m.id) },
+    }));
+
   return {
-    paths: UNIQUE_MOVIES.map((item) => ({
-      params: { id: String(item.id) },
-    })),
+    paths,
     fallback: false,
   };
 };
@@ -445,7 +423,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({
   }
 
   const movie = UNIQUE_MOVIES.find(
-    (m) => String(m.id) === String(params.id)
+    (m) => m && String(m.id) === String(params.id)
   );
 
   if (!movie) {
@@ -453,30 +431,31 @@ export const getStaticProps: GetStaticProps<Props> = async ({
   }
 
   try {
-    const sanitizedItem = sanitizeMediaItem(movie);
+    const sanitized = sanitizeMediaItem(movie);
 
     const imagePath =
-      sanitizedItem.backdrop_path ||
-      sanitizedItem.poster_path;
+      sanitized.backdrop_path ||
+      sanitized.poster_path ||
+      null;
 
     if (!imagePath) {
       return { notFound: true };
     }
 
-    const rawImageUrl = getImageUrl(imagePath, 'original');
+    const raw = getImageUrl(imagePath, 'original');
 
-    const ogImage = rawImageUrl.startsWith('http')
-      ? rawImageUrl
-      : `${BASE_URL}${rawImageUrl}`;
+    const ogImage = raw.startsWith('http')
+      ? raw
+      : `${BASE_URL}${raw}`;
 
     const recommendations = UNIQUE_MOVIES
-      .filter((m) => String(m.id) !== String(params.id))
+      .filter((m) => m && String(m.id) !== String(params.id))
       .slice(0, 6)
       .map((m) => sanitizeMediaItem(m));
 
     return {
       props: {
-        item: sanitizedItem,
+        item: sanitized,
         recommendations,
         ogImage,
       },
