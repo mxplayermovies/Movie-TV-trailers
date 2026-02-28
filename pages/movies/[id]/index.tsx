@@ -266,7 +266,7 @@ import { formatDurationToISO } from '../../../lib/utils/duration';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
-const DEFAULT_OG_IMAGE = `${BASE_URL}/default-og-image.jpg`; // ensure this file exists in your public folder
+const DEFAULT_OG_IMAGE = `${BASE_URL}/default-og-image.jpg`; // ensure this file exists
 
 interface Props {
   item: Omit<MediaItem, 'streams'>;
@@ -278,7 +278,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  // Safely extract values with fallbacks
+  // Safe field access with fallbacks
   const title = item.title || item.name || 'Movie';
   const ytId = item.yt_id || '';
   const canonicalUrl = `${BASE_URL}/movies/${item.id}`;
@@ -326,7 +326,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     router.push(`/watch/${item.id}?type=movie`);
   };
 
-  // Schema.org markup with safe values
   const movieSchema = {
     "@context": "https://schema.org",
     "@type": "Movie",
@@ -403,7 +402,6 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
-            {/* Poster - hidden on mobile */}
             <div className="hidden md:block w-[300px] flex-shrink-0">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
                 <img
@@ -483,48 +481,28 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const movie = UNIQUE_MOVIES.find((m) => String(m.id) === id);
     if (!movie) return { notFound: true };
 
-    // Deep sanitize: ensure all fields used in the component have safe fallbacks
+    // sanitizeMediaItem returns a complete MediaItem (without streams)
     const sanitizedItem = sanitizeMediaItem(movie);
-    const safeItem = {
-      ...sanitizedItem,
-      title: sanitizedItem.title || 'Untitled',
-      overview: sanitizedItem.overview || '',
-      poster_path: sanitizedItem.poster_path || '',
-      backdrop_path: sanitizedItem.backdrop_path || sanitizedItem.poster_path || '',
-      yt_id: sanitizedItem.yt_id || '',
-      release_date: sanitizedItem.release_date || '',
-      vote_average: sanitizedItem.vote_average ?? 0,
-      vote_count: sanitizedItem.vote_count ?? 0,          // ensure this exists
-      duration: sanitizedItem.duration || '',
-      genres: sanitizedItem.genres || [],                  // ensure this exists
-      media_type: sanitizedItem.media_type || 'movie',    // crucial missing field
-    } as Omit<MediaItem, 'streams'>; // type assertion after ensuring shape
+    // Cast to the exact props type (omits streams)
+    const item = sanitizedItem as Omit<MediaItem, 'streams'>;
 
-    // Construct OG image – fallback to default if no image available
-    const imagePath = safeItem.backdrop_path || safeItem.poster_path;
+    // Construct OG image
+    const imagePath = item.backdrop_path || item.poster_path;
     let ogImage = DEFAULT_OG_IMAGE;
     if (imagePath) {
       const rawImageUrl = getImageUrl(imagePath, 'original');
       ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
     }
 
-    // Build safe recommendations
+    // Recommendations: sanitize and cast
     const recommendations = UNIQUE_MOVIES
       .filter((m) => String(m.id) !== id)
       .slice(0, 6)
-      .map(m => {
-        const sanitized = sanitizeMediaItem(m);
-        return {
-          ...sanitized,
-          title: sanitized.title || 'Untitled',
-          poster_path: sanitized.poster_path || '',
-          media_type: sanitized.media_type || 'movie',
-        } as Omit<MediaItem, 'streams'>;
-      });
+      .map(m => sanitizeMediaItem(m) as Omit<MediaItem, 'streams'>);
 
     return {
       props: {
-        item: safeItem,
+        item,
         recommendations,
         ogImage,
       },
@@ -532,33 +510,13 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
-    // Return a minimal fallback that satisfies the Props type
-    const fallbackItem: Omit<MediaItem, 'streams'> = {
-      id: parseInt(id) || 0,
-      title: 'Movie Unavailable',
-      name: '',                         // some items use 'name' instead of 'title'
-      overview: 'We are sorry, but this movie cannot be displayed at the moment.',
-      poster_path: '',
-      backdrop_path: '',
-      yt_id: '',
-      release_date: '',
-      vote_average: 0,
-      vote_count: 0,
-      duration: '',
-      genres: [],
-      media_type: 'movie',
-      // include any other required fields from MediaItem (e.g., popularity, original_language)
-      // these are placeholders; adjust according to your actual MediaItem type
-      popularity: 0,
-      original_language: 'en',
-      original_title: '',
-      adult: false,
-      video: false,
-    };
+    // Create a minimal dummy movie object and sanitize it to get a valid MediaItem
+    const dummyMovie = { id: parseInt(id) || 0 };
+    const fallbackItem = sanitizeMediaItem(dummyMovie) as Omit<MediaItem, 'streams'>;
     return {
       props: {
         item: fallbackItem,
-        recommendations: [] as Omit<MediaItem, 'streams'>[],
+        recommendations: [],
         ogImage: DEFAULT_OG_IMAGE,
       },
       revalidate: 60, // try again sooner
