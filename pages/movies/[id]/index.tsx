@@ -1,4 +1,5 @@
-// import React, { useEffect, useState } from 'react';
+// // pages/movies/[id]/index.tsx
+// import React, { useEffect, useState, useCallback } from 'react';
 // import Head from 'next/head';
 // import { GetStaticPaths, GetStaticProps } from 'next';
 // import { useRouter } from 'next/router';
@@ -8,7 +9,7 @@
 // import Footer from '../../../components/Footer';
 // import YouTubePlayer from '../../../components/YouTubePlayer';
 // import { voiceManager } from '../../../lib/core/VoiceManager';
-// import { Play, Volume2, Link2, Check } from 'lucide-react';
+// import { Play, Volume2 } from 'lucide-react';
 // import { sanitizeMediaItem } from '../../../lib/core/sanitize';
 // import Recommendations from '../../../components/Recommendations';
 // import { formatDurationToISO } from '../../../lib/utils/duration';
@@ -17,29 +18,14 @@
 // const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
 // interface Props {
-//   item: MediaItem | null;
-//   recommendations: MediaItem[];
-//   ogImage: string | null;
+//   item: Omit<MediaItem, 'streams'>;
+//   recommendations: Omit<MediaItem, 'streams'>[];
+//   ogImage: string;
 // }
 
 // export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 //   const router = useRouter();
 //   const [loading, setLoading] = useState(false);
-//   const [copied, setCopied] = useState(false);
-
-//   if (!item || !ogImage) {
-//     return (
-//       <>
-//         <Head>
-//           <title>Movie Not Found | Movie & TV Trailers</title>
-//           <meta name="robots" content="noindex" />
-//         </Head>
-//         <div className="min-h-screen flex items-center justify-center">
-//           <p>Movie not found</p>
-//         </div>
-//       </>
-//     );
-//   }
 
 //   const title = item.title || item.name || 'Movie';
 //   const ytId = item.yt_id;
@@ -49,36 +35,37 @@
 //   const youtubeWatchUrl = ytId ? `https://www.youtube.com/watch?v=${ytId}` : null;
 //   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1` : null;
 
+//   const getPageText = useCallback((): string => {
+//     const titleEl = document.querySelector('h1');
+//     const overviewEl = document.querySelector('.text-gray-600.dark\\:text-gray-300');
+//     let text = '';
+//     if (titleEl?.textContent) text += titleEl.textContent + '. ';
+//     if (overviewEl?.textContent) text += overviewEl.textContent;
+//     return text;
+//   }, []);
+
 //   useEffect(() => {
-//     if (title) {
-//       voiceManager.speak(`Now viewing ${title}. Click the speaker icon to learn about the movie.`);
-//     }
-//   }, [title]);
+//     const timer = setTimeout(() => {
+//       const text = getPageText();
+//       if (text) {
+//         voiceManager.speak(text);
+//       } else {
+//         voiceManager.speak(`Now viewing ${title}.`);
+//       }
+//     }, 1500);
+//     return () => clearTimeout(timer);
+//   }, [title, getPageText]);
 
 //   const readDetails = () => {
-//     voiceManager.speak(`${title}. ${item.overview || ''}`, true);
+//     const text = getPageText();
+//     if (text) {
+//       voiceManager.speak(text, true);
+//     }
 //   };
 
 //   const handlePlay = () => {
 //     setLoading(true);
 //     router.push(`/watch/${item.id}?type=movie`);
-//   };
-
-//   const handleCopy = async () => {
-//     try {
-//       await navigator.clipboard.writeText(canonicalUrl);
-//       setCopied(true);
-//       setTimeout(() => setCopied(false), 2000);
-//     } catch {
-//       const el = document.createElement('input');
-//       el.value = canonicalUrl;
-//       document.body.appendChild(el);
-//       el.select();
-//       document.execCommand('copy');
-//       document.body.removeChild(el);
-//       setCopied(true);
-//       setTimeout(() => setCopied(false), 2000);
-//     }
 //   };
 
 //   const movieSchema = {
@@ -169,7 +156,7 @@
 
 //             <div className="min-w-0">
 //               <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
-//                  <h1 className="text-2xl md:text-5xl font-bold text-gray-500/10/10 mb-2">{title}</h1>
+//                 <h1 className="text-2xl md:text-5xl font-bold text-gray-500/10/10 mb-2">{title}</h1>
 //                 <span className="p-2 dark:text-gray-300 mb-4">Read details aloud</span>
 //                 <button
 //                   onClick={readDetails}
@@ -231,11 +218,11 @@
 //     const movie = UNIQUE_MOVIES.find((m) => String(m.id) === id);
 //     if (!movie) return { notFound: true };
 
-//     const sanitizedItem = sanitizeMediaItem ? sanitizeMediaItem(movie) : movie;
+//     const sanitizedItem = sanitizeMediaItem(movie);
 
 //     const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
 //     if (!imagePath) {
-//       console.error(`Movie "${sanitizedItem.title}" (id: ${id}) has no image. Add one to the data.`);
+//       console.error(`Movie "${sanitizedItem.title}" (id: ${id}) has no image.`);
 //       return { notFound: true };
 //     }
 
@@ -245,7 +232,7 @@
 //     const recommendations = UNIQUE_MOVIES
 //       .filter((m) => String(m.id) !== id)
 //       .slice(0, 6)
-//       .map(m => sanitizeMediaItem ? sanitizeMediaItem(m) : m);
+//       .map(m => sanitizeMediaItem(m));
 
 //     return {
 //       props: {
@@ -260,12 +247,6 @@
 //     return { notFound: true };
 //   }
 // };
-
-
-
-
-
-
 
 // pages/movies/[id]/index.tsx
 import React, { useEffect, useState, useCallback } from 'react';
@@ -285,6 +266,7 @@ import { formatDurationToISO } from '../../../lib/utils/duration';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
+const DEFAULT_OG_IMAGE = `${BASE_URL}/default-og-image.jpg`; // ensure this file exists in your public folder
 
 interface Props {
   item: Omit<MediaItem, 'streams'>;
@@ -296,10 +278,17 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
+  // Safely extract values with fallbacks
   const title = item.title || item.name || 'Movie';
-  const ytId = item.yt_id;
+  const ytId = item.yt_id || '';
   const canonicalUrl = `${BASE_URL}/movies/${item.id}`;
   const description = item.overview?.slice(0, 160) || `Watch ${title} online in HD on Movie & TV trailers. No sign-up required.`;
+  const releaseDate = item.release_date || '';
+  const voteAverage = item.vote_average ?? 0;
+  const duration = item.duration || '';
+  const overview = item.overview || 'No overview available.';
+  const posterPath = item.poster_path || '';
+  const backdropPath = item.backdrop_path || '';
 
   const youtubeWatchUrl = ytId ? `https://www.youtube.com/watch?v=${ytId}` : null;
   const youtubeEmbedUrl = ytId ? `https://www.youtube.com/embed/${ytId}?autoplay=1` : null;
@@ -337,19 +326,20 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     router.push(`/watch/${item.id}?type=movie`);
   };
 
+  // Schema.org markup with safe values
   const movieSchema = {
     "@context": "https://schema.org",
     "@type": "Movie",
     "name": title,
     "description": description,
     "image": ogImage,
-    "datePublished": item.release_date || new Date().toISOString().split('T')[0],
+    "datePublished": releaseDate || new Date().toISOString().split('T')[0],
     "url": canonicalUrl,
-    "duration": item.duration ? formatDurationToISO(item.duration) : undefined,
+    "duration": duration ? formatDurationToISO(duration) : undefined,
     "contentRating": "PG-13",
-    "aggregateRating": item.vote_average ? {
+    "aggregateRating": voteAverage ? {
       "@type": "AggregateRating",
-      "ratingValue": item.vote_average.toFixed(1),
+      "ratingValue": voteAverage.toFixed(1),
       "bestRating": "10",
       "ratingCount": 100
     } : undefined,
@@ -359,7 +349,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         "name": `${title} – Trailer`,
         "description": `Watch the trailer for ${title}`,
         "thumbnailUrl": ogImage,
-        "uploadDate": item.release_date || new Date().toISOString().split('T')[0],
+        "uploadDate": releaseDate || new Date().toISOString().split('T')[0],
         "contentUrl": youtubeWatchUrl,
         "embedUrl": youtubeEmbedUrl
       }
@@ -393,7 +383,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <meta property="og:video:width" content="1280" />
         <meta property="og:video:height" content="720" />
 
-        {item.release_date && <meta property="video:release_date" content={item.release_date} />}
+        {releaseDate && <meta property="video:release_date" content={releaseDate} />}
 
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@MovieTVTrailers" />
@@ -413,28 +403,34 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
+            {/* Poster - hidden on mobile */}
             <div className="hidden md:block w-[300px] flex-shrink-0">
               <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
                 <img
-                  src={getImageUrl(item.poster_path)}
+                  src={posterPath ? getImageUrl(posterPath) : '/placeholder-poster.jpg'}
                   alt={title}
                   className="w-full h-full object-cover"
+                  onError={(e) => { e.currentTarget.src = '/placeholder-poster.jpg'; }}
                 />
               </div>
             </div>
 
             <div className="min-w-0">
               <div className="flex justify-between items-start flex-wrap gap-4 mb-4">
-                <h1 className="text-2xl md:text-5xl font-bold text-gray-500/10/10 mb-2">{title}</h1>
-                <span className="p-2 dark:text-gray-300 mb-4">Read details aloud</span>
-                <button
-                  onClick={readDetails}
-                  className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition"
-                  title="Read aloud"
-                >
-                  <Volume2 size={20} />
-                </button>
+                <h1 className="text-2xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">{title}</h1>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">Read details aloud</span>
+                  <button
+                    onClick={readDetails}
+                    className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition"
+                    title="Read aloud"
+                    aria-label="Read details aloud"
+                  >
+                    <Volume2 size={20} />
+                  </button>
+                </div>
               </div>
+
               {ytId && (
                 <div className="mb-6">
                   <YouTubePlayer videoId={ytId} title={title} autoplay loop />
@@ -442,15 +438,15 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
               )}
 
               <div className="mt-4">
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{item.overview}</p>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{overview}</p>
                 <div className="flex items-center gap-4 mb-6 flex-wrap">
-                  {item.vote_average && (
+                  {voteAverage > 0 && (
                     <span className="px-3 py-1 bg-yellow-500 text-black font-bold rounded">
-                      {item.vote_average.toFixed(1)} ★
+                      {voteAverage.toFixed(1)} ★
                     </span>
                   )}
-                  {item.release_date && <span>{item.release_date}</span>}
-                  {item.duration && <span>{item.duration}</span>}
+                  {releaseDate && <span>{releaseDate}</span>}
+                  {duration && <span>{duration}</span>}
                 </div>
                 <button
                   onClick={handlePlay}
@@ -487,32 +483,69 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const movie = UNIQUE_MOVIES.find((m) => String(m.id) === id);
     if (!movie) return { notFound: true };
 
+    // Deep sanitize: ensure all fields used in the component have safe fallbacks
     const sanitizedItem = sanitizeMediaItem(movie);
+    const safeItem = {
+      ...sanitizedItem,
+      title: sanitizedItem.title || 'Untitled',
+      overview: sanitizedItem.overview || '',
+      poster_path: sanitizedItem.poster_path || '',
+      backdrop_path: sanitizedItem.backdrop_path || sanitizedItem.poster_path || '',
+      yt_id: sanitizedItem.yt_id || '',
+      release_date: sanitizedItem.release_date || '',
+      vote_average: sanitizedItem.vote_average ?? 0,
+      duration: sanitizedItem.duration || '',
+    };
 
-    const imagePath = sanitizedItem.backdrop_path || sanitizedItem.poster_path;
-    if (!imagePath) {
-      console.error(`Movie "${sanitizedItem.title}" (id: ${id}) has no image.`);
-      return { notFound: true };
+    // Construct OG image – fallback to default if no image available
+    const imagePath = safeItem.backdrop_path || safeItem.poster_path;
+    let ogImage = DEFAULT_OG_IMAGE;
+    if (imagePath) {
+      const rawImageUrl = getImageUrl(imagePath, 'original');
+      ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
     }
 
-    const rawImageUrl = getImageUrl(imagePath, 'original');
-    const ogImage = rawImageUrl.startsWith('http') ? rawImageUrl : `${BASE_URL}${rawImageUrl}`;
-
+    // Build safe recommendations
     const recommendations = UNIQUE_MOVIES
       .filter((m) => String(m.id) !== id)
       .slice(0, 6)
-      .map(m => sanitizeMediaItem(m));
+      .map(m => {
+        const sanitized = sanitizeMediaItem(m);
+        return {
+          ...sanitized,
+          title: sanitized.title || 'Untitled',
+          poster_path: sanitized.poster_path || '',
+        };
+      });
 
     return {
       props: {
-        item: sanitizedItem,
+        item: safeItem,
         recommendations,
         ogImage,
       },
-      revalidate: 3600,
+      revalidate: 3600, // ISR: revalidate once per hour
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
-    return { notFound: true };
+    // Return a minimal fallback to avoid 5xx, still render the page with basic info
+    return {
+      props: {
+        item: {
+          id: parseInt(id) || 0,
+          title: 'Movie Unavailable',
+          overview: 'We are sorry, but this movie cannot be displayed at the moment.',
+          poster_path: '',
+          backdrop_path: '',
+          yt_id: '',
+          release_date: '',
+          vote_average: 0,
+          duration: '',
+        },
+        recommendations: [],
+        ogImage: DEFAULT_OG_IMAGE,
+      },
+      revalidate: 60, // try again sooner
+    };
   }
 };
