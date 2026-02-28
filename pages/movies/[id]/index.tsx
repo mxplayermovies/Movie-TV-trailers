@@ -510,9 +510,30 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
-    // Create a minimal dummy movie object and sanitize it to get a valid MediaItem
-    const dummyMovie = { id: parseInt(id) || 0 };
-    const fallbackItem = sanitizeMediaItem(dummyMovie) as Omit<MediaItem, 'streams'>;
+    // Create a complete fallback object that satisfies the input requirements of sanitizeMediaItem
+    const fallbackInput = {
+      id: parseInt(id) || 0,
+      streams: [], // required by ContentDetails
+      poster_path: '',
+      backdrop_path: '',
+      media_type: 'movie' as const,
+      title: 'Movie Unavailable',
+      name: '',
+      overview: 'We are sorry, but this movie cannot be displayed at the moment.',
+      yt_id: '',
+      release_date: '',
+      vote_average: 0,
+      duration: '',
+      // Include other fields that might be needed by the MediaItem type
+      vote_count: 0,
+      popularity: 0,
+      original_language: 'en',
+      original_title: '',
+      adult: false,
+      video: false,
+      genres: [],
+    };
+    const fallbackItem = sanitizeMediaItem(fallbackInput) as Omit<MediaItem, 'streams'>;
     return {
       props: {
         item: fallbackItem,
