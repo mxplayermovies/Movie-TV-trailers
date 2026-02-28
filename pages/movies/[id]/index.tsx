@@ -494,8 +494,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       yt_id: sanitizedItem.yt_id || '',
       release_date: sanitizedItem.release_date || '',
       vote_average: sanitizedItem.vote_average ?? 0,
+      vote_count: sanitizedItem.vote_count ?? 0,          // ensure this exists
       duration: sanitizedItem.duration || '',
-    };
+      genres: sanitizedItem.genres || [],                  // ensure this exists
+      media_type: sanitizedItem.media_type || 'movie',    // crucial missing field
+    } as Omit<MediaItem, 'streams'>; // type assertion after ensuring shape
 
     // Construct OG image – fallback to default if no image available
     const imagePath = safeItem.backdrop_path || safeItem.poster_path;
@@ -515,7 +518,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
           ...sanitized,
           title: sanitized.title || 'Untitled',
           poster_path: sanitized.poster_path || '',
-        };
+          media_type: sanitized.media_type || 'movie',
+        } as Omit<MediaItem, 'streams'>;
       });
 
     return {
@@ -528,21 +532,33 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     };
   } catch (error) {
     console.error(`Error in getStaticProps for movie ${id}:`, error);
-    // Return a minimal fallback to avoid 5xx, still render the page with basic info
+    // Return a minimal fallback that satisfies the Props type
+    const fallbackItem: Omit<MediaItem, 'streams'> = {
+      id: parseInt(id) || 0,
+      title: 'Movie Unavailable',
+      name: '',                         // some items use 'name' instead of 'title'
+      overview: 'We are sorry, but this movie cannot be displayed at the moment.',
+      poster_path: '',
+      backdrop_path: '',
+      yt_id: '',
+      release_date: '',
+      vote_average: 0,
+      vote_count: 0,
+      duration: '',
+      genres: [],
+      media_type: 'movie',
+      // include any other required fields from MediaItem (e.g., popularity, original_language)
+      // these are placeholders; adjust according to your actual MediaItem type
+      popularity: 0,
+      original_language: 'en',
+      original_title: '',
+      adult: false,
+      video: false,
+    };
     return {
       props: {
-        item: {
-          id: parseInt(id) || 0,
-          title: 'Movie Unavailable',
-          overview: 'We are sorry, but this movie cannot be displayed at the moment.',
-          poster_path: '',
-          backdrop_path: '',
-          yt_id: '',
-          release_date: '',
-          vote_average: 0,
-          duration: '',
-        },
-        recommendations: [],
+        item: fallbackItem,
+        recommendations: [] as Omit<MediaItem, 'streams'>[],
         ogImage: DEFAULT_OG_IMAGE,
       },
       revalidate: 60, // try again sooner
