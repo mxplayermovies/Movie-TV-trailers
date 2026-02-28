@@ -831,7 +831,7 @@ export const UNIQUE_MOVIES: MediaItem[] = [
     overview: "Two socially awkward millennials in Mumbai find love while struggling with self-acceptance. As they battle insecurities and societal pressure, their journey takes them from city chaos to mountain serenity.",
   },
   {
-    id: "the-kerala=story-2-goes-beyond-2026",
+    id: "the-kerala-story-2-goes-beyond-2026",
     yt_id: "j0_038C5RRk",
     title: "The Kerala Story 2 Goes Beyond (2026) ", 
     poster_path: "https://media.themoviedb.org/t/p/w500/5btAk8YTRT3FLsqQBumN5eCk8xO.jpg",
