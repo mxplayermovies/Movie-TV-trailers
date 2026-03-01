@@ -115,7 +115,7 @@ export default function Home() {
         <meta name="description" content={SITE_DESC} />
         <meta
           name="keywords"
-          content="free movies, watch online, tv shows, live sports, streaming, hindi dubbed"
+          content="free movies, new trailers bollywood, hindi movie trailer new, new bollywood movies trailer, best movie trailers, new trailer bollywood, hindi dubbed"
         />
         <link rel="canonical" href={BASE_URL} />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
