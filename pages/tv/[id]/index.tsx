@@ -165,7 +165,7 @@ export default function TVShowDetail({ item, recommendations, ogImage }: Props) 
                   className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition disabled:opacity-50"
                 >
                   <Play size={20} />
-                  {loading ? 'Loading…' : 'Play Now'}
+                  {loading ? 'Loading…' : 'Watch Now'}
                 </button>
               </div>
             </div>

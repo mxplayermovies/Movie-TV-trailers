@@ -87,7 +87,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
 
         {/* Google Analytics */}
-        <Script
+        {/* <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-QV663BPPEH"
           strategy="afterInteractive"
         />
@@ -98,7 +98,7 @@ export default function App({ Component, pageProps }: AppProps) {
             gtag('js', new Date());
             gtag('config', 'G-QV663BPPEH');
           `}
-        </Script>
+        </Script> */}
 
         {/* Google Translate */}
         <Script

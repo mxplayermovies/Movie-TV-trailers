@@ -136,7 +136,7 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
                   {item.duration && <span className="text-gray-700 dark:text-gray-300">{item.duration}</span>}
                 </div>
                 <button onClick={() => { setLoading(true); router.push(`/watch/${item.id}?type=movie`); }} disabled={loading} className="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition disabled:opacity-50">
-                  <Play size={20} />{loading ? 'Loading…' : 'Play Now'}
+                  <Play size={20} />{loading ? 'Loading…' : 'Watch Now'}
                 </button>
               </div>
             </div>

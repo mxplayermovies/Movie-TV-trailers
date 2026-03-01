@@ -763,8 +763,167 @@ export const UNIQUE_TV_LIVE: MediaItem[] = [
 
 
 
+
+
+
+
+
+
 export const UNIQUE_MOVIES: MediaItem[] = [
   {
+    id: "second-case-of-seetharam-2026",
+    yt_id: "t7fvUNU7lnk",
+    title: "Second Case of Seetharam (2026) Kannada Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/89Tuu93NTJVef2Y4iATRwlyAO37.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/tvp5tVPXxkwx7e9qPnNPfJvKrJ7.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Crime", "Drama", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/zck880g7i8mn",
+      "Server 2": "https://vidara.to/e/tZZjNaf75fyVd",
+        },
+    overview: "Inspector Seetharam, hoping to reunite with his estranged sister after years apart, must track down a brutal, psychotic serial killer terrorising the town of Anegadde.",
+  },
+  {
+    id: "amoz-alexander-2026",
+    yt_id: "9khqPoQX3Fk",
+    title: "Amoz Alexander (2026) Malayalam Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/8YbxFiaad48dPqYdrpjj1RXyuZ1.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/Amoz_Alexander.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Comedy", "Drama", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/8ojksjf12glb",
+      "Server 2": "https://vidara.to/e/3wSuAjiOIN7ZA",
+        },
+    overview: "True-crime hosts John and Mary meet brutal offender Amos Alexander at his isolated house, where he promises more confessions. The routine shoot spirals into a chilling face-off that unravels dark truths, forcing Mary to question justice and truth.",
+  },
+  {
+    id: "masthishka-maranam-2026",
+    yt_id: "bIp3rb0LArE",
+    title: "Masthishka Maranam (2026) Malayalam Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/9RAnO6kPsoZTVPTVNeJ2sLE0HK.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/Masthishka_Maranam.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Comedy", "Drama", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/l4hdye7qwfm6",
+      "Server 2": "https://vidara.to/e/DUItpSdAXLOtf",
+        },
+    overview: "Centred on a grieving father who navigates a virtual reality memory game in an attempt to reconnect with his lost child.",
+  },
+  {
+    id: "thaai-kizhavi-2026",
+    yt_id: "BCQwSlYlEe8",
+    title: "Thaai Kizhavi (2026) Tamil Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/21dLAnBhu3dMjQ89UIHGEtkoQ02.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/uXnVsLFzxt8zTTPgzFhqeSkI3ce.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Action", "Drama", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/clrd1v70ptrg",
+      "Server 2": "https://vidara.to/e/sJujn5u9FDXxx",
+        },
+    overview: "Pavunuthaayi is a fiercely independent, intimidating elderly woman in a rural village, known for being tough, ruthless, and blunt-especially as a moneylender whose strict enforcement of dues makes her feared by locals. When her granddaughter, Mukhila, falls in love.",
+  },
+  {
+    id: "aazhi-2026",
+    yt_id: "bq5Gu1HktK0",
+    title: "FAazhi (2026) Tamil Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/1SQ0PL6bf0IHdf2xV8sIiMbc8Wq.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/tYCUdUBtVWLKj7MghRFkUi3ZDRY.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Action", "Drama", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/6jmjb836otus",
+      "Server 2": "https://vidara.to/e/FAaUb964ZXvGA",
+        },
+    overview: "Mukhila's Father Murthy comes to know about Arul and Mukhilas love affair. Murthy, who works as a boat mechanic, kidnaps Arul in a boat and beats him up. He plans to kill Arul so that he will not fall in love with his daughter. When the boat breaks down in the sea, Murthy, foot stuck in the motor and is both of them survived the rainstorm or not.",
+  },
+  {
+    id: "fourth-floor-2026",
+    yt_id: "atMfYxlRH3U",
+    title: "Fourth Floor (2026) Tamil Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/zWvALKGFD4X8LXVvLIvwIeUfXvC.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/uqpQn2HpwxqOmcn5CsJmNA9kn5m.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Thriller", "Drama", "Horror"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/158eeddmf8uf",
+      "Server 2": "https://vidara.to/e/nu7NBdAObAFvy",
+        },
+    overview: "Drawn Back to Chennai by an Unexpected Call From His Former Lover, Dheeren Travels From Mumbai and Checks Into a Secluded Office Guest House. Soon After His Arrival, Disturbing and Inexplicable Events Begin to Unfold Within Its Walls. Night After Night, Dheeren is Plagued by Vivid Dreams—fragments of Memories That Eerily Mirror His Own Past and Unresolved Relationship. As the Line Between Dreams and Reality Begins to Blur, Dheeren Realizes These Visions Are Not Random. Each Dream is a Clue, Slowly Pulling Him Toward a Buried Truth Connected to His Ex-lover’s Fate. Trapped Between Guilt, Fear, and the Supernatural, Dheeren Must Confront His Past to Uncover What Truly Happened to Her—before the Guest House Claims Him as Its Next Secret.",
+  },
+  {
+    id: "sarala-subbarao-2026",
+    yt_id: "5Ivqf2fj-Qo",
+    title: "Sarala Subbarao (2026) Kannada Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/qeJydXBGQa9lPRnQ0TGR7y4qXIP.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/2A6f4VEFFJnAkL3WvTYq7gKTPTx.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Romance", "Drama", "Family"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/mqwamxkff7px",
+      "Server 2": "https://vidara.to/e/03tD7cTWxCfUH",
+        },
+    overview: "A romantic family drama set in 1970s Mysore that portrays the journey of Sarala and Subbarao as they balance love, tradition, and aspirations.",
+  },
+  {
+    id: "the-rise-of-ashoka-2026",
+    yt_id: "k4X8z0hWQ4I",
+    title: "The Rise of Ashoka (2026) Kannada Movie", 
+    poster_path: "https://movie-tv-trailers.vercel.app/images/movie/The_Rise_of_Ashoka_1.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/The_Rise_of_Ashoka.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Thriller", "Action", "Drama"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/53br3gvx77h8",
+      "Server 2": "https://vidara.to/e/zxqIDsThw3p4d",
+        },
+    overview: "A young rebel navigates political upheaval in 1970s India, transforming from student activist to influential revolutionary leader.",
+  },
+  {
+    id: "jabraat-2026",
+    yt_id: "LiC8WEXP9p0",
+    title: "Jabraat (2026) Marathi Movie", 
+    poster_path: "https://movie-tv-trailers.vercel.app/images/movie/jabrath-1.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/jabrath.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Thriller", "Horror", "Drama"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/k4h8zj8vdhq5",
+      "Server 2": "https://vidara.to/e/gmoIuB67J1yQC",
+        },
+    overview: "The story revolves around the themes of love, music, and rivalry. It follows a group of friends whose lives are intertwined through their shared passion for dance and music. While the film celebrates the joy of lifelong friendships, it also explores the challenges that test those bonds. The narrative delves into the complexities of relationships, the pursuit of dreams, and the sacrifices made in the name of love and friendship. With a blend of heartwarming moments, emotional depth, and vibrant musical sequences, 'Jabraat' aims to resonate with audiences by portraying the highs and lows of life through the lens of its characters' journeys.",
+  },
+    {
     id: "tu-yaa-main-2026",
     yt_id: "Js8oSyfvtug",
     title: "Tu Yaa Main (2026) ", 
@@ -842,8 +1001,11 @@ export const UNIQUE_MOVIES: MediaItem[] = [
     media_type: 'movie',
     genres: ["Drama", "Family", "Thriller"],
     streams: {
-      "Server 1": "https://byseqekaho.com/e/hf2n2xhm8k8k",
-      "Server 2": "https://vidara.to/e/tJDSMnGeFaCKz",
+      // "Server 1": "https://byseqekaho.com/e/jn98sula1912", No Files available
+      // "Server 2": "https://vidara.to/e/tJDSMnGeFaCKz", No Files available
+
+      "Server 1": "https://byseqekaho.com/e/og8lqwhf7sgf",
+      "Server 2": "https://vidara.to/e/OWKv5jUi0MoMr",
       "Server 3": "https://zxcstream.xyz/player/movie/1625582",
       "Server 4": "https://www.vidking.net/embed/movie/1625582?autoPlay=true&nextEpisode=true&episodeSelector=true",
       "Server 5": "https://cinemaos.tech/player/1625582",
@@ -897,28 +1059,7 @@ export const UNIQUE_MOVIES: MediaItem[] = [
       },
     overview: "After being separated for 15 years, the Sword of Power leads Prince Adam back to Eternia, where he discovers his home shattered under the fiendish rule of Skeletor. To save his family and his world, Adam must join forces with his closest allies, Teela and Duncan/Man-At-Arms, and embrace his true destiny as He-Man — the most powerful man in the universe.",
   },
-  {
-    id: "the-bluff-2026",
-    yt_id: "uUYMqRjNxhM",
-    title: "The Bluff (2026) ", 
-    poster_path: "https://media.themoviedb.org/t/p/w500/sojEzvfxR2DBcDSJyAisX8TWjov.jpg",
-    backdrop_path: "https://media.themoviedb.org/t/p/w780/hYgUkH7TusddHRtelj53I6gFOWR.jpg",
-    release_date: "2026-02-20",
-    vote_average: 7.5,
-    duration: "1h 46m",
-    media_type: 'movie',
-    genres: ["Drama", "Family", "Thriller"],
-    streams: {
-      "Server 1": "https://byseqekaho.com/e/hf2n2xhm8k8k",
-      "Server 2": "https://vidara.to/e/tJDSMnGeFaCKz",
-      "Server 3": "https://zxcstream.xyz/player/movie/799882",
-      "Server 4": "https://www.vidking.net/embed/movie/799882?autoPlay=true&nextEpisode=true&episodeSelector=true",
-      "Server 5": "https://cinemaos.tech/player/799882",
-      "Server 6": "https://xprime.today/watch/799882",
-      "Server 7": "https://www.cinezo.net/watch/movie/799882",
-      },
-    overview: "When her tranquil life on a remote island is shattered by the return of her vengeful former captain, a skilled ex-pirate must confront her bloody past and unleash her deadly talents to save her family from a ruthless siege.",
-  },
+  
   {
     id: "subedaar-2026",
     yt_id: "5uoBUTUKbc8",
@@ -1216,8 +1357,8 @@ export const UNIQUE_MOVIES: MediaItem[] = [
     id: "case-no-73-2026",
     yt_id: "zPlWWXTeuPQ",
     title: "Case No 73 (2026) ", 
-    poster_path: "/images/movie/case73.jpg",
-    backdrop_path: "/images/movie/case.jpg",
+    poster_path: "https://movie-tv-trailers.vercel.app/images/movie/case73.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/case.jpg",
     release_date: "2026-01-16",
     vote_average: 6.4,
     duration: "2h 40m",
@@ -1285,8 +1426,99 @@ export const UNIQUE_MOVIES: MediaItem[] = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
+    id: "chatha-pacha-the-ring-of-rowdies-2026",
+    yt_id: "U1npyTU93q4",
+    title: "Chatha Pacha The Ring of Rowdies (2026) Multi-Languages In Hindi + Kannada.",
+    poster_path: "https://media.themoviedb.org/t/p/w500/a41fqMDWRcZcDqidGcq10xmRoh.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/7ocFvtRnNXwrNJLJRWa0kKVPRW0.jpg",
+    release_date: "2026-01-16",
+    vote_average: 6.4,
+    duration: "1h 47m",
+    media_type: 'movie',
+    genres: ["Action", "Drama", "Thriller"],
+    streams: {
+      "Server 1- Multi-Lang": "https://byseqekaho.com/e/ys00px6ljvjm",
+      "Server 2- Multi-Lang": "https://vidara.to/e/ELnr1KSQd23yZ",
+      },
+    overview: "In the heart of Fort Kochi, three brothers and their crew of unlikely misfits stumble into the wild world of WWE-style costumed wrestling. What begins as a scrappy hustle soon explodes into a riot of masks, egos, and full-blown madness, all set against the backdrop of a city that never plays by the rules. But can their brotherhood survive when the real fight begins outside the ropes?",
+  },
+  {
+    id: "honey-2026",
+    yt_id: "1LGDJx1JV3o",
+    title: "Honey (2026) Multi-Languages In Tamil + Telugu + Hindi + Kannada.",
+    poster_path: "https://media.themoviedb.org/t/p/w500/aiDE86ihhMcoDpcCLCHvuUDm0en.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/ApNGGi1ZPXds1pGfYxCoS9GLTZ0.jpg",
+    release_date: "2026-01-16",
+    vote_average: 6.4,
+    duration: "1h 47m",
+    media_type: 'movie',
+    genres: ["Horror", "Mystery", "Thriller"],
+    streams: {
+      "Server 1- Multi-Lang": "https://byseqekaho.com/e/b84c1yapstb0",
+      "Server 2- Multi-Lang": "https://vidara.to/e/2OOt2xdpn3Suy",
+      },
+    overview: "A broken family,a forbidden ritual,and a girl caught between the real and the unreal.Honey is a haunting tale of systemic abuse,spiritual delusion,and the invisible horrors inflicted on children,where the darkest monsters aren't imaginary.",
+  },
+    {
+    id: "the-bluff-2026",
+    yt_id: "uUYMqRjNxhM",
+    title: "The Bluff (2026) Multi-Languages In Tamil + Telugu + Hindi + Kannada + English.",
+    poster_path: "https://media.themoviedb.org/t/p/w500/sojEzvfxR2DBcDSJyAisX8TWjov.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/hYgUkH7TusddHRtelj53I6gFOWR.jpg",
+    release_date: "2026-01-16",
+    vote_average: 6.4,
+    duration: "1h 47m",
+    media_type: 'movie',
+    genres: ["Drama", "Mystery", "Thriller"],
+    streams: {
+      "Server 1- Multi-Lang": "https://byseqekaho.com/e/y6tu9q92voba",
+      "Server 2- Multi-Lang": "https://vidara.to/e/trybDPYIc56s1",
+       "Server 3": "https://zxcstream.xyz/player/movie/799882",
+      "Server 4": "https://www.vidking.net/embed/movie/799882?autoPlay=true&nextEpisode=true&episodeSelector=true",
+      "Server 5": "https://cinemaos.tech/player/799882",
+      "Server 6": "https://xprime.today/watch/799882",
+      "Server 7": "https://www.cinezo.net/watch/movie/799882",
+      },
+    overview: "When her tranquil life on a remote island is shattered by the return of her vengeful former captain, a skilled ex-pirate must confront her bloody past and unleash her deadly talents to save her family from a ruthless siege.",
+  },
+  {
+    id: "accused-2026",
+    yt_id: "p2ynDIq4nWM",
+    title: "Accused (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
+    poster_path: "https://image.tmdb.org/t/p/w500/eeP55mdqj4KpWtEPBvZJoxmnkXI.jpg",
+    backdrop_path: "https://image.tmdb.org/t/p/original/8QRMlkCMFNKZM2ApnIaut5t4snf.jpg",
+    release_date: "2026-01-16",
+    vote_average: 6.4,
+    duration: "1h 47m",
+    media_type: 'movie',
+    genres: ["Drama", "Mystery", "Thriller"],
+    streams: {
+      "Server 1- Multi-Lang": "https://byseqekaho.com/e/82rufszerwo7",
+      "Server 2- Multi-Lang": "https://vidara.to/e/CAp9kS38Pm4qM",
+      },
+    overview: "When a celebrated queer doctor in London is accused of sexual misconduct, her life unravels. Now under a storm of suspicion and scrutiny, her marriage fractures and the truth blurs. Her wife must decide whether to walk away, or fight for the woman the world is turning against.",
+  },
+    {
     id: "pavane-2026",
     yt_id: "iKM0WEtHoEU",
     title: "Pavane (2026) Multi-Languages In Tamil + Telugu + Hindi + Korean.",
@@ -1802,7 +2034,52 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 export const UNIQUE_ADULT: MediaItem[] = [
+  {
+    id: "ishqneeti-part-2-2026",
+    yt_id: "B7qQZZRScDQ",
+    title: " Ishqneeti – Part 2 (2026) Atrangii Original Web Series. ",
+    poster_path: "https://movie-tv-trailers.vercel.app/images/movie/Ishqneeti-1.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/Ishqneeti.jpg",
+    release_date: "2026-01-26",
+    vote_average: 6.2,
+    duration: "1h 10m",
+    media_type: 'movie',
+    genres: ["Adult", "Romance", "Drama"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/t9xpdozupg5y",
+      "Server 2": "https://vidara.to/e/K7SXzfVLEKnYV",
+      },
+    overview: "Investigation exposes Tripathi family secrets—Madhurima’s past, pregnancy, betrayal, and Vasundhara’s ambition—revealing a political conspiracy where power, revenge, and hidden truths collide before crucial elections.",
+  },
+  {
+    id: "andhadhundh-part-2-2026",
+    yt_id: "4b3Ksouxvpo",
+    title: "Andhadhundh – Part 2 (2026) Ullu Hot Web Series. ",
+    poster_path: "https://movie-tv-trailers.vercel.app/images/movie/anuradha-1.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/anuradha.jpg",
+    release_date: "2026-01-26",
+    vote_average: 6.2,
+    duration: "1h 10m",
+    media_type: 'movie',
+    genres: ["Adult", "Romance", "Drama"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/rqihvtz5g155",
+      "Server 2": "https://vidara.to/e/VzBikdo1jJw8a",
+      },
+    overview: "Andhadhundh – Part 2 (2026) picks up the high-stakes tension where the first part left off. The hidden schemes of Suhas and Ravindra are pushed to the brink of exposure when Geet’s sister, Preet, makes an unexpected arrival. As Preet begins snooping around and Suhas starts to resist the ongoing manipulation, Ravindra’s “little game” faces its greatest challenge yet. As a signature Ullu Telugu original, the show is known for its suspenseful atmosphere, sharp production quality, and the bold performances of its cast. This 80-minute sequel is a trending 2026 title for fans of uncut Telugu web series who enjoy complex thrillers.",
+  },
   {
     id: "sex-trip-2026",
     yt_id: "uOmq4fNpkSw",
@@ -1821,8 +2098,6 @@ export const UNIQUE_ADULT: MediaItem[] = [
       "Server 4": "https://vidara.to/e/iPgCt233IldoD",
       "Server 5": "https://xprime.today/watch/1549519",
       "Server 6": "https://zxcstream.xyz/player/movie/1549519",
-      
-     
     },
     overview: "On a final trip after college graduation, five friends go on a hiking trip and discover a mystical cave that unleashes forbidden desires within them, igniting a night of uninhibited passion, partner-swapping, and raw sexual exploration leaving them forever changed.",
   },
@@ -2052,8 +2327,8 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "maaldar-2026",
     title: "Maaldar (2026) Hindi Adult Rated Movie.",
-    poster_path: "/images/movie/mal.jpg",
-    backdrop_path: "/images/movie/maldar.jpg",
+    poster_path: "https://movie-tv-trailers.vercel.app/images/movie/mal.jpg",
+    backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/maldar.jpg",
     release_date: "2026-01-26",
     vote_average: 6.2,
     duration: "1h 19m",
@@ -2114,9 +2389,47 @@ export const UNIQUE_ADULT: MediaItem[] = [
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const UNIQUE_TV_SHOWS: MediaItem[] = [
   
-  
+  {
+    id: "secret-stories-roslin-s01-2026",
+    yt_id: "JpHw9xNr1_Q",
+    title: "Secret Stories Roslin (2026) Season 1 Hindi Web Series.",
+    poster_path: "https://image.tmdb.org/t/p/w500/pgVtjCdC5aBADQswOGx7BnTbjgH.jpg",
+    backdrop_path: "https://image.tmdb.org/t/p/original/6MtLPgtYbXjrUwSgReJ4wEpnjIJ.jpg",
+    release_date: "2025-01-08",
+    vote_average: 7.2,
+    duration: "45m",
+    media_type: 'tv',
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/lfmafypuy8ja",
+      "Server 2": "https://vidara.to/e/lYB81zAeN41O1",
+    },
+    genres: ["Drama", "Thriller", "Mystery"],
+    overview: "A 17-year-old girl is plagued by nightmares of a green-eyed stalker, pulling her into a spiral of fear and despair. As she delves into the mystery, she uncovers a web of secrets that threaten to consume her sanity and safety.",
+  },
   {
     id: "daldal-s01-2026",
     yt_id: "Kr2SkYQ7WlY",
@@ -2460,6 +2773,18 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
     overview: "Mariam, a young poetess, finds herself trapped in a sleepy town, where every young girl's future lies in wedlock. Mariam hopes to find her freedom against all odds, by uploading her poetry on the internet through an anonymous account.Along with her band of misfits - Robo and Psy, Mariam discovers the power of her poetry and her own voice.",
   },
 ];
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
