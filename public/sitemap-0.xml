@@ -11,7 +11,6 @@
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/movies/index copy</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/privacy</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/sports</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/terms</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -24,6 +23,8 @@
 <url><loc>https://movie-tv-trailers.vercel.app/blog/hindi-dubbed-blockbusters-you-cant-miss</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/blog/adult-movies-top-picks</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/blog/documentaries-that-will-blow-your-mind</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/adult/ishqneeti-part-2-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/adult/andhadhundh-part-2-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/sex-trip-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/pansamantala-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/foreplay-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -39,13 +40,6 @@
 <url><loc>https://movie-tv-trailers.vercel.app/adult/maaldar-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/patikim-ni-robb-guinto-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/adult/audacity-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/cheetahs-up-close-with-bertie-gregory-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/Disneyland Handcrafted-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/land-looters-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-tony-blair-story-s1-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/wwe-la-storia-dietro-le-quinte-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/queen-of-chess-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-investigation-of-lucy-letby-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live/alzazeera-news-channel-hd</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live/cnn-international-channel-hd</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live/abc-channel-hd</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -85,13 +79,21 @@
 <url><loc>https://movie-tv-trailers.vercel.app/live/adult-channel-18</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live/adult-channel-19</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/live/adult-channel-20</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/second-case-of-seetharam-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/amoz-alexander-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/masthishka-maranam-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/thaai-kizhavi-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/aazhi-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/fourth-floor-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/sarala-subbarao-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/the-rise-of-ashoka-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/jabraat-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/tu-yaa-main-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/punha-ekda-sade-made-3-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/do-deewane-meher-mein-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/movies/the-kerala=story-2-goes-beyond-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/movies/the-kerala-story-2-goes-beyond-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/the-odyssey-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/masters-of-the-universe-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-<url><loc>https://movie-tv-trailers.vercel.app/movies/the-bluff-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/subedaar-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/war-machine-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/movies/lee-cronins-the-mummy-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -115,6 +117,7 @@
 <url><loc>https://movie-tv-trailers.vercel.app/sports/italy-serie-a-matches-live</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/sports/spain-la-liga-matches-live</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/sports/willow-sports</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/tv/secret-stories-roslin-s01-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/tv/daldal-s01-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/tv/fiftysix-days-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/tv/the-art-of-sarah-s01-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -134,6 +137,17 @@
 <url><loc>https://movie-tv-trailers.vercel.app/tv/dil-dhokha-aur-desire-s01-2026-hindi-series</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/tv/hasratein-3-s03-2026-hindi-series</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/tv/bandwaale-s01-2026-hindi-series</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/cheetahs-up-close-with-bertie-gregory-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/Disneyland Handcrafted-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/land-looters-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-tony-blair-story-s1-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/wwe-la-storia-dietro-le-quinte-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/queen-of-chess-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/documentary/the-investigation-of-lucy-letby-2026-doc</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/chatha-pacha-the-ring-of-rowdies-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/honey-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/the-bluff-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/accused-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/pavane-2026</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/the-housemaid-2025</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://movie-tv-trailers.vercel.app/hindi-dubbed/xeno-2025</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>

@@ -3,6 +3,7 @@ export const blogPosts = [
  {
     id: '8',
     slug: 'about-movie-tvtrailers-one-man-journey',
+    yt_bg_music_id: "NB-trLMrGJ4",
     title: 'The Story Behind Movie & TVTrailers – Built With Passion, Powered By One Man',
     excerpt: 'A personal message from the creator of Movie & TVTrailers – dedication, hard work, and a vision to provide free entertainment for everyone.',
     content: `

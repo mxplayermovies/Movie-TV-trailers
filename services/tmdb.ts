@@ -770,9 +770,11 @@ export const UNIQUE_TV_LIVE: MediaItem[] = [
 
 
 export const UNIQUE_MOVIES: MediaItem[] = [
+  
   {
     id: "second-case-of-seetharam-2026",
     yt_id: "t7fvUNU7lnk",
+    yt_bg_music_id: "NbjNFoLwfu4",
     title: "Second Case of Seetharam (2026) Kannada Movie", 
     poster_path: "https://media.themoviedb.org/t/p/w500/89Tuu93NTJVef2Y4iATRwlyAO37.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/tvp5tVPXxkwx7e9qPnNPfJvKrJ7.jpg",
@@ -785,7 +787,8 @@ export const UNIQUE_MOVIES: MediaItem[] = [
       "Server 1": "https://byseqekaho.com/e/zck880g7i8mn",
       "Server 2": "https://vidara.to/e/tZZjNaf75fyVd",
         },
-    overview: "Inspector Seetharam, hoping to reunite with his estranged sister after years apart, must track down a brutal, psychotic serial killer terrorising the town of Anegadde.",
+    overview: "The Movie unfolds in the tense atmosphere of Anegadde, a town shaken by a string of brutal murders that bear the signature of a calculating and psychotic serial killer. Assigned to lead the investigation, Inspector Seetharam approaches the case with methodical precision, yet beneath his professional focus lies a deeply personal mission—he hopes to reunite with his estranged sister after years of silence and separation. As the killings escalate, fear grips the town. Each crime scene reveals unsettling patterns, suggesting a perpetrator who thrives on psychological manipulation as much as violence. Seetharam’s investigation moves through narrow streets, isolated neighborhoods, and guarded households, uncovering fragments of a hidden narrative that seems to intertwine disturbingly with his own history. The search for the killer’s identity becomes a journey into memory, guilt, and redemption.Second Case of Seetharam (2026) stands as an intense Kannada crime drama that explores how personal history can shape professional pursuit, proving that sometimes the most dangerous mysteries are the ones closest to home.",
+    
   },
   {
     id: "amoz-alexander-2026",
@@ -992,6 +995,7 @@ export const UNIQUE_MOVIES: MediaItem[] = [
   {
     id: "the-kerala-story-2-goes-beyond-2026",
     yt_id: "j0_038C5RRk",
+    yt_bg_music_id: "1tjjM6c2sO8",
     title: "The Kerala Story 2 Goes Beyond (2026) ", 
     poster_path: "https://media.themoviedb.org/t/p/w500/5btAk8YTRT3FLsqQBumN5eCk8xO.jpg",
     backdrop_path: "https://english.dainikjagranmpcg.com/media/c1600x900/2026-02/trailer-of-the-kerala-story-2-goes-beyond-released,-film-explores-love,-identity-and-radicalisation-across-three-states.jpg",
@@ -1012,11 +1016,12 @@ export const UNIQUE_MOVIES: MediaItem[] = [
       "Server 6": "https://xprime.today/watch/1625582",
       "Server 7": "https://www.cinezo.net/watch/movie/1625582",
         },
-    overview: "Across three regions of India—Kerala, Madhya Pradesh, and Rajasthan—three young women pursue love and freedom, only to become caught in the very forces they believed they had escaped.",
+    overview: "Across three regions of India—Kerala, Madhya Pradesh, and Rajasthan—three young women pursue love and freedom, only to become caught in the very forces they believed they had escaped. this film explores the complex interplay of love, identity, and radicalization, revealing how the quest for personal freedom can sometimes lead to unexpected and tragic consequences.",
   },
   {
     id: "the-odyssey-2026",
     yt_id: "Mzw2ttJD2qQ",
+    yt_bg_music_id: "NB-trLMrGJ4",
     title: "The Odyssey (2026) ", 
     poster_path: "https://m.media-amazon.com/images/M/MV5BN2MyYjk2MWMtODMyZS00MDUyLWE0OGQtOTQ3MGY0MDE0ZjVmXkEyXkFqcGc@._V1_.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/kGCOfQpITTI0rKzrVMRGOFteszf.jpg",
@@ -1035,7 +1040,7 @@ export const UNIQUE_MOVIES: MediaItem[] = [
       "Server 7": "https://www.cinezo.net/watch/movie/1368337",
     
         },
-    overview: "Odysseus, the legendary Greek king of Ithaca, embarks on a long and perilous journey home following the Trojan War, chronicling his encounters with mythical beings such as the Cyclops Polyphemus, the Sirens, and the witch-goddess Circe, while attempting to reunite with his wife, Penelope.",
+    overview: "Odysseus, the legendary Greek king of Ithaca, embarks on a long and perilous journey home following the Trojan War, chronicling his encounters with mythical beings such as the Cyclops Polyphemus, the Sirens, and the witch-goddess Circe, while attempting to reunite with his wife, Penelope. This epic tale explores themes of perseverance, cunning, and the human spirit's resilience in the face of adversity.",
   },
   {
     id: "masters-of-the-universe-2026",
@@ -2416,6 +2421,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "secret-stories-roslin-s01-2026",
     yt_id: "JpHw9xNr1_Q",
+    yt_bg_music_id: "NB-trLMrGJ4",
     title: "Secret Stories Roslin (2026) Season 1 Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/pgVtjCdC5aBADQswOGx7BnTbjgH.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/6MtLPgtYbXjrUwSgReJ4wEpnjIJ.jpg",
