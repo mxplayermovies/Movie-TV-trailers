@@ -650,8 +650,28 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
 
   return (
     <>
-      <Head>...</Head>
-      <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
+           <Head>
+        <title>Movies - Movie & TV trailers</title>
+        <meta name="description" content="Browse the latest movie collection. Watch free movies online in HD. No sign-up required." />
+        <meta name="keywords" content="free movies, watch online, movies, streaming" />
+        <link rel="canonical" href={`${BASE_URL}/movies`} />
+        <meta property="fb:app_id" content={FB_APP_ID} />
+        <meta property="og:site_name" content="Movie & TV trailers" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${BASE_URL}/movies`} />
+        <meta property="og:title" content="Movies - Movie & TV trailers" />
+        <meta property="og:description" content="Browse the latest movie collection. Watch free movies online." />
+        <meta property="og:image" content={`${BASE_URL}/${item.poster_path}`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@MovieTVTrailers" />
+        <meta name="twitter:title" content="Movies - Movie & TV trailers" />
+        <meta name="twitter:description" content="Browse the latest movie collection." />
+        <meta name="twitter:image" content={`${BASE_URL}/${item.poster_path}`} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+      </Head>
+       <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
         <Header />
         <main className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
