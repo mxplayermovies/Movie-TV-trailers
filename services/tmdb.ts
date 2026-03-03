@@ -1453,6 +1453,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "chatha-pacha-the-ring-of-rowdies-2026",
     yt_id: "U1npyTU93q4",
+    yt_bg_music_id: "OxMncFO0ebw",
     title: "Chatha Pacha The Ring of Rowdies (2026) Multi-Languages In Hindi + Kannada.",
     poster_path: "https://media.themoviedb.org/t/p/w500/a41fqMDWRcZcDqidGcq10xmRoh.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/7ocFvtRnNXwrNJLJRWa0kKVPRW0.jpg",
@@ -1465,7 +1466,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
       "Server 1- Multi-Lang": "https://byseqekaho.com/e/ys00px6ljvjm",
       "Server 2- Multi-Lang": "https://vidara.to/e/ELnr1KSQd23yZ",
       },
-    overview: "In the heart of Fort Kochi, three brothers and their crew of unlikely misfits stumble into the wild world of WWE-style costumed wrestling. What begins as a scrappy hustle soon explodes into a riot of masks, egos, and full-blown madness, all set against the backdrop of a city that never plays by the rules. But can their brotherhood survive when the real fight begins outside the ropes?",
+    overview: "In the heart of Fort Kochi, three brothers and their crew of unlikely misfits stumble into the wild world of WWE-style costumed wrestling. What begins as a scrappy hustle soon explodes into a riot of masks, egos, and full-blown madness, all set against the backdrop of a city that never plays by the rules. But can their brotherhood survive when the real fight begins outside the ropes? Featuring Roshan Mathew, Arjun, and Vishak, this electrifying title track sets the tone for the film’s raw action world. Powered by the dynamic music of Shankar-Ehsaan-Loy and directed by Adhvaith Nayar, the video delivers high-voltage energy, attitude, and cinematic intensity.",
   },
   {
     id: "honey-2026",
@@ -2054,6 +2055,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "ishqneeti-part-2-2026",
     yt_id: "B7qQZZRScDQ",
+    yt_bg_music_id: "kgfByIoC2tQ",
     title: " Ishqneeti – Part 2 (2026) Atrangii Original Web Series. ",
     poster_path: "https://movie-tv-trailers.vercel.app/images/movie/Ishqneeti-1.jpg",
     backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/Ishqneeti.jpg",
@@ -2439,6 +2441,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "daldal-s01-2026",
     yt_id: "Kr2SkYQ7WlY",
+    yt_bg_music_id: "KiDXofblRL0",
     title: "Daldal Season 1 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/wvAwkKeIs7bkb6EJAYRzpANhfxM.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/bd0usdz6dgmEE6HVhEhepR5r6MP.jpg",
@@ -2456,6 +2459,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "fiftysix-days-2026",
     yt_id: "P5EhHeF99wg",
+    yt_bg_music_id: "AQ308MeO2YE",
     title: "56 Days Season 1 (2026) Multi-Languages In Tamil + Telugu + Hindi + Malayalam + Kannada + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/sdJLbucggwGj8NdX0UN2zt1Vwmn.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/77TCOiGEmHYLndIw4jsf6uUra4X.jpg",
@@ -2473,7 +2477,8 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "the-art-of-sarah-s01-2026",
     yt_id: "aPNZNcBIWNw",
-    title: "The Art Of Sarah (2026) Season 1 Hindi Dubbed Series",
+    yt_bg_music_id: "tT92fWDaR4s",
+    title: "The Art Of Sarah Season 1 (2026) Hindi Dubbed Series",
     poster_path: "https://image.tmdb.org/t/p/w500/nP2PRGSmLdbZtQtoXPPppcDAsNw.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/1XZZwNzqTPVaMA9U6LGNibAeScx.jpg",
     release_date: "2025-01-08",
@@ -2490,6 +2495,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "space-gen-chandrayaan-s01-2026",
     yt_id: "eshqiwiA9sA",
+    yt_bg_music_id: "-9D3b3G-2YQ",
     title: "Space Gen: Chandrayaan Season 1 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/d6WIr1vycFCCdYewgRf8dpWxQQE.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/d6WIr1vycFCCdYewgRf8dpWxQQE.jpg",
@@ -2510,6 +2516,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "taskaree-the-smugglers-web-s01-2026",
     yt_id: "gKhfbEpM45E",
+    yt_bg_music_id: "rpj1IoxJjKs",
     title: 'Taskaree: The Smugglers Web Season 1 (2026) Hindi Web Series.',
     poster_path: "https://image.tmdb.org/t/p/w500/25fKRXvQLBq4nXu9vjOVJcvCiiD.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/25fKRXvQLBq4nXu9vjOVJcvCiiD.jpg",
@@ -2530,6 +2537,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "bindiya-ke-bahubali-s02-2026",
     yt_id: "S4PE4FAIEMo",
+    yt_bg_music_id: "-E8oCZumIcU",
     title: "Bindiya Ke Bahubali Season 2 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/eSJGKRff52Pg2SfOiIdC4IlMMQR.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/eSJGKRff52Pg2SfOiIdC4IlMMQR.jpg",
@@ -2549,6 +2557,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "bhootiyapa-2026",
     yt_id: "MmV6pPuV4bY",
+    yt_bg_music_id: "G49HxLwd80U",
     title: "Bhootiyapa Season 1 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/4NGdzyuffqhb1jMEvTfri3jn5Fj.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/4NGdzyuffqhb1jMEvTfri3jn5Fj.jpg",
@@ -2568,6 +2577,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "pharma-2025",
     yt_id: "O7wQuF6OKtI",
+    yt_bg_music_id: "a-JtvyxlRBQ",
     title: "Pharma (2025) Hindi Dubbed Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/hQWT47GFQyvO1tFqx6IgCOvrrr8.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/hQWT47GFQyvO1tFqx6IgCOvrrr8.jpg",
@@ -2581,11 +2591,13 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
       "Server 3 - HINDI": "https://short.icu/PqYLFFeKU?thumbnail=https://media.themoviedb.org/t/p/w780/n1qDEYpr3pq7bJ9GGaF9zVNjdNq.jpg"
     },
     genres: ["Drama", "Crime", "Mystery"],
-    overview: "A young medical representative struggles against the pharma game, masters it and eventually fights against it.",
+    overview: "A young medical representative struggles against the pharma game, masters it and eventually fights against it. Web Series is a sharp corporate drama that dives into the high-stakes world of pharmaceutical sales and ethical dilemmas. The story centers on a young medical representative who enters the industry with ambition and the need to prove himself. What begins as a promising career quickly exposes him to the aggressive strategies, hidden pressures, and morally grey tactics that dominate the pharma landscape.As he learns the rules of the game, he becomes exceptionally skilled at navigating doctor relationships, sales targets, and competitive rivalries. His rise within the system highlights how success is often measured by numbers rather than impact. Incentives, influence, and quiet compromises gradually reshape his understanding of right and wrong.However, the deeper he goes, the more he witnesses the consequences of profit-driven decisions on patients and healthcare ethics.",
+   
   },
   {
     id: "the-night-manager-s02-2026",
     yt_id: "FrOIFz4Koe0",
+    yt_bg_music_id: "2kA4gYalMsY",
     title: "The Night Manager Season 2 (2026)",
     poster_path: "https://image.tmdb.org/t/p/w500/1MccRnw41qQjREuZkovqP2UX1i3.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/lJoaiZcYMc8RkmPLROcdS2WQxn9.jpg",
@@ -2603,6 +2615,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "cheekatilo-2026",
     yt_id: "C2eaHHMCWuY",
+    yt_bg_music_id: "9hq7EeMgH80",
     title: "Cheekatilo (2026) Dubbed Web Series In Tamil + Telugu + Hindi.",
     poster_path: "https://image.tmdb.org/t/p/w500/pO86EjZb7QyGYk5RW4Xm4UWe5Uv.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/iHT55IAd2qErJKhH8vCGKbZSniU.jpg",
@@ -2621,7 +2634,8 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "wonder-man-s01-2026",
     yt_id: "_OrRuT7naTw",
-    title: "Wonder Man (2026) Season 1 Hindi Dubbed Series",
+    yt_bg_music_id: "4mHKYGLmO88",
+    title: "Wonder Man Season 1 (2026) Hindi Dubbed Series",
     poster_path: "https://image.tmdb.org/t/p/w500/2XSHwBHIvIDPpbcH4ntQIItlThG.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/los8S8iCRn5Q7irl0LNAp6C6Gmz.jpg",
     release_date: "2026-01-08",
@@ -2634,11 +2648,12 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
       "Server 3 ": "https://short.icu/Sl7KwC5M7?thumbnail=https://media.themoviedb.org/t/p/w780/los8S8iCRn5Q7irl0LNAp6C6Gmz.jpg",
     },
     genres: ["Spy", "Crime", "Mystery"],
-    overview: "Simon and Trevor, two actors at opposite ends of their careers, chase life-changing roles.",
-  },
+    overview: "Simon and Trevor, two actors at opposite ends of their careers, chase life-changing roles. The Series explores the unpredictable world of performance and ambition through the intertwined journeys of Simon and Trevor, two actors standing at dramatically different crossroads. Simon is fighting to stay relevant in an industry that constantly reinvents itself, while Trevor is striving to break through, hungry for recognition and the validation that comes with a defining role. Set against the backdrop of auditions, casting calls, and industry maneuvering, the series captures the emotional highs and crushing lows that define an actor’s career. Each opportunity carries enormous weight, with agents, producers, and public perception shaping outcomes as much as talent itself.",
+     },
   {
     id: "mayasabha-s01-2026-hindi-series",
     yt_id: "pPGPA13ucTs",
+    yt_bg_music_id: "8ikRRgtpbvg",
     title: "Mayasabha Season 1 (2026) Hindi Web Series.",
     poster_path: "https://media.themoviedb.org/t/p/w500/ddhOEoAqefgzcxlx5hIvkFpF9cw.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/nofMFwwxPMkv76NqrbvoAVwiH4J.jpg",
@@ -2656,6 +2671,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "unfamiliar-s01-2026-tv-series",
     yt_id: "RY-FSHJ7fKA",
+    yt_bg_music_id: "6uOvwiuZqeE",
     title: "Unfamiliar Season 1 (2026)",
     poster_path: "https://media.themoviedb.org/t/p/w500/fX0Kvvo6hj9feqS3JyFpVmscz2Y.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/qDq3dG4ElRohih5fUGNQRLHuBaC.jpg",
@@ -2668,11 +2684,12 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
       "Server 1 - Multi-Lang": "https://vidara.to/e/of0qQX1SdWpvo",
       "Server 2 - Multi-Lang": "https://byseqekaho.com/e/ajssdlwajoj4/",
 },
-    overview: "When the past catches up with two former spies, their biggest challenge isn't car chases, shootouts or fistfights — it's telling each other the truth.",
-  },
+    overview: "When the past catches up with two former spies, their biggest challenge isn't car chases, shootouts or fistfights — it's telling each other the truth. The series centers on two former spies whose lives were once defined by covert operations, coded messages, and constant danger. Years after stepping away from the shadows, they are pulled back into a confrontation not with enemies abroad, but with the truths they avoided at home.When fragments of their past resurface, old alliances and unresolved betrayals begin to strain what remains of their relationship. Unlike the high-speed chases and gunfire that once shaped their careers, their greatest challenge now is vulnerability. The secrets they buried during years of service—lies told for protection, omissions made in the name of duty—threaten to dismantle the trust they thought they had rebuilt.",
+     },
   {
     id: "cross=s02-2026-tv-series",
     yt_id: "H1tFYjJ515M",
+     yt_bg_music_id: "YfpfEKKrQrY",
     title: "Cross Season 2 (2026)",
     poster_path: "https://image.tmdb.org/t/p/w500/6hhKdavCEZi8d584ZtIrQIrBvZI.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/cYHJfdRnIhmeBoYN4jRMMnBDroO.jpg",
@@ -2691,6 +2708,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
    {
     id: "kohrra-s02-2026-hindi-series",
     yt_id: "pxcgMDOPdsw",
+    yt_bg_music_id: "f_ujnznnKIU",
     title: "Kohrra Season 2 (2026) Hindi Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/vI23w796RfqWHlRKEcN4N6bD2DY.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/bXXoR0UgauJaKePUWUXsBFsRSed.jpg",
@@ -2704,11 +2722,12 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
       "Server 3": "https://www.vidking.net/embed/tv/230034/2/8?autoPlay=true&nextEpisode=true&episodeSelector=true",
     },
     genres: ["Drama", "Crime", "Mystery"],
-    overview: "When an NRI bridegroom is found dead days before his wedding in the countryside of Punjab, two cops must unravel the troubling case as turbulence unfolds in their own lives.",
-  },
+    overview: "When an NRI bridegroom is found dead days before his wedding in the countryside of Punjab, two cops must unravel the troubling case as turbulence unfolds in their own lives.The new season begins with the shocking discovery of an NRI bridegroom found dead just days before his much-anticipated wedding. What should have been a celebration of union quickly turns into a crime scene that unsettles the entire countryside.Assigned to the case, two police officers must peel back layers of family expectations, hidden resentments, and unspoken tensions that linger beneath the surface of village life. The victim’s international background adds another dimension to the investigation, exposing cultural divides, financial pressures, and secrets tied to migration and identity.",
+    },
   {
     id: "amar-vishwas-s01-2026-hindi-series",
     yt_id: "lQAhJ-SSTQk",
+    yt_bg_music_id: "N8KNqBIiV84",
     title: "Amar Vishwas Season 1 (2026) Hindi Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/eai2N6BgHlQdL5oSeo94UX45CBN.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/9Pn2P17F2M0M7F0uHb9JJxPzdae.jpg",
@@ -2727,6 +2746,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "dil-dhokha-aur-desire-s01-2026-hindi-series",
     yt_id: "5KD3iU9f-0w",
+    yt_bg_music_id: "MeRCvqm_ZQM",
     title: "Dil Dhokha Aur Desire Season 1 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/rKpQmijH1afO8QdeeR3efiFiN7a.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/AnnucFNhk6aTa2YFDnJ9OKOJC5b.jpg",
@@ -2745,6 +2765,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
   {
     id: "hasratein-3-s03-2026-hindi-series",
     yt_id: "UEyF_hf5ZBE",
+    yt_bg_music_id: "M-vazrsRALg",
     title: "Hasratein Season 3 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/9ng6iEsgclvmjOYLL0CUC1cjQZw.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/ztbQ0JhrlwPImOLBCYHLLYlJgYn.jpg",
@@ -2763,6 +2784,7 @@ export const UNIQUE_TV_SHOWS: MediaItem[] = [
     {
     id: "bandwaale-s01-2026-hindi-series",
     yt_id: "7AaUBhs1L1g",
+    yt_bg_music_id: "nOLv1Zql9AQ",
     title: "Bandwaale Season 1 (2026) Hindi Web Series.",
     poster_path: "https://image.tmdb.org/t/p/w500/h1heLNN77Jmjin06ihQdMKTGGIt.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/uz0OhuErhylmCBszXwYAxOU3oVo.jpg",
@@ -2811,6 +2833,7 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
   {
     id: "cheetahs-up-close-with-bertie-gregory-2026-doc",
     yt_id: "7kIFierzEMg",
+    yt_bg_music_id: "_R5WopJ6CvE",
     title: "Cheetahs Up Close with Bertie Gregory (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/pSmSgFb1cnRQep0OzcuKWMYWeqR.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/tLKTds91Rp91bWqFS2hatwoec4y.jpg",
@@ -2829,8 +2852,9 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
     overview: "Bertie arrives in the Serengeti as the spectacular wildebeest migration kicks off. He’s here to film the fastest land animal on Earth: the cheetah. As he gets close to a mother caring for her tiny cubs and a young group of males executing phenomenal hunts as a team, he learns about the unexpected challenges the species endures.",
   },
   {
-    id: "Disneyland Handcrafted-2026-doc",
+    id: "disneyland-handcrafted-2026-doc",
     yt_id: "7rP3FVnGtfg",
+    yt_bg_music_id: "cv6ncEYLRlk",
     title: "Disneyland Handcrafted (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/81szv19zvs5fGqXtWau6tXzfC4T.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/lUUzdpdlQiYno9rFrQ4EJOACQy5.jpg",
@@ -2846,11 +2870,12 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
       "Server 4": "https://xprime.today/watch/1538718",
       "Server 5 ": "https://www.cinezo.net/watch/movie/1538718",     
       },
-    overview: "Oscar and Emmy nominated filmmaker Leslie Iwerks returns with an all-new Disney documentary giving viewers an up-close look at the dedication, effort, and passion that was required to realize a dream that would go on to inspire millions around the world.",
+    overview: "Oscar and Emmy-nominated filmmaker Leslie Iwerks returns with Disneyland Handcrafted, an inspiring documentary that reveals the doubts, challenges, and sheer determination behind Walt Disney’s bold vision. In this exclusive clip, see the making of Disneyland like never before—where every setback made the dream seem impossible, and every triumph proved that it was a miracle Disneyland even opened.",
   },
   {
     id: "land-looters-2026-doc",
     yt_id: "qv8In44ITfA",
+    yt_bg_music_id: "_R5WopJ6CvE",
     title: "Land Looters (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/w2EXW6CCz54yBW3qdAupsZCe177.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/dURBefv0HkUMVeBb8gRIYVXFDTU.jpg",
@@ -2866,11 +2891,12 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
       "Server 4": "https://xprime.today/watch/1603750",
       "Server 5 ": "https://www.cinezo.net/watch/movie/1603750",     
       },
-    overview: "Part travelogue and part sensitive investigation, the movie tells the universal story of people who refuse to be erased, reminding us that defending the Earth means defending life.",
+    overview: "Part travelogue and part sensitive investigation, the movie tells the universal story of people who refuse to be erased, reminding us that defending the Earth means defending life. Moving across diverse landscapes and communities, the film documents stories of people who refuse to be erased in the face of powerful economic and political forces seeking control over their territories. Rather than presenting land as an abstract asset, the documentary portrays it as memory, culture, livelihood, and identity. Each region visited reveals a different struggle—farmers confronting forced acquisition, indigenous groups resisting encroachment, and local families fighting legal battles to remain on ancestral soil. Through intimate interviews and on-the-ground footage, the film captures both the vulnerability and resilience of those standing their ground. Corporate expansion, policy decisions, and opaque deals are examined through a lens that balances accountability with empathy. The documentary invites viewers to see how global economic trends intersect with individual lives, transforming remote communities into frontline defenders of the planet.",
   },
   {
     id: "the-tony-blair-story-s1-2026-doc",
     yt_id: "Gk_MHN9WGv8",
+    yt_bg_music_id: "_R5WopJ6CvE",
     title: "The Tony Blair Story Season 1 (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/uyMSaixjilAIP6ueIEhDEvBvuN.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/7WPtKRkUbF220qqSl6UvQe67Jxn.jpg",
@@ -2889,9 +2915,10 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
     overview: "Tony Blair is one of Britain's most successful and controversial leaders. With unprecedented access, including Blair and family, this series charts his meteoric rise to power. And what happened next. Featuring an in-depth interview with Tony Blair himself, his story is also told through those who knew him best – friends, allies, and opponents. Peeling back the layers of political spin and tabloid sensationalism, the programme offers a fresh perspective on the man who transformed the Labour Party and reshaped Britain. The series goes beyond the headlines to explore the key moments that shaped Blair’s leadership, providing a gripping insight into one of the most influential Prime Ministers of the modern era.",
   },
    {
-    id: "wwe-la-storia-dietro-le-quinte-2026-doc",
+    id: "wwe-the-story-behind-the-scenes-2026-doc",
     yt_id: "FfE8LC_FVLA",
-    title: "WWE: la storia dietro le quinte (2026) [Documentary]",
+    yt_bg_music_id: "0vRamqnNr-E",
+    title: "WWE: The Story Behind the Scenes (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/kLs2nnkaJgg6NW4E7jKQ8FIywO9.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/gMBrBUxPlDuCyQXBPxURl4Fbs9y.jpg",
     release_date: "2026-01-16",
@@ -2906,11 +2933,12 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
       "Server 4 ": "https://www.cinezo.net/watch/tv/289485?season=1&episode=1",
       "Server 5": "https://zxcstream.xyz/player/tv/289485",
       },
-    overview: "Da Monday Night RAW a WrestleMania, questa serie segue le Superstar e lo staff della WWE mentre danno vita ai più grandi spettacoli dell'azienda.",
+    overview: "From Monday Night RAW to WrestleMania, this series follows WWE Superstars and crew as they put on the company’s biggest shows.",
   },
   {
     id: "queen-of-chess-2026-doc",
     yt_id: "8pmJgtLKBXg",
+    yt_bg_music_id: "gXtmCdWd1Cs",
     title: "Queen of Chess (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/ag5TZNcK3vHdCCpZIY8syjwzgfr.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/y5haKgSz1hCDatwIOMuqZ1CFKPW.jpg",
@@ -2932,6 +2960,7 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
   {
     id: "the-investigation-of-lucy-letby-2026-doc",
     yt_id: "vahq6aCN9lI",
+    yt_bg_music_id: "uPOXxxvBJJw",
     title: "The Investigation of Lucy Letby (2026) [Documentary]",
     poster_path: "https://media.themoviedb.org/t/p/w500/qhNThwc72GqihJhXaP29Af5hJ2A.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/qhSfXdkrIzwYsyQ3Z9ehFmO3zjy.jpg",
@@ -2949,8 +2978,8 @@ export const UNIQUE_DOCUMENTARY: MediaItem[] = [
       "Server 6": "https://www.cinezo.net/watch/movie/1620991",
       "Server 7": "https://vidsrc-embed.ru/embed/movie/1620991",
     },
-    overview: "An engaging and thought-provoking look at Lucy Letby, the former nurse serving life in prison after being convicted of the murders of seven infants and the attempted murders of seven others.",
-  },
+    overview: "An engaging and thought-provoking look at Lucy Letby, the former nurse serving life in prison after being convicted of the murders of seven infants and the attempted murders of seven others, stands as a detailed exploration of evidence, accountability, and the profound human impact of crimes committed in places meant for care and protection.",
+   },
   // Add more documentaries as needed
 ];
 
