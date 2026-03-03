@@ -97,8 +97,7 @@
 
 
 
-
-
+// pages/sports/index.tsx
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -107,7 +106,7 @@ import { UNIQUE_SPORTS } from '../../services/tmdb';
 import { MediaItem } from '../../types';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { Volume2, ChevronDown } from 'lucide-react';
+import { Volume2, VolumeX, ChevronDown } from 'lucide-react'; // Added VolumeX
 import { sanitizeMediaItem } from '../../lib/core/sanitize';
 import { DEFAULT_BG_MUSIC_IDS } from '../../lib/core/musicConfig';
 
@@ -115,14 +114,20 @@ const ITEMS_PER_PAGE = 15;
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://movie-tv-trailers.vercel.app';
 const FB_APP_ID = process.env.NEXT_PUBLIC_FB_APP_ID;
 
-interface Props { items: Omit<MediaItem, 'streams'>[]; buildDateString: string; }
+interface Props { 
+  items: Omit<MediaItem, 'streams'>[]; 
+  buildDateString: string; 
+}
 
 export default function SportsPage({ items, buildDateString }: Props) {
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+  const [isMuted, setIsMuted] = useState(false); // 🆕
   const voiceRef = useRef<{
     speak: (text: string, force?: boolean, withMusic?: boolean) => void;
+    cancelSpeech: () => void;
     playBackgroundMusic: (id: string) => void;
     stopBackgroundMusic: () => void;
+    setMusicMuted: (muted: boolean) => void; // 🆕
   } | null>(null);
   const totalItems = items.length;
 
@@ -135,14 +140,16 @@ export default function SportsPage({ items, buildDateString }: Props) {
     } catch { return ''; }
   }, []);
 
+  // Load voiceManager and start continuous background music
   useEffect(() => {
     let cancelled = false;
     import('../../lib/core/VoiceManager').then(({ voiceManager }) => {
       if (cancelled) return;
       voiceRef.current = voiceManager;
       voiceManager.playBackgroundMusic(DEFAULT_BG_MUSIC_IDS.sports);
+      // Auto‑speak after delay (only if not muted)
       setTimeout(() => {
-        if (cancelled) return;
+        if (cancelled || isMuted) return;
         try {
           voiceManager.speak(getPageText() || 'Live Sports page. Browse the latest live sporting action.', true, true);
         } catch { }
@@ -152,9 +159,32 @@ export default function SportsPage({ items, buildDateString }: Props) {
       cancelled = true;
       voiceRef.current?.stopBackgroundMusic();
     };
-  }, [getPageText]);
+  }, [getPageText, isMuted]); // Added isMuted dependency
 
-  const readPageContent = () => { try { voiceRef.current?.speak(getPageText() || 'Live Sports page.', true, true); } catch { } };
+  // 🆕 Effect to handle mute changes
+  useEffect(() => {
+    if (voiceRef.current) {
+      if (isMuted) {
+        voiceRef.current.cancelSpeech();
+        voiceRef.current.setMusicMuted(true);
+      } else {
+        voiceRef.current.setMusicMuted(false);
+      }
+    }
+  }, [isMuted]);
+
+  // Toggle mute
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => !prev);
+  }, []);
+
+  const readPageContent = () => { 
+    if (isMuted) return; // Don't read if muted
+    try { 
+      voiceRef.current?.speak(getPageText() || 'Live Sports page.', true, true); 
+    } catch { } 
+  };
+
   const loadMore = () => setVisibleCount(prev => Math.min(prev + ITEMS_PER_PAGE, totalItems));
   const visibleItems = items.slice(0, visibleCount);
 
@@ -175,17 +205,36 @@ export default function SportsPage({ items, buildDateString }: Props) {
         <main className="container mx-auto px-4 py-8">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold">Live Sports</h1>
-            <p className="page-text hidden">We have {items.length} Live Sports sessions available. Updated as on {buildDateString}. We update our content regularly to ensure you have the latest and greatest Live Sports Action and information every 24 hours. Watch our Latest Live Sports library and enjoy the best free streaming experience.</p>
+            <p className="page-text hidden">
+              We have {items.length} Live Sports sessions available. Updated as on {buildDateString}. We update our content regularly to ensure you have the latest and greatest Live Sports Action and information every 24 hours. Watch our Latest Live Sports library and enjoy the best free streaming experience.
+            </p>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500 dark:text-gray-300">Read details aloud</span>
-              <button onClick={readPageContent} className="p-2 bg-blue-500/20 text-blue-400 rounded-full hover:bg-blue-500 hover:text-white transition" aria-label="Read page aloud"><Volume2 size={20} /></button>
+              <span className="text-sm text-gray-500 dark:text-gray-300">
+                {isMuted ? 'Muted' : 'Read details aloud'}
+              </span>
+   
+              {/* Mute toggle button */}
+              <button
+                onClick={toggleMute}
+                className={`p-2 rounded-full transition ${
+                  isMuted
+                    ? 'bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white'
+                    : 'bg-green-500/20 text-green-400 hover:bg-green-500 hover:text-white'
+                }`}
+                title={isMuted ? 'Unmute' : 'Mute'}
+                aria-label={isMuted ? 'Unmute' : 'Mute'}
+              >
+                {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+              </button>
             </div>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {visibleItems.map((item) => (
               <Link key={item.id} href={`/sports/${item.id}`}>
                 <div className="group cursor-pointer">
-                  <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800"><img src={item.poster_path || '/og-image.jpg'} alt={item.title || item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" /></div>
+                  <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-800">
+                    <img src={item.poster_path || '/og-image.jpg'} alt={item.title || item.name} className="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                  </div>
                   <h2 className="mt-2 font-semibold text-sm truncate">{item.title || item.name}</h2>
                 </div>
               </Link>
@@ -193,7 +242,9 @@ export default function SportsPage({ items, buildDateString }: Props) {
           </div>
           {visibleCount < totalItems && (
             <div className="flex justify-center mt-8">
-              <button onClick={loadMore} className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all"><ChevronDown size={20} />Load More ({visibleCount} / {totalItems})</button>
+              <button onClick={loadMore} className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all">
+                <ChevronDown size={20} />Load More ({visibleCount} / {totalItems})
+              </button>
             </div>
           )}
         </main>
@@ -204,6 +255,9 @@ export default function SportsPage({ items, buildDateString }: Props) {
 }
 
 export const getStaticProps: GetStaticProps = async () => ({
-  props: { items: UNIQUE_SPORTS.map(sanitizeMediaItem), buildDateString: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) },
+  props: { 
+    items: UNIQUE_SPORTS.map(sanitizeMediaItem), 
+    buildDateString: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) 
+  },
   revalidate: 3600,
 });

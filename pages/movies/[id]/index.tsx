@@ -495,6 +495,44 @@
 // };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // pages/movies/[id]/index.tsx
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Head from 'next/head';
