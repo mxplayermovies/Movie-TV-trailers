@@ -770,7 +770,42 @@ export const UNIQUE_TV_LIVE: MediaItem[] = [
 
 
 export const UNIQUE_MOVIES: MediaItem[] = [
-  
+  {
+    id: "hayagrriva-2026",
+    yt_id: "r1EkFEsz-9I",
+    yt_bg_music_id: "VlNFUYaJo3k",
+    title: "Hayagrriva (2026) Kannada Movie", 
+    poster_path: "https://m.media-amazon.com/images/M/MV5BNDRhMzNmM2ItM2YzYy00YmJlLWEyYjAtNzkyYzI1ZWM0OWVjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+    backdrop_path: "https://assets-in.bmscdn.com/discovery-catalog/events/et00484482-ukxdzthsug-landscape.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Drama", "Family", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/n66zs4o2g6q8",
+      "Server 2": "https://vidara.to/e/geb7EParYNkIT",
+        },
+    overview: "In a future where myths become reality through science, mysterious deaths create chaos. Detective Arjun must solve the crimes while saving his marriage. A high-stakes investigation where ancient legends meet modern evolution.",
+   },
+   {
+    id: "nukkad-naatak-2026",
+    yt_id: "JLOIxJaFsSE",
+    yt_bg_music_id: "nQvrbv1xByk",
+    title: "Nukkad Naatak (2026) Hindi Movie", 
+    poster_path: "https://media.themoviedb.org/t/p/w500/ouT4jOENHVyQ1tvrVK78CP9CBoq.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/mvPs3asYSbVYobQAMw7kDaQQsxO.jpg",
+    release_date: "2026-02-20",
+    vote_average: 7.5,
+    duration: "2h 25m",
+    media_type: 'movie',
+    genres: ["Drama", "Family", "Thriller"],
+    streams: {
+      "Server 1": "https://byseqekaho.com/e/ohl0t8oryfdb",
+      "Server 2": "https://vidara.to/e/beqDGCl1ePAu",
+        },
+    overview: "After being caught robbing the college canteen, best friends Molshri and Shivang are expelled. To be reinstated, they must enroll five children from an impoverished slum into a local school. As they navigate the challenges of teaching and learning, they discover the transformative power of education and the resilience of the human spirit.",
+   }, 
   {
     id: "second-case-of-seetharam-2026",
     yt_id: "t7fvUNU7lnk",
@@ -1450,6 +1485,24 @@ export const UNIQUE_MOVIES: MediaItem[] = [
 
 
 export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
+  {
+    id: "lara-croft-tomb-raider-2001",
+    yt_id: "-0enc2VSiKE",
+    yt_bg_music_id: "qhDt9LSuG08",
+    title: "Lara Croft: Tomb Raider (2001) Multi-Languages In Tamil + Telugu + Hindi + English.",
+    poster_path: "https://media.themoviedb.org/t/p/w500/ye5h6fhfz8TkKV4QeuTucvFzxB9.jpg",
+    backdrop_path: "https://media.themoviedb.org/t/p/w780/bL41GVWvp4YJDJ50PDcxaN4cds9.jpg",
+    release_date: "2026-01-16",
+    vote_average: 6.4,
+    duration: "1h 47m",
+    media_type: 'movie',
+    genres: ["Action", "Drama", "Thriller"],
+    streams: {
+      "Server 1- Multi-Lang": "https://byseqekaho.com/e/eph7xhcuwert",
+      "Server 2- Multi-Lang": "https://vidara.to/e/yw1Fdxmseepve",
+      },
+    overview: "Orphaned heiress, English aristocrat and intrepid archaeologist, Lara Croft, embarks on a dangerous quest to retrieve the two halves of an ancient artifact which controls time before it falls into the wrong hands. As an extremely rare planetary alignment is about to occur for the first time in 5,000 years, the fearless tomb raider will have to team up with rival adventurers and sworn enemies to collect the pieces, while time is running out. But, in the end, who can harness the archaic talisman's unlimited power?",
+  },
   {
     id: "chatha-pacha-the-ring-of-rowdies-2026",
     yt_id: "U1npyTU93q4",
