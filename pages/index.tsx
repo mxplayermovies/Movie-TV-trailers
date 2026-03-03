@@ -541,6 +541,8 @@ export default function Home() {
         <meta name="twitter:description" content={SITE_DESC} />
         <meta name="twitter:image" content={OG_IMAGE} />
         <meta name="twitter:image:alt" content={SITE_NAME} />
+        <meta name="facebook-domain-verification" content="2sdb3y62ktx7aiib4gcr8ddhpf2sey" />
+        <meta name="yandex-verification" content="58739946990bf4fe" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </Head>
 

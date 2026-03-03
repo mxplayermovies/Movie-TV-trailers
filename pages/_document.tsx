@@ -19,6 +19,8 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
+        <meta name="facebook-domain-verification" content="2sdb3y62ktx7aiib4gcr8ddhpf2sey" />
+        <meta name="yandex-verification" content="58739946990bf4fe" />
       </Head>
       <body>
         <Main />
