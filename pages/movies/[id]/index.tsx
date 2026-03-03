@@ -590,7 +590,34 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     isoDuration = undefined;
   }
 
-  const movieSchema = { /* ... (unchanged) ... */ };
+    const movieSchema = {
+    "@context": "https://schema.org",
+    "@type": "Movie",
+    "name": title,
+    "description": description,
+    "image": ogImage,
+    "datePublished": item.release_date || new Date().toISOString().split('T')[0],
+    "url": canonicalUrl,
+    "duration": item.duration ? formatDurationToISO(item.duration) : undefined,
+    "contentRating": "PG-13",
+    "aggregateRating": item.vote_average ? {
+      "@type": "AggregateRating",
+      "ratingValue": item.vote_average.toFixed(1),
+      "bestRating": "10",
+      "ratingCount": 100
+    } : undefined,
+    ...(youtubeWatchUrl ? {
+      "trailer": {
+        "@type": "VideoObject",
+        "name": `${title} – Trailer`,
+        "description": `Watch the trailer for ${title}`,
+        "thumbnailUrl": ogImage,
+        "uploadDate": item.release_date || new Date().toISOString().split('T')[0],
+        "contentUrl": youtubeWatchUrl,
+        "embedUrl": youtubeEmbedUrl
+      }
+    } : {})
+  };
 
   const getPageText = useCallback((): string => {
     if (typeof document === 'undefined') return '';
@@ -648,28 +675,48 @@ export default function MovieDetail({ item, recommendations, ogImage }: Props) {
     setIsMuted(prev => !prev);
   }, []);
 
+ 
   return (
     <>
-           <Head>
-        <title>Movies - Movie & TV trailers</title>
-        <meta name="description" content="Browse the latest movie collection. Watch free movies online in HD. No sign-up required." />
-        <meta name="keywords" content="free movies, watch online, movies, streaming" />
-        <link rel="canonical" href={`${BASE_URL}/movies`} />
+         <Head>
+        <title>{title} – Watch Online HD | Movie & TV Trailers</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalUrl} />
+
         <meta property="fb:app_id" content={FB_APP_ID} />
-        <meta property="og:site_name" content="Movie & TV trailers" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`${BASE_URL}/movies`} />
-        <meta property="og:title" content="Movies - Movie & TV trailers" />
-        <meta property="og:description" content="Browse the latest movie collection. Watch free movies online." />
-        <meta property="og:image" content={`${BASE_URL}/${item.poster_path}`} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="Movie & TV Trailers" />
+        <meta property="og:type" content="video.movie" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:title" content={`${title} – Watch Online HD`} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:secure_url" content={ogImage} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1280" />
+        <meta property="og:image:height" content="720" />
+        <meta property="og:image:alt" content={`${title} - backdrop`} />
+
+        {youtubeWatchUrl && <meta property="og:video" content={youtubeWatchUrl} />}
+        {youtubeEmbedUrl && <meta property="og:video:url" content={youtubeEmbedUrl} />}
+        {youtubeEmbedUrl && <meta property="og:video:secure_url" content={youtubeEmbedUrl} />}
+        <meta property="og:video:type" content="text/html" />
+        <meta property="og:video:width" content="1280" />
+        <meta property="og:video:height" content="720" />
+
+        {item.release_date && <meta property="video:release_date" content={item.release_date} />}
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@MovieTVTrailers" />
-        <meta name="twitter:title" content="Movies - Movie & TV trailers" />
-        <meta name="twitter:description" content="Browse the latest movie collection." />
-        <meta name="twitter:image" content={`${BASE_URL}/${item.poster_path}`} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }} />
+        <meta name="twitter:creator" content="@MovieTVTrailers" />
+        <meta name="twitter:title" content={`${title} – Watch Online HD`} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image:alt" content={`${title} - backdrop`} />
+        {youtubeEmbedUrl && <meta name="twitter:player" content={youtubeEmbedUrl} />}
+        <meta name="twitter:player:width" content="1280" />
+        <meta name="twitter:player:height" content="720" />
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(movieSchema) }} />
       </Head>
        <div className="min-h-screen bg-slate-50 dark:bg-[#0f172a]">
         <Header />
