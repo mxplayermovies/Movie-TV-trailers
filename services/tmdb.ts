@@ -1471,6 +1471,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "honey-2026",
     yt_id: "1LGDJx1JV3o",
+    yt_bg_music_id: "3TPgiIeBTfk",
     title: "Honey (2026) Multi-Languages In Tamil + Telugu + Hindi + Kannada.",
     poster_path: "https://media.themoviedb.org/t/p/w500/aiDE86ihhMcoDpcCLCHvuUDm0en.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/ApNGGi1ZPXds1pGfYxCoS9GLTZ0.jpg",
@@ -1488,6 +1489,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
     {
     id: "the-bluff-2026",
     yt_id: "uUYMqRjNxhM",
+    yt_bg_music_id: "NLqFgqjQsOw",
     title: "The Bluff (2026) Multi-Languages In Tamil + Telugu + Hindi + Kannada + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/sojEzvfxR2DBcDSJyAisX8TWjov.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/hYgUkH7TusddHRtelj53I6gFOWR.jpg",
@@ -1510,6 +1512,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "accused-2026",
     yt_id: "p2ynDIq4nWM",
+    yt_bg_music_id: "JW1ABSKANgU",
     title: "Accused (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/eeP55mdqj4KpWtEPBvZJoxmnkXI.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/8QRMlkCMFNKZM2ApnIaut5t4snf.jpg",
@@ -1527,6 +1530,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
     {
     id: "pavane-2026",
     yt_id: "iKM0WEtHoEU",
+    yt_bg_music_id: "NPgX3BV0YWI",
     title: "Pavane (2026) Multi-Languages In Tamil + Telugu + Hindi + Korean.",
     poster_path: "https://image.tmdb.org/t/p/w500/wOXc8stx1CLvM6GC0ABKfWOkbYw.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/atWzbjlDkfbkh4mdY3uuiF9vr3r.jpg",
@@ -1544,6 +1548,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
     {
     id: "the-housemaid-2025",
     yt_id: "BqWH0KDqm3U",
+    yt_bg_music_id: "fjnLB7OjdD0",
     title: "The Housemaid (2025) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/cWsBscZzwu5brg9YjNkGewRUvJX.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/tNONILTe9OJz574KZWaLze4v6RC.jpg",
@@ -1561,6 +1566,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "xeno-2025",
     yt_id: "73mpV0yAz0A",
+    yt_bg_music_id: "qHAk8jwhnOA",
     title: "Xeno (2025) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/bXJD04oDre4ZiW6CapzBuJyyp4w.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/xZjnJupgEYI5fDVY9siyiiGKtK6.jpg",
@@ -1578,6 +1584,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "skyfall-2012",
     yt_id: "YvV3g8hLlyU",
+    yt_bg_music_id: "q9AcnLA5f8c",
     title: "Skyfall (2012) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/d0IVecFQvsGdSbnMAHqiYsNYaJT.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/qB2eFmGEh5YCzhXUpz7As2PaDCh.jpg",
@@ -1595,6 +1602,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "mercy-2026",
     yt_id: "JUADqWkJiiE",
+    yt_bg_music_id: "npF2Kyr3n2A",
     title: "Mercy (2026) Multi-Languages In Tamil Hindi + Malayalam + Kannada + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/pyok1kZJCfyuFapYXzHcy7BLlQa.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/7HKpc11uQfxnw0Y8tRUYn1fsKqE.jpg",
@@ -1612,6 +1620,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "firebreak-2026",
     yt_id: "Bi4zKhBoWxA",
+    yt_bg_music_id: "6LmUBr_5fkg",
     title: "Firebreak (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/knh3c8LzL9fMhjc5SZPAOotXyiy.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/thgemkoLauZxcqe6KX8wxqEc70z.jpg",
@@ -1629,6 +1638,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "lucky-the-superstar-2026",
     yt_id: "JwPvl7zUlUE",
+     yt_bg_music_id: "i-NoU5Sedyw",
     title: "Lucky the Superstar (2026) Multi-Languages In Tamil + Telugu + Hindi + Malayalam + Kannada.",
     poster_path: "https://image.tmdb.org/t/p/w500/fb5ao0wON2Dq3atOy3rikyL8IsP.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/cg2ioY2B4LpnpaYfzSExvmGqy1c.jpg",
@@ -1646,6 +1656,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "hotspot-2-much-2026",
     yt_id: "cbWQRBbPra8",
+    yt_bg_music_id: "0Cl-W4c_cBE",
     title: "Hotspot 2 Much (2026) Multi-Languages In Tamil + Hindi.",
     poster_path: "https://image.tmdb.org/t/p/w500/iSdXPDyQTkXtDEgvzWxtq6f0Pud.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/gG1E5JG0wElxoxU73EmV4aiXS3t.jpg",
@@ -1665,6 +1676,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "the-negotiator-2025",
     yt_id: "FZ5Fuu_49po",
+    yt_bg_music_id: "Fnn4m3yHZEc",
     title: "The Negotiator (2025) Multi-Languages In Tamil + Telugu + Hindi.",
     poster_path: "https://image.tmdb.org/t/p/w500/ns0qUI7Y8cK5g6XSvRHmNANAN99.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/qElvJvnwPBYu9JOM9nrsvHbdfE.jpg",
@@ -1682,6 +1694,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "chalo-dilli-2011",
     yt_id: "khRB85bwj-8",
+    yt_bg_music_id: "i4vz2v20G2M",
     title: "Chalo Dilli (2011) Multi-Languages In Tamil + Hindi.",
     poster_path: "https://image.tmdb.org/t/p/w500/9IAHOSZpWxyHbK40WmUFJq2Bwuh.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/jU8W4GzmyYaW0vgLqv35kEG71O5.jpg",
@@ -1699,6 +1712,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
     {
     id: "joes-college-road-trip-2026",
     yt_id: "wAFF7SwGY_k",
+    yt_bg_music_id: "UJMpdQUYGao",
     title: "Joe's College Road Trip (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/jWGOCUlzF4aCVLwHoiuqWWfhcrA.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/dbr3eceKuGnKc9v5GaVTVtegZNK.jpg",
@@ -1716,6 +1730,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "vaa-vaathiyaar-2026",
     yt_id: "AZab2l-maIY",
+    yt_bg_music_id: "dN3ltKrp2t8",
     title: "Vaa Vaathiyaar (2026) Multi-Languages In Tamil + Telugu + Hindi + Malayalam + Kannada.",
     poster_path: "https://image.tmdb.org/t/p/w500/47uIUf9KCfDzxQXixw8lrvYl8C8.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/qPNIwdR3y965KMsiweyuXdjDRXR.jpg",
@@ -1733,6 +1748,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "Anaconda-2026-multi-lang",
     yt_id: "gmx1SD-TJjo",
+    yt_bg_music_id: "YlGfFnSDq0Q",
     title: "Anaconda (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://image.tmdb.org/t/p/w500/qxMv3HwAB3XPuwNLMhVRg795Ktp.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/swxhEJsAWms6X1fDZ4HdbvYBSf9.jpg",
@@ -1751,6 +1767,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "the-wrecking-crew-2026-multi-lang",
     yt_id: "pTNoa2sdq5A",
+    yt_bg_music_id: "vixIbrA2oGU",
     title: "The Wrecking Crew (2026) Multi-Languages In Tamil + Telugu + Hindi + Malayalam + Kannada + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/gbVwHl4YPSq6BcC92TQpe7qUTh6.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/e4OnHU8HNAhdS6C4Ypk6NA26kPQ.jpg",
@@ -1768,6 +1785,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "relationship-goals-2026-multi-lang",
     yt_id: "To87iNMhedU",
+    yt_bg_music_id: "WpxuZ9jOYDk",
     title: "Relationship Goals (2026) Multi-Languages In Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/o7dVxvZIKnAB7k1eeeWp2k14Es7.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/6zaQ1ffMOXjBdeg0gKd6OxUvT4C.jpg",
@@ -1785,6 +1803,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "even-if-this-love-disappears-tonight-2026-multi-lang",
     yt_id: "kA7S8HQ5u8o",
+    yt_bg_music_id: "2fq4V4A3oHM",
     title: "Even if This Love Disappears Tonight (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/5eNN8KLDPUXDqIkTdCbmn1gx5P7.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/iL5eGI9ctHdUOV4yG6dyGKctSEX.jpg",
@@ -1802,6 +1821,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "nari-nari-naduma-murari-2026-multi-lang",
     yt_id: "ILrgbOWdHf4",
+     yt_bg_music_id: "hkGLcLfb4qY",
     title: "Nari Nari Naduma Murari (2026) Multi-Languages In Hindi + Malayalam + Kannada.",
     poster_path: "https://media.themoviedb.org/t/p/w500/jFBu7tS0mlEZwYTkjJcKH48bV4m.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/8o1b4G5Uv5EFQ64Sicz1ae7WLsT.jpg",
@@ -1819,6 +1839,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "the-investigation-of-lucy-letby-2026-multi-lang",
     yt_id: "vahq6aCN9lI",
+    yt_bg_music_id: "uPOXxxvBJJw",
     title: "The Investigation of Lucy Letby (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/qhNThwc72GqihJhXaP29Af5hJ2A.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/qhSfXdkrIzwYsyQ3Z9ehFmO3zjy.jpg",
@@ -1840,6 +1861,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "lockdown-2026-multi-lang",
     yt_id: "DnTJzBsgIfU",
+    yt_bg_music_id: "99SSB89wxvI",
     title: "Lockdown (2026) Multi-Languages",
     poster_path: "https://media.themoviedb.org/t/p/w500/upUB6qQVrAQ3jUUSUkDFOfGFdQn.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/upUB6qQVrAQ3jUUSUkDFOfGFdQn.jpg",
@@ -1858,6 +1880,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "the-astronaut-2026-multi-lang",
     yt_id: "cF3gdVOT6gQ",
+     yt_bg_music_id: "ogwbIKhySzQ",
     title: "The Astronaut (2026) Multi-Languages In Tamil + Telugu + Hindi.",
     poster_path: "https://media.themoviedb.org/t/p/w500/souvvkJHYhztC1UqZ8lEVUiJa3J.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/3C01kAcKGR6FwsUUSOvJ8N82pqr.jpg",
@@ -1876,6 +1899,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "primate-2026-multi-lang",
     yt_id: "5euVfhfa3hI",
+    yt_bg_music_id: "RoVVwGncYWs",
     title: "Primate (2026) Multi-Languages In Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/57cyAMc9c8iveudogTRuDOQjujn.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/qca9e83DzC3zBexlFx3HKZMNawF.jpg",
@@ -1897,6 +1921,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
     {
     id: "queen-of-chess-2026-multi-lang",
     yt_id: "8pmJgtLKBXg",
+    yt_bg_music_id: "GYbMxFGXVTA",
     title: "Queen Of Chess (2026) Multi-Languages In Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/ag5TZNcK3vHdCCpZIY8syjwzgfr.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/y5haKgSz1hCDatwIOMuqZ1CFKPW.jpg",
@@ -1917,6 +1942,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "twisted-2026-multi-lang",
     yt_id: "fAkM20N5YV0",
+    yt_bg_music_id: "dqBYL-d9GQc",
     title: "Twisted (2026) Multi-Languages",
     poster_path: "https://media.themoviedb.org/t/p/w500/rF6txsM6cgF9vg6Ra5sNbkvUwrw.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/qg6wGnkBhCcsGfNz1eGtPMtKGDs.jpg",
@@ -1937,6 +1963,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "guns-up-2025-multi-lang",
     yt_id: "em64F7k27ws",
+    yt_bg_music_id: "yTuVrGspNP4",
     title: "Guns Up (2025) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/3RokBWEkQqJRZEVP3DPwGm5MYh6.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/4bYpERIjVMfDJJPEKDONI784sRb.jpg",
@@ -1958,6 +1985,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "redux-redux-2026-multi-lang",
     yt_id: "q3MIBtD4zuY",
+    yt_bg_music_id: "38B6Vur-Uqw",
     title: "Redux Redux (2026) Multi-Languages In Tamil + Telugu + Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/9u7sUTYPPTxGCXbkcw8FTq50PnO.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/rdiOHydT17DtZ9WBVFLnVK4cU2R.jpg",
@@ -1979,6 +2007,7 @@ export const UNIQUE_HINDI_DUBBED: MediaItem[] = [
   {
     id: "return-to-silent-hill-2026-multi-Languages",
     yt_id: "PKex8MPiB_U",
+    yt_bg_music_id: "38B6Vur-Uqw",
     title: "Return to Silent Hill (2026) Multi-Languages In Hindi + English.",
     poster_path: "https://media.themoviedb.org/t/p/w500/fqAGFN2K2kDL0EHxvJaXzaMUkkt.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/nTbO6UF944b0VZrgypMK5rFYRSW.jpg",
@@ -2073,6 +2102,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "andhadhundh-part-2-2026",
     yt_id: "4b3Ksouxvpo",
+    yt_bg_music_id: "q_r0THGGLy4",
     title: "Andhadhundh – Part 2 (2026) Ullu Hot Web Series. ",
     poster_path: "https://movie-tv-trailers.vercel.app/images/movie/anuradha-1.jpg",
     backdrop_path: "https://movie-tv-trailers.vercel.app/images/movie/anuradha.jpg",
@@ -2085,11 +2115,12 @@ export const UNIQUE_ADULT: MediaItem[] = [
       "Server 1": "https://byseqekaho.com/e/rqihvtz5g155",
       "Server 2": "https://vidara.to/e/VzBikdo1jJw8a",
       },
-    overview: "Andhadhundh – Part 2 (2026) picks up the high-stakes tension where the first part left off. The hidden schemes of Suhas and Ravindra are pushed to the brink of exposure when Geet’s sister, Preet, makes an unexpected arrival. As Preet begins snooping around and Suhas starts to resist the ongoing manipulation, Ravindra’s “little game” faces its greatest challenge yet. As a signature Ullu Telugu original, the show is known for its suspenseful atmosphere, sharp production quality, and the bold performances of its cast. This 80-minute sequel is a trending 2026 title for fans of uncut Telugu web series who enjoy complex thrillers.",
+    overview: "The Web Series picks up the high-stakes tension where the first part left off. The hidden schemes of Suhas and Ravindra are pushed to the brink of exposure when Geet’s sister, Preet, makes an unexpected arrival. As Preet begins snooping around and Suhas starts to resist the ongoing manipulation, Ravindra’s “little game” faces its greatest challenge yet. As a signature Ullu Telugu original, the show is known for its suspenseful atmosphere, sharp production quality, and the bold performances of its cast. This 80-minute sequel is a trending 2026 title for fans of uncut Telugu web series who enjoy complex thrillers.",
   },
   {
     id: "sex-trip-2026",
     yt_id: "uOmq4fNpkSw",
+    yt_bg_music_id: "6KtNLjdnM4M",
     title: "Sex Trip (2026) Filipino Adult Rated Movie. ",
     poster_path: "https://image.tmdb.org/t/p/w500/sr4sLilBbPx4TfPnX2zzUxlySgu.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/q2UhJtqp4ONeARofhpIHx4S0ElU.jpg",
@@ -2111,6 +2142,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "pansamantala-2026",
     yt_id: "GZWKWwfJ2Sc",
+    yt_bg_music_id: "3DuhMJkXIXc",
     title: "Pansamantala (2026) Filipino Adult Rated Movie. ",
     poster_path: "https://image.tmdb.org/t/p/w500/oa9YIxSVw7FsVIWaObFiO0RkKv0.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/bzKjJboSsOA6sKthmNN5ojM01vw.jpg",
@@ -2133,6 +2165,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "foreplay-2026",
     yt_id: "M2JVXoCv750",
+    yt_bg_music_id: "uUi4u2hYet0",
     title: "Foreplay (2026) Filipino Adult Rated Movie. ",
     poster_path: "https://image.tmdb.org/t/p/w500/gO76jmB6I7vV6w3lSH6F86mktC5.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/3R8o8kelqunze33PbpJ04eUYrJp.jpg",
@@ -2154,6 +2187,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "bagong-tukso-2026",
     yt_id: "1qaxZd-hXhY",
+     yt_bg_music_id: "uUi4u2hYet0",
     title: "Bagong Tukso (2026) Filipino Adult Rated Movie. ",
     poster_path: "https://image.tmdb.org/t/p/w500/t7nlhiZNaGdXPmbsTM872VlZgXD.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/brgYZB9cAuwTfZoHb8nq9FLtWMG.jpg",
@@ -2175,6 +2209,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "sagaran-2026",
     yt_id: "HPSlKmxzXPM",
+    yt_bg_music_id: "0yiuzPwZf3M",
     title: "Sagaran (2026) Filipino Adult Rated Movie. ",
     poster_path: "https://image.tmdb.org/t/p/w500/x44TC1EEYDR7Qo6ZGECabsnzkdQ.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/mwEai7501xFLP6DKaAEZScZuIgB.jpg",
@@ -2196,6 +2231,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "sulutan-2025",
     yt_id: "SbeZ0ZpIuxw",
+    yt_bg_music_id: "e12XPzwJm4s",
     title: "Sulutan (2025) Filipino Adult Rated Movie. ",
     poster_path: "https://image.tmdb.org/t/p/w500/kd11696ab32WhHUeq5ZkWi9k09Y.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/kd11696ab32WhHUeq5ZkWi9k09Y.jpg",
@@ -2216,6 +2252,8 @@ export const UNIQUE_ADULT: MediaItem[] = [
   },
   {
     id: "the-secret-of-maria-makinang-2025",
+    yt_id: "HPSlKmxzXPM",
+    yt_bg_music_id: "wSspf3bye6E",
     title: "The Secret of Maria Makinang (2025) Filipino Adult Rated Movie.",
     poster_path: "https://image.tmdb.org/t/p/w500/aaIyWoyk13wp2SmzVTA1X2VSLaz.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/aaIyWoyk13wp2SmzVTA1X2VSLaz.jpg",
@@ -2239,6 +2277,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "angkinin-mo-ako-2025",
     yt_id: "rgHjCS7stRE",
+    yt_bg_music_id: "lmUuG7IlEWM",
     title: "Angkinin Mo Ako (2025) Filipino Adult Rated Movie.",
     poster_path: "https://image.tmdb.org/t/p/w500/2YZ24F49pRkNb45YWI6yckrTYE.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/2YZ24F49pRkNb45YWI6yckrTYE.jpg",
@@ -2261,6 +2300,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "elaichi-ek-prem-katha-2026",
     yt_id: "-s0HqQQdd_g",
+     yt_bg_music_id: "JhiCPZtEzB0",
     title: "Elaichi: Ek Prem Katha (2026) Hindi Adult Rated Movie.",
     poster_path: "https://image.tmdb.org/t/p/w500/uaHRJYzURYiNyZmF0p0bTiQMpOK.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/uaHRJYzURYiNyZmF0p0bTiQMpOK.jpg",
@@ -2278,6 +2318,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "chemistry-part-2",
     yt_id: "zYiQGwoWAAI",
+    yt_bg_music_id: "5-fXZ5dg8_g",
     title: "Chemistry Part 2 (2026) Hindi Adult Rated Movie.",
     poster_path: "https://m.media-amazon.com/images/M/MV5BYzBiMWY2ZWEtYTNjOC00ZTg0LWJlMGQtODU1N2UwYWM3MDAyXkEyXkFqcGc@._V1_.jpg",
     backdrop_path: "https://media-files.atrangii.in/media-metadata/6979de0ef60fc20caae469ce",
@@ -2296,6 +2337,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "generation-gap-part-2",
     yt_id: "hM8QW_8YGUI",
+    yt_bg_music_id: "5-fXZ5dg8_g",
     title: "Generation Gap Part 2 (2026) Hindi Adult Rated Movie.",
     poster_path: "https://m.media-amazon.com/images/M/MV5BMGFhYWQ3YjktNzg3OC00NmJlLTg4NWQtMzcyYWIwNjNkYTIwXkEyXkFqcGc@._V1_.jpg",
     backdrop_path: "https://i.ytimg.com/vi/ID1smTZldw0/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLB3JVPV9kENRBn5u8fWkxQdl4K0_w",
@@ -2314,6 +2356,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "sirena-2026",
     yt_id: "0iLFXsq_A8E",
+    yt_bg_music_id: "5-fXZ5dg8_g",
     title: "Sirena (2026) Filipino Adult Rated Movie.",
     poster_path: "https://image.tmdb.org/t/p/w500/vOI7DzSJQylwqo1UgiIBZIftY7h.jpg",
     backdrop_path: "https://image.tmdb.org/t/p/original/bbjLZffHvztUrq4IfoepMzhE4VR.jpg",
@@ -2349,6 +2392,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   },
   {
     id: "patikim-ni-robb-guinto-2026",
+    yt_bg_music_id: "5-fXZ5dg8_g",
     title: "Patikim ni Robb Guinto (2026) Filipino Adult Rated Movie.",
     poster_path: "https://media.themoviedb.org/t/p/w500/4rL4XpHnngzElgdYDqaDtZnmtEH.jpg",
     backdrop_path: "https://media.themoviedb.org/t/p/w780/AarN9NHen3V3z2H4Naw5Izc11x.jpg",
@@ -2369,6 +2413,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
   {
     id: "audacity-2026",
     yt_id: "sDfKGG6Q06E",
+    yt_bg_music_id: "OZXW_hRw_hI",
     title: "Audacity (2026) Hindi Adult Rated Movie.",
     poster_path: "https://www.coolmoviez.baby/files/images/Audacity_(2026)_Part_2_Atrangii_Hindi_Unrated_Webseries.jpg",
     backdrop_path: "https://i.ytimg.com/vi/tULnumoXoWk/maxresdefault.jpg",
@@ -2381,7 +2426,7 @@ export const UNIQUE_ADULT: MediaItem[] = [
       "Server 1": "https://vidara.to/e/jOktxgon2ZQlO",
       "Server 2": "https://byseqekaho.com/e/zldtte3alzfk/",
       },
-    overview: "VMX hottie Christy Imperial gives fans a taste of VMX GL Crush Robb Guinto's spiciest and tastiest scenes",
+    overview: "When Pratham helps Kaveri escape her painful past, sparks don’t just fly… they clash. A silent sister-war begins, and one unexpected conversation turns gratitude into shock. Nothing will be the same again. Cast: Soma Majhi, Falak Hasan, Mahi Khan and Joshua Chhabra ",
   },
   
 ];
