@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 10;
+  --background-end-rgb: 0, 0, 0;
+}
+
+/* PRODUCTION RESET */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  top: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  background: #0a0a0a;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* GOOGLE TRANSLATE - PRODUCTION GRADE FIX */
+
+/* Kill the Google Top Bar, Banner, and Tooltips */
+.goog-te-banner-frame.skiptranslate, 
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-te-gadget-icon,
+.goog-tooltip,
+.skiptranslate[style*="top: 40px"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    width: 0 !important;
+    max-height: 0 !important;
+    max-width: 0 !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+}
+
+/* Force body to top regardless of translate injection */
+body {
+    top: 0 !important;
+    position: static !important;
+}
+
+/* Remove translate banner space */
+body > .skiptranslate {
+    display: none !important;
+}
+
+/* Strip gadget branding */
+.goog-te-gadget {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0 !important;
+  color: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  background: transparent !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.goog-te-gadget span,
+a[href="https://translate.google.com"],
+a[href*="//translate.google.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+/* Hide the translate button that sometimes appears */
+.goog-te-button {
+  display: none !important;
+}
+
+/* Hide the Google Translate footer/bottom bar */
+.goog-te-footer {
+  display: none !important;
+}
+
+/* Hide any additional Google Translate elements that might appear */
+iframe[title="Google Translate Element"],
+iframe[src*="translate.google.com"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Main Container – black background, white border, no outline */
+#google_translate_element {
+  background-color: #000000 !important;
+  border: 1px solid #ffffff !important;
+  border-radius: 8px !important;
+  padding: 4px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+  display: inline-block !important;
+  min-width: 160px !important;
+  outline: none !important;
+  transition: all 0.2s ease;
+}
+
+/* The actual dropdown/content container – ensure white text */
+.goog-te-gadget > div {
+  display: inline-block !important;
+  font-size: 14px !important;
+  color: #ffffff !important;
+}
+
+/* THE SELECT DROPDOWN – black background, white text, no border, no outline */
+.goog-te-combo {
+  display: block !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 6px 8px !important;
+  font-size: 14px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  outline: none !important;
+  width: 100% !important;
+  min-width: 110px !important;
+  cursor: pointer !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  height: 36px !important;
+  transition: all 0.2s ease;
+}
+
+/* Remove any focus outline from the select */
+.goog-te-combo:focus {
+  outline: none !important;
+}
+
+/* Styling for the dropdown list items – black background, white text */
+.goog-te-combo option {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  padding: 12px !important;
+  font-size: 14px !important;
+}
+
+/* Ensure translate widget doesn't break layout */
+.translate-widget-container {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+@media (max-width: 375px) {
+  .xs\:hidden {
+    display: none !important;
+  }
+}
