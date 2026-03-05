@@ -527,9 +527,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         </div>
       </div>
       <p className="text-sm text-gray-700 dark:text-white font-bold text-center font-['Poppins'] leading-relaxed">
-        If the stream is not available, please try selecting a different server
-        for the best experience. We regularly check our servers to ensure smooth
-        playback. All copyrights belong to their respective owners.
+        If the stream is not available, please try selecting a different server for the best experience.
       </p>
       <div
         ref={containerRef}
@@ -648,13 +646,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         </div>
       </div>
 
-      <p className="text-sm text-gray-700 dark:text-white font-bold text-center text-justify font-['Poppins'] leading-relaxed">
+      {/* <p className="text-sm text-gray-700 dark:text-white font-bold text-center text-justify font-['Poppins'] leading-relaxed">
         We do not host, upload, or store any media files. All streaming links
         are publicly available on the internet and provided by independent
         third-party sources. We do not control or manage this content and are
         not affiliated with any content owners. All copyrights belong to their
         respective owners.
-      </p>
+      </p> */}
     </div>
   )
 }
