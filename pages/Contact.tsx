@@ -229,7 +229,8 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <button
+    <div className="min-h-screen bg-miraj-black pt-24 pb-20 relative">
+     <button
   onClick={handleSpeakerClick}
   className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl transition-all duration-300 font-semibold ${
     isSpeaking
