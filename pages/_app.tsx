@@ -50,7 +50,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       // New ad script
    
       const adScriptNew = document.createElement('script');
-      adScriptNew.src = 'https://movie-tv-trailers.vercel.app/7d6e5c4e347dc.js ';
+      adScriptNew.src = 'https://movie-tv-trailers.vercel.app/2710a0fc048d2?site_id=101501713';
       adScriptNew.setAttribute('data-cfasync', 'false');
       adScriptNew.async = true;
       document.head.appendChild(adScriptNew);
