@@ -250,13 +250,13 @@ const WatchPage: React.FC<WatchPageProps> = ({
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://movies4u-official.vercel.app/',
+        item: 'https://movie-tv-trailers.vercel.app/',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: type === 'movie' ? 'Movies' : type === 'tv' ? 'TV Shows' : type === 'sports' ? 'Sports' : 'Live TV',
-        item: `https://movies4u-official.vercel.app/${
+        item: `https://movie-tv-trailers.vercel.app/${
           type === 'movie' ? 'movies' : type === 'tv' ? 'tv' : type === 'sports' ? 'sports' : 'live'
         }`,
       },
@@ -323,7 +323,7 @@ const WatchPage: React.FC<WatchPageProps> = ({
       {!isPaidUser && youtubeTrailerId ? (
         <>
           <SEO
-            title={`${title} - Official Trailer | Watch Free on Movies4U™ Official`}
+            title={`${title} - Official Trailer | Watch Free on Movie & TV trailers`}
             description={`Watch the official trailer for ${title}. ${description.substring(0, 150)}... Unlock the full movie in HD quality.`}
             image={getImageUrl(details.backdrop_path || details.poster_path, 'original')}
             type="video.other"
@@ -345,8 +345,8 @@ const WatchPage: React.FC<WatchPageProps> = ({
                 duration: 'PT2M30S',
                 publisher: {
                   '@type': 'Organization',
-                  name: 'Movies4U™ Official',
-                  logo: { '@type': 'ImageObject', url: 'https://movies4u-official.vercel.app/logo.png' },
+                  name: 'Movie & TV trailers',
+                  logo: { '@type': 'ImageObject', url: 'https://movie-tv-trailers.vercel.app/logo.png' },
                 },
               }),
             }}
@@ -354,7 +354,7 @@ const WatchPage: React.FC<WatchPageProps> = ({
         </>
       ) : (
         <SEO
-          title={`${title} - Watch Free on Movies4U™ Official`}
+          title={`${title} - Watch Free on Movie & TV trailers`}
           description={description}
           image={getImageUrl(details.poster_path, 'original')}
           type="video.movie"
