@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import SEO from '../components/SEO';
-import { MonitorPlay, Zap, Globe, Shield, AlertCircle, Volume2, VolumeX } from 'lucide-react';
+import { MonitorPlay, Zap, Globe, Shield, AlertCircle, Volume2, Download, VolumeX } from 'lucide-react';
 
 // ========== IMPORT THE AUDIO/TTS MODULES ==========
 import { voiceManager } from '../lib/core/VoiceManager';
@@ -91,18 +91,18 @@ const About: React.FC = () => {
   return (
     <div className="min-h-screen bg-miraj-black pt-24 pb-20 relative">
       {/* Read Aloud button – controls both TTS and background music */}
-      <button
-        onClick={handleSpeakerClick}
-        className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full shadow-lg transition-all ${
-          isSpeaking
-            ? 'bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white'
-            : 'bg-miraj-gold/20 text-miraj-gold hover:bg-miraj-gold hover:text-black'
-        }`}
-        title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
-      >
-        {isSpeaking ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        <span className="text-sm text-gray-300 dark:text-gray-300">Read aloud</span>
-      </button>
+   <button
+  onClick={handleSpeakerClick}
+  className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl transition-all duration-300 font-semibold ${
+    isSpeaking
+      ? 'bg-red-600 text-white hover:bg-red-700'
+      : 'bg-yellow-400 text-black hover:bg-yellow-500'
+  }`}
+  title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
+>
+  {isSpeaking ? <VolumeX size={22} /> : <Volume2 size={22} />}
+  <span className="text-sm">Read Aloud</span>
+</button>
 
       <SEO 
         title="About Us - Movie & TV trailers" 
@@ -130,8 +130,27 @@ const About: React.FC = () => {
             We are passionate about cinema and technology, constantly updating our platform to ensure fast loading times, minimal buffering, and a user-friendly interface that works perfectly across all your devices.
           </p>
         </div>
+        <div className="bg-miraj-gray border border-white/5 rounded-2xl p-6 md:p-10 mb-8">
+              <h2>Our Android App</h2>
+              <p>Enjoy a native mobile experience with our Android app, available directly from our website. Get push notifications for new content and a smoother streaming experience on the go.</p>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <div className=" max-w-2xl mx-auto mt-12 bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 p-8 rounded-3xl border border-green-200 dark:border-green-500/20 text-center">
+              <h2 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">Get Our Android App</h2>
+              <p className="text-slate-600 dark:text-slate-300 mb-6">
+                Download the official Movie & TV trailers Android app for the best mobile experience.
+              </p>
+              <a
+                href="https://median.co/share/odmellj"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition shadow-lg hover:shadow-xl"
+              >
+                <Download size={20} />
+                Download APK
+              </a>
+            </div>
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <div className="bg-black/40 border border-white/5 p-6 rounded-xl hover:border-miraj-gold/30 transition-colors">
             <MonitorPlay className="text-miraj-gold mb-4" size={32} />
             <h3 className="text-xl font-bold text-white mb-2">Huge Library</h3>

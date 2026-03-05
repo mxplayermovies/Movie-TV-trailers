@@ -167,17 +167,17 @@ const HindiDubbed: React.FC = () => {
     <div className="min-h-screen bg-miraj-black pt-24 pb-20 relative">
       {/* Read Aloud button – controls both TTS and background music */}
       <button
-        onClick={handleSpeakerClick}
-        className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full shadow-lg transition-all ${
-          isSpeaking
-            ? 'bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white'
-            : 'bg-miraj-gold/20 text-miraj-gold hover:bg-miraj-gold hover:text-black'
-        }`}
-        title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
-      >
-        {isSpeaking ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        <span className="text-sm text-gray-300 dark:text-gray-300">Read aloud</span>
-      </button>
+  onClick={handleSpeakerClick}
+  className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl transition-all duration-300 font-semibold ${
+    isSpeaking
+      ? 'bg-red-600 text-white hover:bg-red-700'
+      : 'bg-yellow-400 text-black hover:bg-yellow-500'
+  }`}
+  title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
+>
+  {isSpeaking ? <VolumeX size={22} /> : <Volume2 size={22} />}
+  <span className="text-sm">Read Aloud</span>
+</button>
 
       <SEO 
         title="Hindi Dubbed Movies - Movie & TV trailers" 

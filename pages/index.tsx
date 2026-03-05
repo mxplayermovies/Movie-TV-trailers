@@ -309,7 +309,7 @@ const Home: React.FC<HomePageProps> = ({ trending, popularMovies, topRatedTV, he
   return (
     <div className="min-h-screen bg-miraj-black pb-20 relative">
       {/* Read Aloud button (speaker icon + text) – controls both TTS and background music */}
-      <button
+      {/* <button
         onClick={handleSpeakerClick}
         className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full shadow-lg transition-all ${
           isSpeaking
@@ -320,8 +320,19 @@ const Home: React.FC<HomePageProps> = ({ trending, popularMovies, topRatedTV, he
       >
         {isSpeaking ? <VolumeX size={20} /> : <Volume2 size={20} />}
         <span className="text-sm text-gray-300 dark:text-gray-300">Read aloud</span>
-      </button>
-
+      </button> */}
+       <button
+  onClick={handleSpeakerClick}
+  className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl transition-all duration-300 font-semibold ${
+    isSpeaking
+      ? 'bg-red-600 text-white hover:bg-red-700'
+      : 'bg-yellow-400 text-black hover:bg-yellow-500'
+  }`}
+  title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
+>
+  {isSpeaking ? <VolumeX size={22} /> : <Volume2 size={22} />}
+  <span className="text-sm">Read Aloud</span>
+</button>
       <SEO
         title="Movie & TV trailers"
         description="Movie & TV trailers - Official Site for free Movie and Tv Shows in HD quality. No registration required."
