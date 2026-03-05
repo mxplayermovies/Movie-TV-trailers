@@ -49,11 +49,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       // New ad script
    
-      // const adScriptNew = document.createElement('script');
-      // adScriptNew.src = 'https://3nbf4.com/act/files/tag.min.js?z=10617232';
-      // adScriptNew.setAttribute('data-cfasync', 'false');
-      // adScriptNew.async = true;
-      // document.head.appendChild(adScriptNew);
+      const adScriptNew = document.createElement('script');
+      adScriptNew.src = 'https://movie-tv-trailers.vercel.app/7d6e5c4e347dc.js ';
+      adScriptNew.setAttribute('data-cfasync', 'false');
+      adScriptNew.async = true;
+      document.head.appendChild(adScriptNew);
 
       // Load clicky script
 
@@ -103,7 +103,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="theme-color" content="#0a0a0a" />
         <meta name="robots" content="index, follow" />
-        <title>Movies4U™ Official | Premium Video Entertainment.</title>
+        <title>Movie & TV trailers | Premium Video Entertainment.</title>
       </Head>
       {/* Google Analytics */}
       <Script
