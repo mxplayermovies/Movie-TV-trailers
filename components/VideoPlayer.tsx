@@ -526,7 +526,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </div>
         </div>
       </div>
-      <p className="text-sm text-gray-700 dark:text-white font-bold text-center font-['Poppins'] leading-relaxed">
+      <p className="text-bg text-white dark:text-white font-bold text-center font-['Poppins'] leading-relaxed">
         If the stream is not available, please try selecting a different server for the best experience.
       </p>
       <div
