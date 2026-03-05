@@ -48,12 +48,12 @@ const Terms: React.FC = () => {
   const buildSpeakText = (): string => {
     const intro = "Terms of Use page. ";
     const sections = [
-      "Section 1: Agreement to Terms. By accessing or using Movies4U Official, you agree to be bound by these Terms of Use. If you disagree with any part of the terms, then you may not access the service.",
+      "Section 1: Agreement to Terms. By accessing or using Movie & TV trailers, you agree to be bound by these Terms of Use. If you disagree with any part of the terms, then you may not access the service.",
       "Section 2: Content Disclaimer. Important Legal Notice. We do not host nor transmit any audiovisual content itself and do not control nor influence such content. We cannot accept any liability for the content transmitted by others. Any responsibility for this content lies with those who host or transmit it. We are not affiliated nor claim to be affiliated with any of the owners of streams or videos. All content is copyright of their respective owners.",
-      "Section 3: Use of Service. You agree to use the Service only for purposes that are permitted by the Terms and any applicable law, regulation, or generally accepted practices or guidelines in the relevant jurisdictions. You agree not to access any of the Services by any means other than through the interface provided by Movies4U Official.",
-      "Section 4: Intellectual Property. The Service and its original content, features, and functionality are and will remain the exclusive property of Movies4U Official and its licensors.",
+      "Section 3: Use of Service. You agree to use the Service only for purposes that are permitted by the Terms and any applicable law, regulation, or generally accepted practices or guidelines in the relevant jurisdictions. You agree not to access any of the Services by any means other than through the interface provided by Movie & TV trailers.",
+      "Section 4: Intellectual Property. The Service and its original content, features, and functionality are and will remain the exclusive property of Movie & TV trailers and its licensors.",
       "Section 5: Termination. We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including if you breach the Terms.",
-      "Section 6: Changes. We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.",
+      "Section 6: Changes. We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.",
     ];
     const lastUpdated = `Last updated: ${getCurrentDateString()}.`;
     return `${intro}${sections.join(' ')} ${lastUpdated}`;

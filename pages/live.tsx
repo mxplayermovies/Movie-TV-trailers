@@ -72,7 +72,7 @@ const LiveTV: React.FC = () => {
       }
       const channelCount = channels.length;
       const currentDate = getCurrentDateString();
-      const speakText = `Live TV page. Browse ${channelCount} live TV channels including news, entertainment, and more. Updated as of ${currentDate}. All content is free and in HD quality.`;
+      const speakText = `Live TV page. Browse ${channelCount} live TV channels including news, entertainment, and more. Updated as of ${currentDate}. All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.`;
       voiceManager.speak(speakText, true, true, () => {
         voiceManager.stopBackgroundMusic();
         setIsSpeaking(false);

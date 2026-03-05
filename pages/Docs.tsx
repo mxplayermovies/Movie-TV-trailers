@@ -58,7 +58,7 @@ const Documentary: React.FC = () => {
     const sections = [
       `Browse ${UNIQUE_DOCUMENTARY.length} hand-picked documentary films.`,
       "Covering nature, history, adventure, and social topics from around the world.",
-      "All titles are free and available in HD quality.",
+      "All titles are free and available in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.",
     ];
     const lastUpdated = `Last updated: ${getCurrentDateString()}.`;
     return `${intro}${sections.join(' ')} ${lastUpdated}`;

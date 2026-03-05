@@ -261,7 +261,7 @@ const Home: React.FC<HomePageProps> = ({ trending, popularMovies, topRatedTV, he
       }
       // Then start TTS, and when TTS ends, stop background music as well
       const welcomeText =
-        "Welcome to Movies4U Official. Browse the latest movies, TV shows, live sports, and documentaries. All content is free and in HD quality.";
+     "Welcome to Movie & TV Trailers. Browse the latest movies, TV shows, live sports, and documentaries. All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.";
       voiceManager.speak(welcomeText, true, true, () => {
         // TTS ended naturally – stop background music too
         voiceManager.stopBackgroundMusic();

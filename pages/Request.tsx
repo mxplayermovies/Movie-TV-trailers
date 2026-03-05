@@ -197,7 +197,7 @@ const Request: React.FC = () => {
       "You can also use the Web Request Form on this page. " +
       "Fill in the content title, release year, type — movie or TV show — and any additional notes such as an IMDB link or specific season. " +
       "Then click Submit Request and we will get back to you within 24 hours. " +
-      "All content is free and in HD quality."
+      "All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers."
     );
   };
 

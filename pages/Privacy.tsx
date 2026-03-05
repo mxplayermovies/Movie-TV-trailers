@@ -54,6 +54,7 @@ const Privacy: React.FC = () => {
       "Our website uses cookies to enhance your browsing experience.",
       "This site may contain links to third-party websites with their own privacy policies.",
       "We may update this policy from time to time."
+      "All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers."
     ];
     const lastUpdated = `Last updated: ${getCurrentDateString()}.`;
     return `${intro}${sections.join(' ')} ${lastUpdated} All content is free and in HD quality.`;

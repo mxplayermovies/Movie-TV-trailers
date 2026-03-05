@@ -49,14 +49,14 @@ const Contact: React.FC = () => {
                     <Mail className="text-miraj-gold mb-3" size={28} />
                     <h3 className="font-bold text-white text-lg mb-1">Email Us</h3>
                     <p className="text-gray-400 text-sm mb-2">For general inquiries and support.</p>
-                    <a href="mailto:support@movies4uofficial.com" className="text-miraj-red hover:underline font-medium">support@movies4uofficial.com</a>
+                    <a href="mailto:support@movieandtvtrailers.com" className="text-miraj-red hover:underline font-medium">support@movieandtvtrailers.com</a>
                 </div>
                 
                 <div className="bg-miraj-gray border border-white/5 p-6 rounded-xl">
                     <MessageSquare className="text-miraj-gold mb-3" size={28} />
                     <h3 className="font-bold text-white text-lg mb-1">DMCA / Legal</h3>
                     <p className="text-gray-400 text-sm mb-2">For copyright related matters.</p>
-                    <a href="mailto:legal@movies4uofficial.com" className="text-miraj-red hover:underline font-medium">legal@movies4uofficial.com</a>
+                    <a href="mailto:legal@movieandtvtrailers.com" className="text-miraj-red hover:underline font-medium">legal@movieandtvtrailers.com</a>
                 </div>
             </div>
 

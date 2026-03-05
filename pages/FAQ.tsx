@@ -55,6 +55,10 @@ const FAQ: React.FC = () => {
     {
       question: "How can I request a specific movie or show?",
       answer: "You can use the 'Contact Us' page to send us a request. Please include the full title and release year of the content you are looking for."
+    },
+    { 
+      question: "What devices are supported?",
+      answer: "Our platform is accessible on most modern web browsers and mobile devices. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers."
     }
   ];
 

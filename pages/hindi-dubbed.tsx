@@ -80,7 +80,7 @@ const HindiDubbed: React.FC = () => {
       // Then start TTS, and when TTS ends, stop background music as well
       const itemCount = allItems.length;
       const currentDate = getCurrentDateString();
-      const speakText = `Hindi Dubbed page. Browse the latest Hindi dubbed movies. Currently showing ${itemCount} titles. Updated as of ${currentDate}. All content is free and in HD quality.`;
+      const speakText = `Hindi Dubbed page. Browse the latest Hindi dubbed movies. Currently showing ${itemCount} titles. Updated as of ${currentDate}. All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.`;
       voiceManager.speak(speakText, true, true, () => {
         // TTS ended naturally – stop background music too
         voiceManager.stopBackgroundMusic();

@@ -44,8 +44,9 @@ const Footer: React.FC = () => {
               <li><Link href="/Movies" className="hover:text-miraj-gold hover:pl-2 transition-all block">Movies</Link></li>
               <li><Link href="/tv" className="hover:text-miraj-gold hover:pl-2 transition-all block">TV Shows</Link></li>
               <li><Link href="/hindi-dubbed" className="hover:text-miraj-gold hover:pl-2 transition-all block">Hindi Dubbed</Link></li>
-                 <li><Link href="/Docs" className="hover:text-miraj-gold hover:pl-2 transition-all block">Documentary</Link></li>
-                    <li><Link href="/Sports" className="hover:text-miraj-gold hover:pl-2 transition-all block">Live Sports</Link></li>
+              <li><Link href="/adult" className="hover:text-miraj-gold hover:pl-2 transition-all block">Adult</Link></li>
+              <li><Link href="/Docs" className="hover:text-miraj-gold hover:pl-2 transition-all block">Documentary</Link></li>
+              <li><Link href="/Sports" className="hover:text-miraj-gold hover:pl-2 transition-all block">Live Sports</Link></li>
               <li><Link href="/live" className="hover:text-miraj-gold hover:pl-2 transition-all block">Live TV</Link></li>
             </ul>
           </div>

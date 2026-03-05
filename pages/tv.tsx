@@ -78,7 +78,7 @@ const TVShows: React.FC = () => {
       const currentYear = new Date().getFullYear();
       const showCount = shows.length;
       const currentDate = getCurrentDateString();
-      const speakText = `TV shows page. Browse the latest TV series from ${currentYear}. Currently showing ${showCount} shows. Updated as of ${currentDate}. All content is free and in HD quality.`;
+      const speakText = `TV shows page. Browse the latest TV series from ${currentYear}. Currently showing ${showCount} shows. Updated as of ${currentDate}. All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.`;
       voiceManager.speak(speakText, true, true, () => {
         // TTS ended naturally – stop background music too
         voiceManager.stopBackgroundMusic();

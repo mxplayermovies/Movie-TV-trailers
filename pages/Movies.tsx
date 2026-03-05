@@ -78,7 +78,7 @@ const Movies: React.FC = () => {
       const currentYear = new Date().getFullYear();
       const movieCount = movies.length;
       const currentDate = getCurrentDateString();
-      const speakText = `Movies page. Browse the latest movies from ${currentYear}. Currently showing ${movieCount} movies. Updated as of ${currentDate}. All content is free and in HD quality.`;
+      const speakText = `Movies page. Browse the latest movies from ${currentYear}. Currently showing ${movieCount} movies. Updated as of ${currentDate}. All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.`;
       voiceManager.speak(speakText, true, true, () => {
         // TTS ended naturally – stop background music too
         voiceManager.stopBackgroundMusic();

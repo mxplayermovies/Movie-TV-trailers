@@ -62,7 +62,7 @@ const DMCA: React.FC = () => {
       }
       // Then start TTS, and when TTS ends, stop background music as well
       const currentDate = getCurrentDateString();
-      const speakText = `DMCA Policy page. Movies4U Official respects intellectual property rights. We do not host any content and are not responsible for third-party streams. If you are a copyright owner, you can submit a takedown notice including identification of the copyrighted work, the infringing material URL, your contact information, and a statement of good faith. Send your notice to dmca at movies4uofficial dot com with subject DMCA Takedown Request. Updated as of ${currentDate}. All content is free and in HD quality.`;
+      const speakText = `DMCA Policy page. Movies4U Official respects intellectual property rights. We do not host any content and are not responsible for third-party streams. If you are a copyright owner, you can submit a takedown notice including identification of the copyrighted work, the infringing material URL, your contact information, and a statement of good faith. Send your notice to dmca at movies4uofficial dot com with subject DMCA Takedown Request. Updated as of ${currentDate}. All content is free and in HD quality. For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.`;
       voiceManager.speak(speakText, true, true, () => {
         // TTS ended naturally – stop background music too
         voiceManager.stopBackgroundMusic();

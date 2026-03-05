@@ -58,10 +58,11 @@ const Adults: React.FC = () => {
   const buildSpeakText = (): string => {
     const intro = "Adults section. ";
     const sections = [
-      `Browse ${UNIQUE_ADULT.length} mature and adult-rated movies and web series.`,
+      `Total there are${UNIQUE_ADULT.length} mature and adult-rated movies and web series.`,
       "Includes Hindi, Filipino, and international adult content.",
       "All titles are free and available in HD quality.",
-      "You must be 18 or older to view this section.",
+      "You must be 18 or older to view this section.", 
+      "For the best viewing experience, download our mobile app on your smartphone and enjoy better performance, smoother streaming, and daily notifications for the latest updates and new trailers.",
     ];
     const lastUpdated = `Last updated: ${getCurrentDateString()}.`;
     return `${intro}${sections.join(' ')} ${lastUpdated}`;
