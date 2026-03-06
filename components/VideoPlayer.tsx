@@ -253,7 +253,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         {
           id: 'f-6',
           name: 'Server 6',
-          url: `https://zxcstream.xyz/player/tv/${tmdbId}/hindi?autoplay=false&back=true&server=0`,
+          url: `https://zxcstream.xyz/player/tv/${tmdbId}/?autoplay=false&back=true&server=0`,
           quality: 'HD',
           type: 'iframe'
         }
@@ -487,7 +487,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                   <option
                     key={i}
                     value={i}
-                    className='bg-white dark:bg-gray-800 text-black dark:text-white'
+                    className='bg-white dark:bg-gray-800 text-black dark:text-white font-extrabold'
                   >
                     {s.name || `Server ${i + 1}`}
                   </option>
@@ -513,7 +513,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 <option
                   key={p}
                   value={p}
-                  className='bg-white dark:bg-gray-800 text-black dark:text-white'
+                  className='bg-white dark:bg-gray-800 text-black dark:text-white font-extrabold'
                 >
                   {p}
                 </option>

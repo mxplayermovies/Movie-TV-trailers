@@ -209,3 +209,17 @@ export interface CastMember {
   character: string;
   profile_path: string | null;
 }
+export interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  image: string;
+  videoId?: string | null;
+  yt_bg_music_id?: string;   // 🎵 ADDED – background music for blog post
+  category: string;   
+  tags: string[];
+  author: string;
+  date: string;
+}

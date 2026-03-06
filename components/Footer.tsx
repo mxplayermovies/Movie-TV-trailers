@@ -58,6 +58,7 @@ const Footer: React.FC = () => {
             </h3>
             <ul className="space-y-3 text-sm text-gray-400">
               <li><Link href="/FAQ" className="hover:text-miraj-gold hover:pl-2 transition-all block">FAQ</Link></li>
+              <li><Link href="/blog" className="hover:text-miraj-gold hover:pl-2 transition-all block">Blog</Link></li>
               <li><Link href="/Contact" className="hover:text-miraj-gold hover:pl-2 transition-all block">Contact Us</Link></li>
               <li><Link href="/About" className="hover:text-miraj-gold hover:pl-2 transition-all block">About Us</Link></li>
               <li><Link href="/Request" className="hover:text-miraj-gold hover:pl-2 transition-all block">Request Content</Link></li>

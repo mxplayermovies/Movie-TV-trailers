@@ -1,3 +1,646 @@
+// // pages/watch/[...slug].tsx
+// import React, { useState, useEffect, useCallback, useRef } from 'react';
+// import { GetServerSideProps } from 'next';
+// import { useRouter } from 'next/router';
+// import {
+//   getDetails,
+//   getCast,
+//   getImageUrl,
+//   getRecommendations,
+//   getYouTubeTrailer,
+//   UNIQUE_MOVIES,
+//   UNIQUE_TV_SHOWS,
+//   UNIQUE_SPORTS,
+//   UNIQUE_TV_LIVE,
+//   UNIQUE_HINDI_DUBBED,
+//   UNIQUE_ADULT,
+//   UNIQUE_DOCUMENTARY,
+// } from '../../services/tmdb';
+// import VideoPlayer from '../../components/VideoPlayer';
+// import YouTubePlayer from '../../components/YouTubePlayer';
+// import SEO from '../../components/SEO';
+// import { ContentDetails, CastMember, MediaItem, StreamSource } from '../../types';
+// import {
+//   Calendar,
+//   Clock,
+//   Star,
+//   User,
+//   Share2,
+//   X,
+//   Copy,
+//   Check,
+//   Lock,
+//   Play,
+//   Volume2,
+//   VolumeX,
+// } from 'lucide-react';
+// import Link from 'next/link';
+
+// import { voiceManager } from '../../lib/core/VoiceManager';
+// import { musicController } from '../../lib/core/MusicController';
+
+// interface WatchPageProps {
+//   details: Omit<ContentDetails, 'streams'> | null;
+//   cast: CastMember[];
+//   initialRecommendations: MediaItem[];
+//   type: 'movie' | 'tv' | 'sports' | 'tv_live';
+//   id: string;
+//   youtubeTrailerId: string | null;
+//   initialStreams?: StreamSource[]; // ✅ NEW: pre‑resolved streams for custom items
+// }
+
+// const WatchPage: React.FC<WatchPageProps> = ({
+//   details,
+//   cast,
+//   initialRecommendations,
+//   type,
+//   id,
+//   youtubeTrailerId,
+//   initialStreams,
+// }) => {
+//   const router = useRouter();
+//   const [recommendations, setRecommendations] = useState<MediaItem[]>(
+//     initialRecommendations || []
+//   );
+//   const [isShareOpen, setIsShareOpen] = useState(false);
+//   const [copiedLink, setCopiedLink] = useState(false);
+//   const [isPaidUser, setIsPaidUser] = useState(false);
+//   const [showPaymentModal, setShowPaymentModal] = useState(false);
+//   const [season, setSeason] = useState(1);
+//   const [episode, setEpisode] = useState(1);
+//   const [streams, setStreams] = useState<StreamSource[]>(initialStreams || []);
+//   const [loadingStreams, setLoadingStreams] = useState(!initialStreams);
+
+//   // ========== TTS PLAY/STOP STATE ==========
+//   const [isSpeaking, setIsSpeaking] = useState(false);
+
+//   // ========== TTS TEXT ==========
+//   const titleRef = useRef<HTMLHeadingElement>(null);
+//   const descriptionRef = useRef<HTMLParagraphElement>(null);
+//   const [ttsTitle, setTtsTitle] = useState<string>('');
+//   const [ttsDescription, setTtsDescription] = useState<string>('');
+
+//   // Compute the background music video ID (if any) – only from the details object
+//   const getBgMusicId = useCallback((): string | null => {
+//     if (!details) return null;
+//     // Check if the item has a custom yt_bg_music_id
+//     if ('yt_bg_music_id' in details && details.yt_bg_music_id) {
+//       return details.yt_bg_music_id as string;
+//     }
+//     // No default fallback – return null if not present
+//     return null;
+//   }, [details]);
+
+//   // Stop music on unmount (cleanup)
+//   useEffect(() => {
+//     return () => {
+//       voiceManager.stopBackgroundMusic();
+//       musicController.setCurrentMusicId(null);
+//     };
+//   }, []);
+
+//   // Unlock audio on first user interaction (any click on the page)
+//   useEffect(() => {
+//     const unlockOnce = () => {
+//       voiceManager.onUserInteraction(); // Unmutes YT player if needed
+//       document.removeEventListener('click', unlockOnce);
+//     };
+//     document.addEventListener('click', unlockOnce);
+//     return () => document.removeEventListener('click', unlockOnce);
+//   }, []);
+
+//   // TTS: play/stop toggle (now also controls background music if ID exists)
+//   const handleSpeakerClick = () => {
+//     if (isSpeaking) {
+//       // Stop both TTS and background music
+//       voiceManager.cancelSpeech();
+//       voiceManager.stopBackgroundMusic();
+//       setIsSpeaking(false);
+//     } else {
+//       // Start background music only if a video ID exists
+//       const videoId = getBgMusicId();
+//       if (videoId) {
+//         console.log(`[WatchPage] Starting background music: ${videoId}`);
+//         voiceManager.playBackgroundMusic(videoId);
+//         musicController.setCurrentMusicId(videoId);
+//       } else {
+//         console.log('[WatchPage] No background music ID for this content – TTS only');
+//       }
+//       // Then start TTS, and when TTS ends, stop background music as well
+//       const finalTitle = ttsTitle || details?.title || details?.name || '';
+//       const finalDescription = ttsDescription || details?.overview || '';
+//       if (!finalTitle && !finalDescription) return;
+//       const textToSpeak = `${finalTitle}. ${finalDescription}`.trim();
+//       if (!textToSpeak) return;
+
+//       voiceManager.speak(textToSpeak, true, true, () => {
+//         // TTS ended naturally – stop background music too
+//         voiceManager.stopBackgroundMusic();
+//         setIsSpeaking(false);
+//       });
+//       setIsSpeaking(true);
+//     }
+//   };
+
+//   // Update ttsTitle and ttsDescription when DOM changes (translation)
+//   useEffect(() => {
+//     if (!titleRef.current || !descriptionRef.current) return;
+
+//     setTtsTitle(titleRef.current.innerText || details?.title || details?.name || '');
+//     setTtsDescription(descriptionRef.current.innerText || details?.overview || '');
+
+//     const observer = new MutationObserver(() => {
+//       if (titleRef.current) setTtsTitle(titleRef.current.innerText);
+//       if (descriptionRef.current) setTtsDescription(descriptionRef.current.innerText);
+//     });
+
+//     observer.observe(titleRef.current, {
+//       childList: true,
+//       subtree: true,
+//       characterData: true,
+//     });
+//     observer.observe(descriptionRef.current, {
+//       childList: true,
+//       subtree: true,
+//       characterData: true,
+//     });
+
+//     return () => observer.disconnect();
+//   }, [details]);
+
+//   // Fetch streams client-side only if not provided via initialStreams
+//   useEffect(() => {
+//     if (initialStreams || !details) return;
+//     const fetchStreams = async () => {
+//       try {
+//         const url = `/api/streams?id=${encodeURIComponent(id)}&type=${type}`; // use rawId
+//         const res = await fetch(url);
+//         if (!res.ok) {
+//           if (res.status === 404) setStreams([]);
+//           else throw new Error('Failed to fetch streams');
+//         } else {
+//           const data = await res.json();
+//           setStreams(data.streams || []);
+//         }
+//       } catch (error) {
+//         console.error('Error fetching streams:', error);
+//         setStreams([]);
+//       } finally {
+//         setLoadingStreams(false);
+//       }
+//     };
+//     fetchStreams();
+//   }, [id, type, details, initialStreams]);
+
+//   // Load recommendations if needed
+//   useEffect(() => {
+//     if ((!initialRecommendations || initialRecommendations.length === 0) && details) {
+//       getRecommendations(type, id).then(setRecommendations);
+//     }
+//   }, [type, id, details, initialRecommendations]);
+
+//   if (!details) {
+//     return (
+//       <div className="min-h-screen bg-miraj-black flex items-center justify-center">
+//         <div className="text-center">
+//           <h1 className="text-2xl font-bold text-white mb-4">Content Not Found</h1>
+//           <Link href="/" className="text-miraj-gold hover:underline">Return Home</Link>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   const title = details.title || details.name || 'Unknown Title';
+//   const date = details.release_date || details.first_air_date;
+//   const year = date ? new Date(date).getFullYear() : 'N/A';
+//   const description = details.overview || `Watch ${title} online for free.`;
+
+//   let schemaType = 'Movie';
+//   if (type === 'tv') schemaType = 'TVSeries';
+//   else if (type === 'sports') schemaType = 'SportsEvent';
+//   else if (type === 'tv_live') schemaType = 'TVSeries';
+
+//   const schema = {
+//     '@context': 'https://schema.org',
+//     '@type': schemaType,
+//     name: title,
+//     description,
+//     image: [getImageUrl(details.poster_path, 'original')],
+//     datePublished: date,
+//     aggregateRating: details.vote_average
+//       ? {
+//           '@type': 'AggregateRating',
+//           ratingValue: details.vote_average.toFixed(1),
+//           bestRating: '10',
+//           ratingCount: 100,
+//         }
+//       : undefined,
+//     genre: details.genres?.map((g) => (typeof g === 'string' ? g : g.name)),
+//     actor: cast.slice(0, 5).map((person) => ({
+//       '@type': 'Person',
+//       name: person.name,
+//     })),
+//   };
+
+//   const breadcrumbSchema = {
+//     '@context': 'https://schema.org',
+//     '@type': 'BreadcrumbList',
+//     itemListElement: [
+//       {
+//         '@type': 'ListItem',
+//         position: 1,
+//         name: 'Home',
+//         item: 'https://movie-tv-trailers.vercel.app/',
+//       },
+//       {
+//         '@type': 'ListItem',
+//         position: 2,
+//         name: type === 'movie' ? 'Movies' : type === 'tv' ? 'TV Shows' : type === 'sports' ? 'Sports' : 'Live TV',
+//         item: `https://movie-tv-trailers.vercel.app/${
+//           type === 'movie' ? 'movies' : type === 'tv' ? 'tv' : type === 'sports' ? 'sports' : 'live'
+//         }`,
+//       },
+//       {
+//         '@type': 'ListItem',
+//         position: 3,
+//         name: title,
+//       },
+//     ],
+//   };
+
+//   const handleCopyLink = () => {
+//     if (typeof window !== 'undefined') {
+//       navigator.clipboard.writeText(window.location.href);
+//       setCopiedLink(true);
+//       setTimeout(() => setCopiedLink(false), 2000);
+//     }
+//   };
+
+//   const handlePayNow = () => setShowPaymentModal(true);
+//   const handlePaymentComplete = () => {
+//     setIsPaidUser(true);
+//     setShowPaymentModal(false);
+//   };
+
+//   const getUnlockTitle = () => {
+//     switch (type) {
+//       case 'movie': return 'Unlock Full Movie';
+//       case 'tv': return 'Unlock Full TV Show';
+//       case 'sports': return 'Unlock Full Sports Event';
+//       case 'tv_live': return 'Unlock Live TV';
+//       default: return 'Unlock Full Content';
+//     }
+//   };
+
+//   const getUnlockDescription = () => {
+//     switch (type) {
+//       case 'movie': return 'Watch the complete movie in HD quality without interruptions';
+//       case 'tv': return 'Watch all episodes in HD quality without interruptions';
+//       case 'sports': return 'Watch the full sports event in HD quality without interruptions';
+//       case 'tv_live': return 'Watch live TV in HD quality without interruptions';
+//       default: return 'Watch full content in HD quality without interruptions';
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-miraj-black pt-20 md:pt-28 pb-20 relative">
+//       {/* Read Aloud button (speaker icon + text) – controls both TTS and optional background music */}
+//       {details.overview && (
+//         <button
+//   onClick={handleSpeakerClick}
+//   className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl transition-all duration-300 font-semibold ${
+//     isSpeaking
+//       ? 'bg-red-600 text-white hover:bg-red-700'
+//       : 'bg-yellow-400 text-black hover:bg-yellow-500'
+//   }`}
+//   title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
+// >
+//   {isSpeaking ? <VolumeX size={22} /> : <Volume2 size={22} />}
+//   <span className="text-sm">Read Aloud</span>
+// </button>
+//       )}
+
+//       {!isPaidUser && youtubeTrailerId ? (
+//         <>
+//           <SEO
+//             title={`${title} - Official Trailer | Watch Free on Movie & TV trailers`}
+//             description={`Watch the official trailer for ${title}. ${description.substring(0, 150)}... Unlock the full movie in HD quality.`}
+//             image={getImageUrl(details.backdrop_path || details.poster_path, 'original')}
+//             type="video.other"
+//             path={router.asPath}
+//             keywords={[`${title} trailer`, `${title} official trailer`, `watch ${title} trailer`, `${title} movie trailer`, `${title} preview`, 'movie trailers', 'film trailers', 'free stream Movies', 'free movie trailers', 'HD trailers']}
+//           />
+//           <script
+//             type="application/ld+json"
+//             dangerouslySetInnerHTML={{
+//               __html: JSON.stringify({
+//                 '@context': 'https://schema.org',
+//                 '@type': 'VideoObject',
+//                 name: `${title} - Official Trailer`,
+//                 description: `Watch the official trailer for ${title}. ${description}`,
+//                 thumbnailUrl: getImageUrl(details.backdrop_path || details.poster_path, 'original'),
+//                 uploadDate: details.release_date || new Date().toISOString(),
+//                 contentUrl: `https://www.youtube.com/watch?v=${youtubeTrailerId}`,
+//                 embedUrl: `https://www.youtube.com/embed/${youtubeTrailerId}`,
+//                 duration: 'PT2M30S',
+//                 publisher: {
+//                   '@type': 'Organization',
+//                   name: 'Movie & TV trailers',
+//                   logo: { '@type': 'ImageObject', url: 'https://movie-tv-trailers.vercel.app/logo.png' },
+//                 },
+//               }),
+//             }}
+//           />
+//         </>
+//       ) : (
+//         <SEO
+//           title={`${title} - Watch Free on Movie & TV trailers`}
+//           description={description}
+//           image={getImageUrl(details.poster_path, 'original')}
+//           type="video.movie"
+//           schema={schema}
+//           path={router.asPath}
+//         />
+//       )}
+
+//       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+//       {/* Share Modal */}
+//       {isShareOpen && (
+//         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+//           <div className="bg-miraj-gray border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+//             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
+//               <h3 className="text-lg font-bold text-white flex items-center gap-2">Share Content</h3>
+//               <button onClick={() => setIsShareOpen(false)}><X size={24} className="text-gray-400" /></button>
+//             </div>
+//             <div className="p-6">
+//               <div className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-lg p-2">
+//                 <input className="bg-transparent text-gray-300 text-sm flex-1 outline-none" readOnly value={typeof window !== 'undefined' ? window.location.href : ''} />
+//                 <button onClick={handleCopyLink} className="p-2 bg-white/10 rounded hover:bg-white/20">
+//                   {copiedLink ? <Check size={16} className="text-green-500" /> : <Copy size={16} className="text-white" />}
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Payment Modal */}
+//       {showPaymentModal && (
+//         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+//           <div className="bg-miraj-gray border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+//             <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
+//               <h3 className="text-lg font-bold text-white flex items-center gap-2"><Lock size={20} className="text-miraj-gold" /> Unlock Full Content</h3>
+//               <button onClick={() => setShowPaymentModal(false)}><X size={24} className="text-gray-400" /></button>
+//             </div>
+//             <div className="p-6">
+//               <p className="text-gray-300 mb-6">Get unlimited access to watch full movies and TV shows in HD quality.</p>
+//               <div className="bg-black/50 border border-white/10 rounded-lg p-4 mb-6">
+//                 <div className="flex items-center justify-between mb-2">
+//                   <span className="text-gray-400">Premium Access</span>
+//                   <span className="text-2xl font-bold text-miraj-gold">Free for Now</span>
+//                 </div>
+//                 <ul className="text-sm text-gray-400 space-y-1 mt-4">
+//                   <li>✓ Unlimited HD Streaming</li>
+//                   <li>✓ No Ads</li>
+//                   <li>✓ Download for Offline Viewing</li>
+//                   <li>✓ Access to Premium Content</li>
+//                 </ul>
+//               </div>
+//               <button onClick={handlePaymentComplete} className="w-full bg-gradient-to-r from-miraj-gold to-yellow-500 text-black font-bold py-3 rounded-full hover:shadow-lg hover:shadow-miraj-gold/50 transition-all">Watch Now</button>
+//             </div>
+//           </div>
+//         </div>
+//       )}
+
+//       {/* Player Section */}
+//       <div className="container mx-auto px-0 md:px-6 mb-8 mt-4 relative z-10">
+//         <div className="w-full max-w-7xl mx-auto">
+//           {!isPaidUser && youtubeTrailerId ? (
+//             <YouTubePlayer videoId={youtubeTrailerId} title={`${title} - Trailer`} autoplay={true} loop={true} />
+//           ) : (
+//             <>
+//               {loadingStreams ? (
+//                 <div className="aspect-video bg-miraj-gray rounded-xl flex items-center justify-center">
+//                   <div className="w-10 h-10 border-4 border-white/5 border-t-miraj-gold rounded-full animate-spin" />
+//                 </div>
+//               ) : (
+//                 <VideoPlayer
+//                   tmdbId={id}
+//                   type={type}
+//                   title={title}
+//                   season={season}
+//                   episode={episode}
+//                   customStreams={streams} // ✅ streams already include documentary streams
+//                 />
+//               )}
+//             </>
+//           )}
+
+//           {!isPaidUser && youtubeTrailerId && (
+//             <div className="mt-6 bg-gradient-to-r from-miraj-red/20 to-miraj-gold/20 border-2 border-miraj-gold/50 rounded-xl p-6">
+//               <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+//                 <div>
+//                   <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2"><Lock size={20} className="text-miraj-gold" /> {getUnlockTitle()}</h3>
+//                   <p className="text-gray-300 text-sm">{getUnlockDescription()}</p>
+//                 </div>
+//                 <button onClick={handlePayNow} className="flex items-center gap-2 bg-gradient-to-r from-miraj-gold to-yellow-500 hover:from-yellow-500 hover:to-miraj-gold text-black font-bold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-miraj-gold/50 whitespace-nowrap">
+//                   <Play size={20} fill="currentColor" /> <span>Pay Now</span>
+//                 </button>
+//               </div>
+//             </div>
+//           )}
+
+//           {type === 'tv' && isPaidUser && (
+//             <div className="bg-miraj-gray border border-white/5 p-4 mt-4 rounded-xl flex items-center gap-4">
+//               <div className="flex flex-col">
+//                 <label className="text-xs text-gray-400 font-bold mb-1">SEASON</label>
+//                 <input type="number" min="1" value={season} onChange={(e) => setSeason(parseInt(e.target.value))} className="bg-black/50 border border-white/10 rounded px-3 py-2 text-white w-20 text-center font-bold focus:border-miraj-gold focus:outline-none" />
+//               </div>
+//               <div className="flex flex-col">
+//                 <label className="text-xs text-gray-400 font-bold mb-1">EPISODE</label>
+//                 <input type="number" min="1" value={episode} onChange={(e) => setEpisode(parseInt(e.target.value))} className="bg-black/50 border border-white/10 rounded px-3 py-2 text-white w-20 text-center font-bold focus:border-miraj-gold focus:outline-none" />
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Details & Cast */}
+//       <div className="container mx-auto px-4 md:px-6 relative z-10">
+//         <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
+//           <div className="hidden md:block w-[300px] flex-shrink-0">
+//             <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
+//               <img src={getImageUrl(details.poster_path)} alt={title} className="w-full h-full object-cover" style={{ filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)' }} />
+//             </div>
+//           </div>
+//           <div className="min-w-0">
+//             <div className="flex justify-between items-start flex-wrap gap-4">
+//               <h1 ref={titleRef} className="text-2xl md:text-5xl font-bold text-white mb-2">
+//                 {title}
+//               </h1>
+//               <button onClick={() => setIsShareOpen(true)} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 hover:bg-miraj-gold hover:text-black transition-colors border border-white/5">
+//                 <Share2 size={18} /> <span className="hidden sm:inline font-bold text-sm">Share</span>
+//               </button>
+//             </div>
+
+//             <div className="flex items-center gap-4 text-sm text-gray-300 mb-6 flex-wrap">
+//               <span className="flex items-center gap-1 text-miraj-gold font-bold bg-miraj-gold/10 px-2 py-1 rounded"><Star size={14} fill="currentColor" /> {details.vote_average?.toFixed(1) || 'N/A'}</span>
+//               <span className="flex items-center gap-1"><Calendar size={16} /> {year}</span>
+//               {details.runtime && <span className="flex items-center gap-1"><Clock size={16} /> {details.runtime}m</span>}
+//               <span className="border border-white/20 px-2 py-0.5 rounded text-xs uppercase font-bold">
+//                 {type === 'tv_live' ? 'Live TV' : type.replace('_', ' ')}
+//               </span>
+//             </div>
+
+//             <p ref={descriptionRef} className="text-gray-400 leading-relaxed text-lg mb-8">
+//               {description}
+//             </p>
+
+//             {cast.length > 0 && (
+//               <div className="mb-8">
+//                 <h3 className="text-lg font-bold text-white mb-4">Cast</h3>
+//                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+//                   {cast.slice(0, 5).map((person) => (
+//                     <div key={person.id} className="text-center group">
+//                       <div className="aspect-[2/3] rounded-lg overflow-hidden mb-2 bg-white/5 border border-white/5 group-hover:border-miraj-gold/50 transition-colors">
+//                         {person.profile_path ? (
+//                           <img src={getImageUrl(person.profile_path)} alt={person.name} className="w-full h-full object-cover" />
+//                         ) : (
+//                           <User className="w-full h-full p-4 text-gray-500" />
+//                         )}
+//                       </div>
+//                       <p className="text-xs font-bold text-white truncate">{person.name}</p>
+//                       <p className="text-[10px] text-gray-500 truncate">{person.character}</p>
+//                     </div>
+//                   ))}
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+
+//         {recommendations.length > 0 && (
+//           <div className="mt-12 border-t border-white/10 pt-8">
+//             <h3 className="text-2xl font-bold text-white mb-6">You May Also Like</h3>
+//             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+//               {recommendations.map((item) => (
+//                 <Link key={item.id} href={`/watch/${item.media_type || 'movie'}/${item.id}`} className="group relative block">
+//                   <div className="aspect-[2/3] rounded-xl overflow-hidden bg-miraj-gray border border-white/5 shadow-lg">
+//                     <img src={getImageUrl(item.poster_path)} alt={item.title || item.name} className="w-full h-full object-cover group-hover:opacity-60 transition-opacity" style={{ filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)' }} />
+//                   </div>
+//                   <h4 className="mt-2 text-sm font-bold text-white truncate group-hover:text-miraj-gold transition-colors">{item.title || item.name}</h4>
+//                 </Link>
+//               ))}
+//             </div>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const { slug } = context.query;
+//   if (!slug || !Array.isArray(slug) || slug.length < 2) return { notFound: true };
+
+//   const type = slug[0] as 'movie' | 'tv' | 'sports' | 'tv_live';
+//   const rawId = slug[1]; // full ID (may be a string like "cheetahs-up-close...")
+//   let id = rawId;
+//   // For TMDB numeric IDs we may want to strip the slug suffix, but keep rawId for custom lookup
+//   if ((type === 'movie' || type === 'tv') && /^\d+/.test(rawId)) {
+//     id = rawId.split('-')[0]; // numeric part for TMDB API
+//   }
+
+//   try {
+//     let customItem: ContentDetails | null = null;
+//     let streamsForCustom: StreamSource[] | undefined;
+
+//     // Search all custom arrays for a match using both rawId and id (numeric part)
+//     const customArrays = {
+//       movie: [UNIQUE_MOVIES, UNIQUE_HINDI_DUBBED, UNIQUE_ADULT, UNIQUE_DOCUMENTARY],
+//       tv: [UNIQUE_TV_SHOWS],
+//       sports: [UNIQUE_SPORTS],
+//       tv_live: [UNIQUE_TV_LIVE],
+//     };
+
+//     const arrays = customArrays[type] || [];
+//     for (const arr of arrays) {
+//       const found = arr?.find((item) => String(item.id) === rawId || String(item.id) === id);
+//       if (found) {
+//         customItem = found as ContentDetails;
+//         // Convert streams to StreamSource[] if present
+//         if (found.streams) {
+//           if (Array.isArray(found.streams)) {
+//             streamsForCustom = found.streams as StreamSource[];
+//           } else {
+//             // Convert Record<string,string> to StreamSource[]
+//             streamsForCustom = Object.entries(found.streams).map(([name, url], i) => ({
+//               id: `srv-${i}`,
+//               name,
+//               url: String(url),
+//               quality: 'HD',
+//               type: String(url).includes('.m3u8') || String(url).includes('hls') ? 'hls' : 'iframe',
+//             }));
+//           }
+//         }
+//         break;
+//       }
+//     }
+
+//     let details: ContentDetails | null = null;
+//     let cast: CastMember[] = [];
+//     let recommendations: MediaItem[] = [];
+//     let youtubeTrailerId: string | null = null;
+
+//     if (customItem) {
+//       details = customItem;
+//       // For custom items, cast and recommendations are empty; we might still try to fetch from TMDB if numeric?
+//       // We'll keep them empty; the page will show just the details.
+//       if ('yt_id' in customItem && typeof customItem.yt_id === 'string') {
+//         youtubeTrailerId = customItem.yt_id;
+//       }
+//     } else {
+//       // Not a custom item – fetch from TMDB API
+//       try {
+//         details = await getDetails(type, id);
+//       } catch (e) {
+//         console.warn('TMDB details fetch failed:', e);
+//       }
+//       if (!details) return { notFound: true };
+
+//       if (type === 'movie' || type === 'tv') {
+//         try { cast = await getCast(type, id); } catch (e) { console.warn('Cast fetch failed'); }
+//         try { recommendations = await getRecommendations(type, id); } catch (e) { console.warn('Recs fetch failed'); }
+//         try { youtubeTrailerId = await getYouTubeTrailer(type, id); } catch (e) { console.warn('YouTube trailer fetch failed'); }
+//       }
+//     }
+
+//     if (!details) return { notFound: true };
+
+//     // Remove streams from details to avoid duplication (they will be passed separately)
+//     const { streams, ...detailsWithoutStreams } = details;
+
+//     return {
+//       props: {
+//         details: detailsWithoutStreams,
+//         cast,
+//         initialRecommendations: recommendations,
+//         type,
+//         id: rawId, // keep rawId for client‑side use (e.g., API calls)
+//         youtubeTrailerId,
+//         initialStreams: streamsForCustom || null, // ✅ pass streams for custom items
+//       },
+//     };
+//   } catch (error) {
+//     console.error('Critical Server Side Error', error);
+//     return { notFound: true };
+//   }
+// };
+
+// export default WatchPage;
+
+
 // pages/watch/[...slug].tsx
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { GetServerSideProps } from 'next';
@@ -39,6 +682,43 @@ import Link from 'next/link';
 import { voiceManager } from '../../lib/core/VoiceManager';
 import { musicController } from '../../lib/core/MusicController';
 
+/* ─── Translation-safe style helpers ────────────────────────────────────────
+ *
+ * Google Translate rewrites the DOM and injects translated text that can be
+ * significantly longer than the English source.  The helpers below ensure:
+ *
+ *  1. `overflowWrap: 'anywhere'` + `wordBreak: 'break-word'` + `hyphens: 'auto'`
+ *     on every text node so translated words never overflow their containers.
+ *
+ *  2. `fluidFont()` uses CSS `clamp()` so text scales smoothly between the
+ *     smallest phone (320 px) and a large desktop (1280 px).
+ *
+ *  3. No fixed heights on any text-bearing row – only minHeight guards.
+ *
+ *  4. Flex rows have `minWidth: 0` on children + `flexWrap: 'wrap'` so siblings
+ *     wrap gracefully instead of overflowing.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+/** Applied to every visible text node. */
+const TEXT_SAFE: React.CSSProperties = {
+  overflowWrap: 'anywhere',
+  wordBreak: 'break-word',
+  hyphens: 'auto',
+  minWidth: 0,
+};
+
+/** Linearly interpolates font size between minPx @ 320 vw and maxPx @ 1280 vw. */
+function fluidFont(minPx: number, maxPx: number): React.CSSProperties {
+  const slope = (maxPx - minPx) / (1280 - 320);
+  const intercept = minPx - slope * 320;
+  return {
+    fontSize: `clamp(${minPx}px, calc(${intercept.toFixed(2)}px + ${(slope * 100).toFixed(4)}vw), ${maxPx}px)`,
+    ...TEXT_SAFE,
+  };
+}
+
+/* ─── Types ─────────────────────────────────────────────────────────────── */
+
 interface WatchPageProps {
   details: Omit<ContentDetails, 'streams'> | null;
   cast: CastMember[];
@@ -46,8 +726,10 @@ interface WatchPageProps {
   type: 'movie' | 'tv' | 'sports' | 'tv_live';
   id: string;
   youtubeTrailerId: string | null;
-  initialStreams?: StreamSource[]; // ✅ NEW: pre‑resolved streams for custom items
+  initialStreams?: StreamSource[];
 }
+
+/* ─── Component ─────────────────────────────────────────────────────────── */
 
 const WatchPage: React.FC<WatchPageProps> = ({
   details,
@@ -59,39 +741,36 @@ const WatchPage: React.FC<WatchPageProps> = ({
   initialStreams,
 }) => {
   const router = useRouter();
+
   const [recommendations, setRecommendations] = useState<MediaItem[]>(
     initialRecommendations || []
   );
-  const [isShareOpen, setIsShareOpen] = useState(false);
-  const [copiedLink, setCopiedLink] = useState(false);
-  const [isPaidUser, setIsPaidUser] = useState(false);
+  const [isShareOpen, setIsShareOpen]       = useState(false);
+  const [copiedLink, setCopiedLink]         = useState(false);
+  const [isPaidUser, setIsPaidUser]         = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [season, setSeason] = useState(1);
-  const [episode, setEpisode] = useState(1);
-  const [streams, setStreams] = useState<StreamSource[]>(initialStreams || []);
-  const [loadingStreams, setLoadingStreams] = useState(!initialStreams);
+  const [season, setSeason]                 = useState(1);
+  const [episode, setEpisode]               = useState(1);
+  const [streams, setStreams]               = useState<StreamSource[]>(initialStreams || []);
+  const [loadingStreams, setLoadingStreams]  = useState(!initialStreams);
 
-  // ========== TTS PLAY/STOP STATE ==========
-  const [isSpeaking, setIsSpeaking] = useState(false);
-
-  // ========== TTS TEXT ==========
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
-  const [ttsTitle, setTtsTitle] = useState<string>('');
+  // ── TTS state ────────────────────────────────────────────────────────────
+  const [isSpeaking, setIsSpeaking]         = useState(false);
+  const titleRef                            = useRef<HTMLHeadingElement>(null);
+  const descriptionRef                      = useRef<HTMLParagraphElement>(null);
+  const [ttsTitle, setTtsTitle]             = useState<string>('');
   const [ttsDescription, setTtsDescription] = useState<string>('');
 
-  // Compute the background music video ID (if any) – only from the details object
+  // ── Background music ID ───────────────────────────────────────────────────
   const getBgMusicId = useCallback((): string | null => {
     if (!details) return null;
-    // Check if the item has a custom yt_bg_music_id
     if ('yt_bg_music_id' in details && details.yt_bg_music_id) {
       return details.yt_bg_music_id as string;
     }
-    // No default fallback – return null if not present
     return null;
   }, [details]);
 
-  // Stop music on unmount (cleanup)
+  // ── Stop music on unmount ─────────────────────────────────────────────────
   useEffect(() => {
     return () => {
       voiceManager.stopBackgroundMusic();
@@ -99,42 +778,35 @@ const WatchPage: React.FC<WatchPageProps> = ({
     };
   }, []);
 
-  // Unlock audio on first user interaction (any click on the page)
+  // ── Unlock audio on first user interaction ────────────────────────────────
   useEffect(() => {
     const unlockOnce = () => {
-      voiceManager.onUserInteraction(); // Unmutes YT player if needed
+      voiceManager.onUserInteraction();
       document.removeEventListener('click', unlockOnce);
     };
     document.addEventListener('click', unlockOnce);
     return () => document.removeEventListener('click', unlockOnce);
   }, []);
 
-  // TTS: play/stop toggle (now also controls background music if ID exists)
+  // ── TTS play / stop toggle ────────────────────────────────────────────────
   const handleSpeakerClick = () => {
     if (isSpeaking) {
-      // Stop both TTS and background music
       voiceManager.cancelSpeech();
       voiceManager.stopBackgroundMusic();
       setIsSpeaking(false);
     } else {
-      // Start background music only if a video ID exists
       const videoId = getBgMusicId();
       if (videoId) {
-        console.log(`[WatchPage] Starting background music: ${videoId}`);
         voiceManager.playBackgroundMusic(videoId);
         musicController.setCurrentMusicId(videoId);
-      } else {
-        console.log('[WatchPage] No background music ID for this content – TTS only');
       }
-      // Then start TTS, and when TTS ends, stop background music as well
-      const finalTitle = ttsTitle || details?.title || details?.name || '';
+      const finalTitle       = ttsTitle       || details?.title || details?.name || '';
       const finalDescription = ttsDescription || details?.overview || '';
       if (!finalTitle && !finalDescription) return;
       const textToSpeak = `${finalTitle}. ${finalDescription}`.trim();
       if (!textToSpeak) return;
 
       voiceManager.speak(textToSpeak, true, true, () => {
-        // TTS ended naturally – stop background music too
         voiceManager.stopBackgroundMusic();
         setIsSpeaking(false);
       });
@@ -142,42 +814,33 @@ const WatchPage: React.FC<WatchPageProps> = ({
     }
   };
 
-  // Update ttsTitle and ttsDescription when DOM changes (translation)
+  // ── Observe DOM mutations from Google Translate to keep TTS text fresh ────
   useEffect(() => {
     if (!titleRef.current || !descriptionRef.current) return;
 
-    setTtsTitle(titleRef.current.innerText || details?.title || details?.name || '');
+    setTtsTitle(titleRef.current.innerText       || details?.title    || details?.name    || '');
     setTtsDescription(descriptionRef.current.innerText || details?.overview || '');
 
     const observer = new MutationObserver(() => {
-      if (titleRef.current) setTtsTitle(titleRef.current.innerText);
+      if (titleRef.current)       setTtsTitle(titleRef.current.innerText);
       if (descriptionRef.current) setTtsDescription(descriptionRef.current.innerText);
     });
 
-    observer.observe(titleRef.current, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-    });
-    observer.observe(descriptionRef.current, {
-      childList: true,
-      subtree: true,
-      characterData: true,
-    });
+    observer.observe(titleRef.current,       { childList: true, subtree: true, characterData: true });
+    observer.observe(descriptionRef.current, { childList: true, subtree: true, characterData: true });
 
     return () => observer.disconnect();
   }, [details]);
 
-  // Fetch streams client-side only if not provided via initialStreams
+  // ── Fetch streams client-side if not server-provided ─────────────────────
   useEffect(() => {
     if (initialStreams || !details) return;
     const fetchStreams = async () => {
       try {
-        const url = `/api/streams?id=${encodeURIComponent(id)}&type=${type}`; // use rawId
+        const url = `/api/streams?id=${encodeURIComponent(id)}&type=${type}`;
         const res = await fetch(url);
         if (!res.ok) {
-          if (res.status === 404) setStreams([]);
-          else throw new Error('Failed to fetch streams');
+          setStreams(res.status === 404 ? [] : []);
         } else {
           const data = await res.json();
           setStreams(data.streams || []);
@@ -192,32 +855,48 @@ const WatchPage: React.FC<WatchPageProps> = ({
     fetchStreams();
   }, [id, type, details, initialStreams]);
 
-  // Load recommendations if needed
+  // ── Load recommendations ──────────────────────────────────────────────────
   useEffect(() => {
     if ((!initialRecommendations || initialRecommendations.length === 0) && details) {
       getRecommendations(type, id).then(setRecommendations);
     }
   }, [type, id, details, initialRecommendations]);
 
+  // ── Not found guard ───────────────────────────────────────────────────────
   if (!details) {
     return (
-      <div className="min-h-screen bg-miraj-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Content Not Found</h1>
-          <Link href="/" className="text-miraj-gold hover:underline">Return Home</Link>
+      <div className="min-h-screen bg-miraj-black flex items-center justify-center px-4">
+        <div
+          className="text-center"
+          style={{ maxWidth: 400, width: '100%' }}
+        >
+          <h1
+            className="font-bold text-white mb-4"
+            style={{ ...fluidFont(18, 28), ...TEXT_SAFE }}
+          >
+            Content Not Found
+          </h1>
+          <Link
+            href="/"
+            className="text-miraj-gold hover:underline"
+            style={{ ...fluidFont(14, 16), ...TEXT_SAFE }}
+          >
+            Return Home
+          </Link>
         </div>
       </div>
     );
   }
 
-  const title = details.title || details.name || 'Unknown Title';
-  const date = details.release_date || details.first_air_date;
-  const year = date ? new Date(date).getFullYear() : 'N/A';
+  // ── Derived values ────────────────────────────────────────────────────────
+  const title       = details.title || details.name || 'Unknown Title';
+  const date        = details.release_date || details.first_air_date;
+  const year        = date ? new Date(date).getFullYear() : 'N/A';
   const description = details.overview || `Watch ${title} online for free.`;
 
   let schemaType = 'Movie';
-  if (type === 'tv') schemaType = 'TVSeries';
-  else if (type === 'sports') schemaType = 'SportsEvent';
+  if (type === 'tv')       schemaType = 'TVSeries';
+  else if (type === 'sports')  schemaType = 'SportsEvent';
   else if (type === 'tv_live') schemaType = 'TVSeries';
 
   const schema = {
@@ -236,38 +915,32 @@ const WatchPage: React.FC<WatchPageProps> = ({
         }
       : undefined,
     genre: details.genres?.map((g) => (typeof g === 'string' ? g : g.name)),
-    actor: cast.slice(0, 5).map((person) => ({
-      '@type': 'Person',
-      name: person.name,
-    })),
+    actor: cast.slice(0, 5).map((person) => ({ '@type': 'Person', name: person.name })),
   };
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      {
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Home',
-        item: 'https://movie-tv-trailers.vercel.app/',
-      },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://movie-tv-trailers.vercel.app/' },
       {
         '@type': 'ListItem',
         position: 2,
-        name: type === 'movie' ? 'Movies' : type === 'tv' ? 'TV Shows' : type === 'sports' ? 'Sports' : 'Live TV',
+        name:
+          type === 'movie'   ? 'Movies'   :
+          type === 'tv'      ? 'TV Shows' :
+          type === 'sports'  ? 'Sports'   : 'Live TV',
         item: `https://movie-tv-trailers.vercel.app/${
-          type === 'movie' ? 'movies' : type === 'tv' ? 'tv' : type === 'sports' ? 'sports' : 'live'
+          type === 'movie'   ? 'movies'  :
+          type === 'tv'      ? 'tv'      :
+          type === 'sports'  ? 'sports'  : 'live'
         }`,
       },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: title,
-      },
+      { '@type': 'ListItem', position: 3, name: title },
     ],
   };
 
+  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.href);
@@ -276,50 +949,55 @@ const WatchPage: React.FC<WatchPageProps> = ({
     }
   };
 
-  const handlePayNow = () => setShowPaymentModal(true);
-  const handlePaymentComplete = () => {
-    setIsPaidUser(true);
-    setShowPaymentModal(false);
-  };
+  const handlePayNow          = () => setShowPaymentModal(true);
+  const handlePaymentComplete = () => { setIsPaidUser(true); setShowPaymentModal(false); };
 
   const getUnlockTitle = () => {
     switch (type) {
-      case 'movie': return 'Unlock Full Movie';
-      case 'tv': return 'Unlock Full TV Show';
-      case 'sports': return 'Unlock Full Sports Event';
+      case 'movie':   return 'Unlock Full Movie';
+      case 'tv':      return 'Unlock Full TV Show';
+      case 'sports':  return 'Unlock Full Sports Event';
       case 'tv_live': return 'Unlock Live TV';
-      default: return 'Unlock Full Content';
+      default:        return 'Unlock Full Content';
     }
   };
 
   const getUnlockDescription = () => {
     switch (type) {
-      case 'movie': return 'Watch the complete movie in HD quality without interruptions';
-      case 'tv': return 'Watch all episodes in HD quality without interruptions';
-      case 'sports': return 'Watch the full sports event in HD quality without interruptions';
+      case 'movie':   return 'Watch the complete movie in HD quality without interruptions';
+      case 'tv':      return 'Watch all episodes in HD quality without interruptions';
+      case 'sports':  return 'Watch the full sports event in HD quality without interruptions';
       case 'tv_live': return 'Watch live TV in HD quality without interruptions';
-      default: return 'Watch full content in HD quality without interruptions';
+      default:        return 'Watch full content in HD quality without interruptions';
     }
   };
 
+  /* ── Render ──────────────────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-miraj-black pt-20 md:pt-28 pb-20 relative">
-      {/* Read Aloud button (speaker icon + text) – controls both TTS and optional background music */}
+
+      {/* ── Read Aloud FAB ────────────────────────────────────────────────── */}
       {details.overview && (
         <button
-  onClick={handleSpeakerClick}
-  className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl transition-all duration-300 font-semibold ${
-    isSpeaking
-      ? 'bg-red-600 text-white hover:bg-red-700'
-      : 'bg-yellow-400 text-black hover:bg-yellow-500'
-  }`}
-  title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
->
-  {isSpeaking ? <VolumeX size={22} /> : <Volume2 size={22} />}
-  <span className="text-sm">Read Aloud</span>
-</button>
+          onClick={handleSpeakerClick}
+          className={`fixed bottom-6 left-6 z-50 flex items-center gap-2 rounded-full shadow-2xl transition-all duration-300 font-semibold touch-manipulation ${
+            isSpeaking
+              ? 'bg-red-600 text-white hover:bg-red-700'
+              : 'bg-yellow-400 text-black hover:bg-yellow-500'
+          }`}
+          style={{
+            padding: 'clamp(10px,2.5vw,14px) clamp(14px,4vw,22px)',
+            minHeight: 48,
+            minWidth: 48,
+          }}
+          title={isSpeaking ? 'Stop reading and music' : 'Read page description aloud with background music'}
+        >
+          {isSpeaking ? <VolumeX size={22} className="shrink-0" /> : <Volume2 size={22} className="shrink-0" />}
+          <span style={{ ...fluidFont(12, 14), ...TEXT_SAFE }}>Read Aloud</span>
+        </button>
       )}
 
+      {/* ── SEO / JSON-LD ─────────────────────────────────────────────────── */}
       {!isPaidUser && youtubeTrailerId ? (
         <>
           <SEO
@@ -328,7 +1006,11 @@ const WatchPage: React.FC<WatchPageProps> = ({
             image={getImageUrl(details.backdrop_path || details.poster_path, 'original')}
             type="video.other"
             path={router.asPath}
-            keywords={[`${title} trailer`, `${title} official trailer`, `watch ${title} trailer`, `${title} movie trailer`, `${title} preview`, 'movie trailers', 'film trailers', 'free stream Movies', 'free movie trailers', 'HD trailers']}
+            keywords={[
+              `${title} trailer`, `${title} official trailer`, `watch ${title} trailer`,
+              `${title} movie trailer`, `${title} preview`, 'movie trailers', 'film trailers',
+              'free stream Movies', 'free movie trailers', 'HD trailers',
+            ]}
           />
           <script
             type="application/ld+json"
@@ -363,21 +1045,49 @@ const WatchPage: React.FC<WatchPageProps> = ({
         />
       )}
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
-      {/* Share Modal */}
+      {/* ── Share Modal ───────────────────────────────────────────────────── */}
       {isShareOpen && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-miraj-gray border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">Share Content</h3>
-              <button onClick={() => setIsShareOpen(false)}><X size={24} className="text-gray-400" /></button>
+          <div
+            className="bg-miraj-gray border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-full"
+            style={{ maxWidth: 'min(440px, 96vw)' }}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40 flex-wrap gap-2">
+              <h3
+                className="font-bold text-white flex items-center gap-2"
+                style={{ ...fluidFont(14, 18), ...TEXT_SAFE, flex: 1, minWidth: 0 }}
+              >
+                Share Content
+              </h3>
+              <button
+                onClick={() => setIsShareOpen(false)}
+                className="shrink-0 p-1 rounded hover:bg-white/10 transition-colors"
+                aria-label="Close"
+              >
+                <X size={24} className="text-gray-400" />
+              </button>
             </div>
-            <div className="p-6">
+            <div className="p-5">
               <div className="flex items-center gap-2 bg-black/50 border border-white/10 rounded-lg p-2">
-                <input className="bg-transparent text-gray-300 text-sm flex-1 outline-none" readOnly value={typeof window !== 'undefined' ? window.location.href : ''} />
-                <button onClick={handleCopyLink} className="p-2 bg-white/10 rounded hover:bg-white/20">
-                  {copiedLink ? <Check size={16} className="text-green-500" /> : <Copy size={16} className="text-white" />}
+                <input
+                  className="bg-transparent text-gray-300 flex-1 outline-none min-w-0"
+                  style={{ ...fluidFont(11, 14), ...TEXT_SAFE }}
+                  readOnly
+                  value={typeof window !== 'undefined' ? window.location.href : ''}
+                />
+                <button
+                  onClick={handleCopyLink}
+                  className="p-2 bg-white/10 rounded hover:bg-white/20 shrink-0"
+                  aria-label="Copy link"
+                >
+                  {copiedLink
+                    ? <Check size={16} className="text-green-500" />
+                    : <Copy  size={16} className="text-white" />}
                 </button>
               </div>
             </div>
@@ -385,39 +1095,83 @@ const WatchPage: React.FC<WatchPageProps> = ({
         </div>
       )}
 
-      {/* Payment Modal */}
+      {/* ── Payment Modal ─────────────────────────────────────────────────── */}
       {showPaymentModal && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="bg-miraj-gray border border-white/10 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2"><Lock size={20} className="text-miraj-gold" /> Unlock Full Content</h3>
-              <button onClick={() => setShowPaymentModal(false)}><X size={24} className="text-gray-400" /></button>
+          <div
+            className="bg-miraj-gray border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-full"
+            style={{ maxWidth: 'min(440px, 96vw)' }}
+          >
+            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-black/40 flex-wrap gap-2">
+              <h3
+                className="font-bold text-white flex items-center gap-2"
+                style={{ ...fluidFont(14, 18), ...TEXT_SAFE, flex: 1, minWidth: 0 }}
+              >
+                <Lock size={20} className="text-miraj-gold shrink-0" />
+                <span style={TEXT_SAFE}>Unlock Full Content</span>
+              </h3>
+              <button
+                onClick={() => setShowPaymentModal(false)}
+                className="shrink-0 p-1 rounded hover:bg-white/10 transition-colors"
+                aria-label="Close"
+              >
+                <X size={24} className="text-gray-400" />
+              </button>
             </div>
-            <div className="p-6">
-              <p className="text-gray-300 mb-6">Get unlimited access to watch full movies and TV shows in HD quality.</p>
+            <div className="p-5">
+              <p
+                className="text-gray-300 mb-6"
+                style={{ ...fluidFont(13, 15), ...TEXT_SAFE }}
+              >
+                Get unlimited access to watch full movies and TV shows in HD quality.
+              </p>
               <div className="bg-black/50 border border-white/10 rounded-lg p-4 mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-gray-400">Premium Access</span>
-                  <span className="text-2xl font-bold text-miraj-gold">Free for Now</span>
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <span
+                    className="text-gray-400"
+                    style={{ ...fluidFont(13, 14), ...TEXT_SAFE }}
+                  >
+                    Premium Access
+                  </span>
+                  <span
+                    className="font-bold text-miraj-gold"
+                    style={{ ...fluidFont(18, 24), ...TEXT_SAFE }}
+                  >
+                    Free for Now
+                  </span>
                 </div>
-                <ul className="text-sm text-gray-400 space-y-1 mt-4">
-                  <li>✓ Unlimited HD Streaming</li>
-                  <li>✓ No Ads</li>
-                  <li>✓ Download for Offline Viewing</li>
-                  <li>✓ Access to Premium Content</li>
+                <ul
+                  className="text-gray-400 space-y-1 mt-4"
+                  style={{ ...fluidFont(12, 14), ...TEXT_SAFE }}
+                >
+                  <li style={TEXT_SAFE}>✓ Unlimited HD Streaming</li>
+                  <li style={TEXT_SAFE}>✓ No Ads</li>
+                  <li style={TEXT_SAFE}>✓ Download for Offline Viewing</li>
+                  <li style={TEXT_SAFE}>✓ Access to Premium Content</li>
                 </ul>
               </div>
-              <button onClick={handlePaymentComplete} className="w-full bg-gradient-to-r from-miraj-gold to-yellow-500 text-black font-bold py-3 rounded-full hover:shadow-lg hover:shadow-miraj-gold/50 transition-all">Watch Now</button>
+              <button
+                onClick={handlePaymentComplete}
+                className="w-full bg-gradient-to-r from-miraj-gold to-yellow-500 text-black font-bold rounded-full hover:shadow-lg hover:shadow-miraj-gold/50 transition-all"
+                style={{ padding: 'clamp(10px,2.5vw,14px)', ...fluidFont(14, 16) }}
+              >
+                <span style={TEXT_SAFE}>Watch Now</span>
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Player Section */}
+      {/* ── Player Section ────────────────────────────────────────────────── */}
       <div className="container mx-auto px-0 md:px-6 mb-8 mt-4 relative z-10">
         <div className="w-full max-w-7xl mx-auto">
           {!isPaidUser && youtubeTrailerId ? (
-            <YouTubePlayer videoId={youtubeTrailerId} title={`${title} - Trailer`} autoplay={true} loop={true} />
+            <YouTubePlayer
+              videoId={youtubeTrailerId}
+              title={`${title} - Trailer`}
+              autoplay={true}
+              loop={true}
+            />
           ) : (
             <>
               {loadingStreams ? (
@@ -431,87 +1185,212 @@ const WatchPage: React.FC<WatchPageProps> = ({
                   title={title}
                   season={season}
                   episode={episode}
-                  customStreams={streams} // ✅ streams already include documentary streams
+                  customStreams={streams}
                 />
               )}
             </>
           )}
 
+          {/* ── Unlock CTA ──────────────────────────────────────────────── */}
           {!isPaidUser && youtubeTrailerId && (
-            <div className="mt-6 bg-gradient-to-r from-miraj-red/20 to-miraj-gold/20 border-2 border-miraj-gold/50 rounded-xl p-6">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2 flex items-center gap-2"><Lock size={20} className="text-miraj-gold" /> {getUnlockTitle()}</h3>
-                  <p className="text-gray-300 text-sm">{getUnlockDescription()}</p>
+            <div
+              className="mt-6 bg-gradient-to-r from-miraj-red/20 to-miraj-gold/20 border-2 border-miraj-gold/50 rounded-xl"
+              style={{ padding: 'clamp(16px,4vw,24px)' }}
+            >
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 flex-wrap">
+                <div className="min-w-0 flex-1">
+                  <h3
+                    className="font-bold text-white mb-2 flex items-center gap-2 flex-wrap"
+                    style={{ ...fluidFont(15, 20), ...TEXT_SAFE }}
+                  >
+                    <Lock size={20} className="text-miraj-gold shrink-0" />
+                    <span style={TEXT_SAFE}>{getUnlockTitle()}</span>
+                  </h3>
+                  <p
+                    className="text-gray-300"
+                    style={{ ...fluidFont(12, 14), ...TEXT_SAFE }}
+                  >
+                    {getUnlockDescription()}
+                  </p>
                 </div>
-                <button onClick={handlePayNow} className="flex items-center gap-2 bg-gradient-to-r from-miraj-gold to-yellow-500 hover:from-yellow-500 hover:to-miraj-gold text-black font-bold px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-miraj-gold/50 whitespace-nowrap">
-                  <Play size={20} fill="currentColor" /> <span>Pay Now</span>
+                <button
+                  onClick={handlePayNow}
+                  className="flex items-center gap-2 bg-gradient-to-r from-miraj-gold to-yellow-500 hover:from-yellow-500 hover:to-miraj-gold text-black font-bold rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-miraj-gold/50 shrink-0"
+                  style={{
+                    padding: 'clamp(10px,2.5vw,14px) clamp(20px,5vw,36px)',
+                    ...fluidFont(13, 15),
+                    whiteSpace: 'normal',
+                  }}
+                >
+                  <Play size={20} fill="currentColor" className="shrink-0" />
+                  <span style={TEXT_SAFE}>Pay Now</span>
                 </button>
               </div>
             </div>
           )}
 
+          {/* ── TV season / episode controls ────────────────────────────── */}
           {type === 'tv' && isPaidUser && (
-            <div className="bg-miraj-gray border border-white/5 p-4 mt-4 rounded-xl flex items-center gap-4">
+            <div
+              className="bg-miraj-gray border border-white/5 mt-4 rounded-xl flex items-end gap-4 flex-wrap"
+              style={{ padding: 'clamp(12px,3vw,16px)' }}
+            >
               <div className="flex flex-col">
-                <label className="text-xs text-gray-400 font-bold mb-1">SEASON</label>
-                <input type="number" min="1" value={season} onChange={(e) => setSeason(parseInt(e.target.value))} className="bg-black/50 border border-white/10 rounded px-3 py-2 text-white w-20 text-center font-bold focus:border-miraj-gold focus:outline-none" />
+                <label
+                  className="text-gray-400 font-bold mb-1 uppercase"
+                  style={{ ...fluidFont(10, 12), ...TEXT_SAFE }}
+                >
+                  Season
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={season}
+                  onChange={(e) => setSeason(parseInt(e.target.value))}
+                  className="bg-black/50 border border-white/10 rounded px-3 py-2 text-white text-center font-bold focus:border-miraj-gold focus:outline-none"
+                  style={{ width: 'clamp(64px,15vw,80px)', ...fluidFont(13, 15) }}
+                />
               </div>
               <div className="flex flex-col">
-                <label className="text-xs text-gray-400 font-bold mb-1">EPISODE</label>
-                <input type="number" min="1" value={episode} onChange={(e) => setEpisode(parseInt(e.target.value))} className="bg-black/50 border border-white/10 rounded px-3 py-2 text-white w-20 text-center font-bold focus:border-miraj-gold focus:outline-none" />
+                <label
+                  className="text-gray-400 font-bold mb-1 uppercase"
+                  style={{ ...fluidFont(10, 12), ...TEXT_SAFE }}
+                >
+                  Episode
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={episode}
+                  onChange={(e) => setEpisode(parseInt(e.target.value))}
+                  className="bg-black/50 border border-white/10 rounded px-3 py-2 text-white text-center font-bold focus:border-miraj-gold focus:outline-none"
+                  style={{ width: 'clamp(64px,15vw,80px)', ...fluidFont(13, 15) }}
+                />
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Details & Cast */}
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 max-w-7xl mx-auto">
-          <div className="hidden md:block w-[300px] flex-shrink-0">
+      {/* ── Details & Cast ────────────────────────────────────────────────── */}
+      <div
+        className="container mx-auto relative z-10"
+        style={{ paddingLeft: 'clamp(12px,4vw,24px)', paddingRight: 'clamp(12px,4vw,24px)' }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,300px)_1fr] gap-6 lg:gap-8 max-w-7xl mx-auto">
+
+          {/* Poster (desktop only) */}
+          <div className="hidden md:block" style={{ maxWidth: 300, width: '100%' }}>
             <div className="aspect-[2/3] rounded-xl overflow-hidden shadow-2xl relative border border-white/10">
-              <img src={getImageUrl(details.poster_path)} alt={title} className="w-full h-full object-cover" style={{ filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)' }} />
+              <img
+                src={getImageUrl(details.poster_path)}
+                alt={title}
+                className="w-full h-full object-cover"
+                style={{
+                  filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)',
+                }}
+              />
             </div>
           </div>
-          <div className="min-w-0">
-            <div className="flex justify-between items-start flex-wrap gap-4">
-              <h1 ref={titleRef} className="text-2xl md:text-5xl font-bold text-white mb-2">
+
+          {/* Info column */}
+          <div style={{ minWidth: 0 }}>
+
+            {/* Title row */}
+            <div
+              className="flex justify-between items-start flex-wrap gap-3 mb-2"
+            >
+              <h1
+                ref={titleRef}
+                className="font-bold text-white"
+                style={{ ...fluidFont(20, 48), ...TEXT_SAFE, flex: '1 1 auto' }}
+              >
                 {title}
               </h1>
-              <button onClick={() => setIsShareOpen(true)} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 hover:bg-miraj-gold hover:text-black transition-colors border border-white/5">
-                <Share2 size={18} /> <span className="hidden sm:inline font-bold text-sm">Share</span>
+              <button
+                onClick={() => setIsShareOpen(true)}
+                className="flex items-center gap-2 bg-white/10 rounded-full hover:bg-miraj-gold hover:text-black transition-colors border border-white/5 shrink-0"
+                style={{ padding: 'clamp(6px,1.5vw,10px) clamp(12px,3vw,18px)', ...fluidFont(12, 14) }}
+              >
+                <Share2 size={18} className="shrink-0" />
+                <span className="hidden sm:inline font-bold" style={TEXT_SAFE}>Share</span>
               </button>
             </div>
 
-            <div className="flex items-center gap-4 text-sm text-gray-300 mb-6 flex-wrap">
-              <span className="flex items-center gap-1 text-miraj-gold font-bold bg-miraj-gold/10 px-2 py-1 rounded"><Star size={14} fill="currentColor" /> {details.vote_average?.toFixed(1) || 'N/A'}</span>
-              <span className="flex items-center gap-1"><Calendar size={16} /> {year}</span>
-              {details.runtime && <span className="flex items-center gap-1"><Clock size={16} /> {details.runtime}m</span>}
-              <span className="border border-white/20 px-2 py-0.5 rounded text-xs uppercase font-bold">
+            {/* Meta badges */}
+            <div
+              className="flex items-center flex-wrap mb-6 text-gray-300"
+              style={{ gap: 'clamp(8px,2vw,16px)', ...fluidFont(12, 14) }}
+            >
+              <span
+                className="flex items-center gap-1 text-miraj-gold font-bold bg-miraj-gold/10 rounded"
+                style={{ padding: '2px 8px', ...TEXT_SAFE }}
+              >
+                <Star size={14} fill="currentColor" className="shrink-0" />
+                <span style={TEXT_SAFE}>{details.vote_average?.toFixed(1) || 'N/A'}</span>
+              </span>
+              <span className="flex items-center gap-1" style={TEXT_SAFE}>
+                <Calendar size={16} className="shrink-0" />
+                <span style={TEXT_SAFE}>{year}</span>
+              </span>
+              {details.runtime && (
+                <span className="flex items-center gap-1" style={TEXT_SAFE}>
+                  <Clock size={16} className="shrink-0" />
+                  <span style={TEXT_SAFE}>{details.runtime}m</span>
+                </span>
+              )}
+              <span
+                className="border border-white/20 rounded font-bold uppercase"
+                style={{ padding: '2px 8px', ...fluidFont(10, 12), ...TEXT_SAFE }}
+              >
                 {type === 'tv_live' ? 'Live TV' : type.replace('_', ' ')}
               </span>
             </div>
 
-            <p ref={descriptionRef} className="text-gray-400 leading-relaxed text-lg mb-8">
+            {/* Overview */}
+            <p
+              ref={descriptionRef}
+              className="text-gray-400 leading-relaxed mb-8"
+              style={{ ...fluidFont(14, 18), ...TEXT_SAFE }}
+            >
               {description}
             </p>
 
+            {/* Cast grid */}
             {cast.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-lg font-bold text-white mb-4">Cast</h3>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+                <h3
+                  className="font-bold text-white mb-4"
+                  style={{ ...fluidFont(14, 18), ...TEXT_SAFE }}
+                >
+                  Cast
+                </h3>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 sm:gap-4">
                   {cast.slice(0, 5).map((person) => (
-                    <div key={person.id} className="text-center group">
+                    <div key={person.id} className="text-center group" style={{ minWidth: 0 }}>
                       <div className="aspect-[2/3] rounded-lg overflow-hidden mb-2 bg-white/5 border border-white/5 group-hover:border-miraj-gold/50 transition-colors">
                         {person.profile_path ? (
-                          <img src={getImageUrl(person.profile_path)} alt={person.name} className="w-full h-full object-cover" />
+                          <img
+                            src={getImageUrl(person.profile_path)}
+                            alt={person.name}
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
                           <User className="w-full h-full p-4 text-gray-500" />
                         )}
                       </div>
-                      <p className="text-xs font-bold text-white truncate">{person.name}</p>
-                      <p className="text-[10px] text-gray-500 truncate">{person.character}</p>
+                      <p
+                        className="font-bold text-white"
+                        style={{ ...fluidFont(10, 12), ...TEXT_SAFE, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
+                      >
+                        {person.name}
+                      </p>
+                      <p
+                        className="text-gray-500"
+                        style={{ ...fluidFont(9, 11), ...TEXT_SAFE, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }}
+                      >
+                        {person.character}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -520,16 +1399,46 @@ const WatchPage: React.FC<WatchPageProps> = ({
           </div>
         </div>
 
+        {/* ── Recommendations ─────────────────────────────────────────────── */}
         {recommendations.length > 0 && (
           <div className="mt-12 border-t border-white/10 pt-8">
-            <h3 className="text-2xl font-bold text-white mb-6">You May Also Like</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <h3
+              className="font-bold text-white mb-6"
+              style={{ ...fluidFont(18, 24), ...TEXT_SAFE }}
+            >
+              You May Also Like
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
               {recommendations.map((item) => (
-                <Link key={item.id} href={`/watch/${item.media_type || 'movie'}/${item.id}`} className="group relative block">
+                <Link
+                  key={item.id}
+                  href={`/watch/${item.media_type || 'movie'}/${item.id}`}
+                  className="group relative block"
+                  style={{ minWidth: 0 }}
+                >
                   <div className="aspect-[2/3] rounded-xl overflow-hidden bg-miraj-gray border border-white/5 shadow-lg">
-                    <img src={getImageUrl(item.poster_path)} alt={item.title || item.name} className="w-full h-full object-cover group-hover:opacity-60 transition-opacity" style={{ filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)' }} />
+                    <img
+                      src={getImageUrl(item.poster_path)}
+                      alt={item.title || item.name}
+                      className="w-full h-full object-cover group-hover:opacity-60 transition-opacity"
+                      style={{
+                        filter: 'url(#ultraSharp) brightness(1.05) contrast(1.1) saturate(1.08) hue-rotate(5deg)',
+                      }}
+                    />
                   </div>
-                  <h4 className="mt-2 text-sm font-bold text-white truncate group-hover:text-miraj-gold transition-colors">{item.title || item.name}</h4>
+                  <h4
+                    className="mt-2 font-bold text-white group-hover:text-miraj-gold transition-colors"
+                    style={{
+                      ...fluidFont(11, 14),
+                      ...TEXT_SAFE,
+                      overflow: 'hidden',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                    }}
+                  >
+                    {item.title || item.name}
+                  </h4>
                 </Link>
               ))}
             </div>
@@ -540,48 +1449,53 @@ const WatchPage: React.FC<WatchPageProps> = ({
   );
 };
 
+/* ─── getServerSideProps ─────────────────────────────────────────────────── */
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query;
   if (!slug || !Array.isArray(slug) || slug.length < 2) return { notFound: true };
 
-  const type = slug[0] as 'movie' | 'tv' | 'sports' | 'tv_live';
-  const rawId = slug[1]; // full ID (may be a string like "cheetahs-up-close...")
-  let id = rawId;
-  // For TMDB numeric IDs we may want to strip the slug suffix, but keep rawId for custom lookup
+  const type  = slug[0] as 'movie' | 'tv' | 'sports' | 'tv_live';
+  const rawId = slug[1];
+  let id      = rawId;
+
   if ((type === 'movie' || type === 'tv') && /^\d+/.test(rawId)) {
-    id = rawId.split('-')[0]; // numeric part for TMDB API
+    id = rawId.split('-')[0];
   }
 
   try {
     let customItem: ContentDetails | null = null;
     let streamsForCustom: StreamSource[] | undefined;
 
-    // Search all custom arrays for a match using both rawId and id (numeric part)
     const customArrays = {
-      movie: [UNIQUE_MOVIES, UNIQUE_HINDI_DUBBED, UNIQUE_ADULT, UNIQUE_DOCUMENTARY],
-      tv: [UNIQUE_TV_SHOWS],
-      sports: [UNIQUE_SPORTS],
+      movie:   [UNIQUE_MOVIES, UNIQUE_HINDI_DUBBED, UNIQUE_ADULT, UNIQUE_DOCUMENTARY],
+      tv:      [UNIQUE_TV_SHOWS],
+      sports:  [UNIQUE_SPORTS],
       tv_live: [UNIQUE_TV_LIVE],
     };
 
     const arrays = customArrays[type] || [];
     for (const arr of arrays) {
-      const found = arr?.find((item) => String(item.id) === rawId || String(item.id) === id);
+      const found = arr?.find(
+        (item) => String(item.id) === rawId || String(item.id) === id
+      );
       if (found) {
         customItem = found as ContentDetails;
-        // Convert streams to StreamSource[] if present
         if (found.streams) {
           if (Array.isArray(found.streams)) {
             streamsForCustom = found.streams as StreamSource[];
           } else {
-            // Convert Record<string,string> to StreamSource[]
-            streamsForCustom = Object.entries(found.streams).map(([name, url], i) => ({
-              id: `srv-${i}`,
-              name,
-              url: String(url),
-              quality: 'HD',
-              type: String(url).includes('.m3u8') || String(url).includes('hls') ? 'hls' : 'iframe',
-            }));
+            streamsForCustom = Object.entries(found.streams).map(
+              ([name, url], i) => ({
+                id:      `srv-${i}`,
+                name,
+                url:     String(url),
+                quality: 'HD',
+                type:    String(url).includes('.m3u8') || String(url).includes('hls')
+                  ? 'hls'
+                  : 'iframe',
+              })
+            );
           }
         }
         break;
@@ -589,36 +1503,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     let details: ContentDetails | null = null;
-    let cast: CastMember[] = [];
-    let recommendations: MediaItem[] = [];
+    let cast: CastMember[]             = [];
+    let recommendations: MediaItem[]   = [];
     let youtubeTrailerId: string | null = null;
 
     if (customItem) {
       details = customItem;
-      // For custom items, cast and recommendations are empty; we might still try to fetch from TMDB if numeric?
-      // We'll keep them empty; the page will show just the details.
       if ('yt_id' in customItem && typeof customItem.yt_id === 'string') {
         youtubeTrailerId = customItem.yt_id;
       }
     } else {
-      // Not a custom item – fetch from TMDB API
-      try {
-        details = await getDetails(type, id);
-      } catch (e) {
-        console.warn('TMDB details fetch failed:', e);
-      }
+      try { details = await getDetails(type, id); } catch (e) { console.warn('TMDB details fetch failed:', e); }
       if (!details) return { notFound: true };
 
       if (type === 'movie' || type === 'tv') {
-        try { cast = await getCast(type, id); } catch (e) { console.warn('Cast fetch failed'); }
-        try { recommendations = await getRecommendations(type, id); } catch (e) { console.warn('Recs fetch failed'); }
-        try { youtubeTrailerId = await getYouTubeTrailer(type, id); } catch (e) { console.warn('YouTube trailer fetch failed'); }
+        try { cast             = await getCast(type, id);             } catch { console.warn('Cast fetch failed'); }
+        try { recommendations  = await getRecommendations(type, id);  } catch { console.warn('Recs fetch failed'); }
+        try { youtubeTrailerId = await getYouTubeTrailer(type, id);   } catch { console.warn('YouTube trailer fetch failed'); }
       }
     }
 
     if (!details) return { notFound: true };
 
-    // Remove streams from details to avoid duplication (they will be passed separately)
     const { streams, ...detailsWithoutStreams } = details;
 
     return {
@@ -627,9 +1533,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         cast,
         initialRecommendations: recommendations,
         type,
-        id: rawId, // keep rawId for client‑side use (e.g., API calls)
+        id: rawId,
         youtubeTrailerId,
-        initialStreams: streamsForCustom || null, // ✅ pass streams for custom items
+        initialStreams: streamsForCustom || null,
       },
     };
   } catch (error) {
