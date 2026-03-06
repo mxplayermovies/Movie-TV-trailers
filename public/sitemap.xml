@@ -118,4 +118,11 @@
     <priority>0.8</priority>
   </url>
 
+   <url>
+    <loc>https://movie-tv-trailers.vercel.app/blog</loc>
+    <lastmod>2026-01-05</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
