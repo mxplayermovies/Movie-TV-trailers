@@ -21,7 +21,7 @@ export default function Document() {
         "@type": "Organization",
         "name": "Movie & TV trailers",
         "url": "https://movie-tv-trailers.vercel.app/",
-        "logo": "https://movie-tv-trailers.vercel.app/logo.png",
+        "logo": "https://movie-tv-trailers.vercel.app/og-image.jpg",
         "sameAs": [
           "https://facebook.com/movieandtvtrailers",
           "https://twitter.com/movieandtvtrailers"
