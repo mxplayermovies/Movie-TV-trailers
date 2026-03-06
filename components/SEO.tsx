@@ -14,7 +14,7 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({ 
   title, 
   description = "Movie & TV trailers - Stream thousands of Movies, TV Shows, and Live Sports for free in HD quality. No registration required.",
-  image = "https://movie-tv-trailers.vercel.app/logo.png",
+  image = "https://movie-tv-trailers.vercel.app/og-image.jpg",
   type = "website",
   schema,
   path = "",
